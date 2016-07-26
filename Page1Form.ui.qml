@@ -3,20 +3,20 @@ import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
 
 Item {
-    property alias button1: button1
-    property alias button2: button2
+    property alias masterImage: masterImage
+    property alias mosaicImages: mosaicImages
 
     RowLayout {
         anchors.centerIn: parent
 
         Button {
-            id: button1
-            text: qsTr("Press Me 1")
+            id: masterImage
+            text: qsTr("Select master Image")
         }
 
         Button {
-            id: button2
-            text: qsTr("Press Me 2")
+            id: mosaicImages
+            text: qsTr("Add mosaic images")
         }
     }
 }

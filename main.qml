@@ -2,11 +2,16 @@ import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
 
+
 ApplicationWindow {
     visible: true
     width: 640
     height: 480
-    title: qsTr("Hello World")
+    title: qsTr("Mosaic Maker")
+    id: mainWindow
+
+    property url masterURL: ""
+    property var mosaicURLs: []
 
     SwipeView {
         id: swipeView
@@ -28,10 +33,10 @@ ApplicationWindow {
         id: tabBar
         currentIndex: swipeView.currentIndex
         TabButton {
-            text: qsTr("First")
+            text: qsTr("Select Files")
         }
         TabButton {
-            text: qsTr("Second")
+            text: qsTr("Generate Mosaic")
         }
     }
 }
