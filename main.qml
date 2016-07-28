@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
+import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.0
 
 
@@ -13,30 +14,80 @@ ApplicationWindow {
     property url masterURL: ""
     property var mosaicURLs: []
 
-    SwipeView {
-        id: swipeView
-        anchors.fill: parent
-        currentIndex: tabBar.currentIndex
-
-        Page1 {
+    ColumnLayout {
+        Button {
+            id: masterImage
+            text: qsTr("Select Target")
+            onClicked: masterFileDialog.open();
         }
-
-        Page {
-            Label {
-                text: qsTr("Second page")
-                anchors.centerIn: parent
-            }
+        Button {
+            id: mosaicImages
+            text: qsTr("Add Mosaic Images")
+            onClicked: mosaicFileDialog.open();
         }
     }
 
-    footer: TabBar {
-        id: tabBar
-        currentIndex: swipeView.currentIndex
-        TabButton {
-            text: qsTr("Select Files")
+    FileDialog {
+        id: masterFileDialog
+        title: "Select additional mosaic images"
+        folder: shortcuts.pictures
+        nameFilters: ["JPEG Images (*.jpg, *.jpeg, *.JPG, *.JPEG)"]
+        selectExisting: true
+        selectMultiple: false
+        onAccepted: {
+            mainWindow.masterURL = masterFileDialog.fileURL
         }
-        TabButton {
-            text: qsTr("Generate Mosaic")
+    }
+
+    FileDialog {
+        id: mosaicFileDialog
+        title: "Select additional mosaic images"
+        folder: shortcuts.pictures
+        nameFilters: ["JPEG Images (*.jpg, *.jpeg, *.JPG, *.JPEG)"]
+        selectExisting: true
+        selectMultiple: true
+        onAccepted: {
+            mainWindow.mosaicURLs.append(mosaicFileDialog.fileURLs)
         }
+    }
+
+    Rectangle {
+      id: thumbnailView
+      anchors.right: parent.right
+      anchors.top: parent.top
+      width: 300
+      height: 500
+      visible: true
+      color: "gray"
+      GridView {
+        anchors.fill: parent
+        id: gridView1
+        cellWidth: 50
+        cellHeight: 50
+        delegate: listDelegate
+        model: sourceImages
+        visible: true
+      }
+      Component {
+        id: listDelegate
+        Rectangle {
+          id: gridImageWrapper
+          width: gridView1.cellWidth
+          height: gridView1.cellHeight
+          color: "gray"
+          Image {
+            id: frontIcon
+            asynchronous: true;
+            anchors.centerIn: parent
+            sourceSize.width: gridView1.cellWidth - 2
+            sourceSize.height: gridView1.cellHeight - 2
+            fillMode: Image.PreserveAspectFit
+            source: {index == -1 ? '' : "image://imgProvider/" + index}
+            smooth: true
+            visible: true
+            cache: true
+          }
+        }
+      }
     }
 }
