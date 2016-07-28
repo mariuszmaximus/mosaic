@@ -5,23 +5,15 @@ import QtQuick.Layouts 1.0
 
 
 ApplicationWindow {
-    visible: true
-    width: 640
-    height: 480
-    title: qsTr("Mosaic Maker")
-    id: mainWindow
-
-    property url masterURL: ""
-    property var mosaicURLs: []
+    width: 800
+    height: 600
 
     ColumnLayout {
         Button {
-            id: masterImage
             text: qsTr("Select Target")
             onClicked: masterFileDialog.open();
         }
         Button {
-            id: mosaicImages
             text: qsTr("Add Mosaic Images")
             onClicked: mosaicFileDialog.open();
         }
@@ -30,7 +22,6 @@ ApplicationWindow {
     FileDialog {
         id: masterFileDialog
         title: "Select additional mosaic images"
-        folder: shortcuts.pictures
         nameFilters: ["JPEG Images (*.jpg, *.jpeg, *.JPG, *.JPEG)"]
         selectExisting: true
         selectMultiple: false
@@ -42,12 +33,11 @@ ApplicationWindow {
     FileDialog {
         id: mosaicFileDialog
         title: "Select additional mosaic images"
-        folder: shortcuts.pictures
         nameFilters: ["JPEG Images (*.jpg, *.jpeg, *.JPG, *.JPEG)"]
         selectExisting: true
         selectMultiple: true
         onAccepted: {
-            mainWindow.mosaicURLs.append(mosaicFileDialog.fileURLs)
+            mosaicImages.imagesAdded(mosaicFileDialog.fileURLs)
         }
     }
 
@@ -65,7 +55,7 @@ ApplicationWindow {
         cellWidth: 50
         cellHeight: 50
         delegate: listDelegate
-        model: sourceImages
+        model: mosaicImages
         visible: true
       }
       Component {

@@ -15,17 +15,15 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QLatin1String("qrc:/main.qml")));
 
-    MoSourceImages sourceImages;
+    MoSourceImages mosaicImages;
     engine.rootContext()->setContextProperty(
-                "sourceImages", &sourceImages);
-    MoImageProvider* imageProvider = new MoImageProvider(&sourceImages);
+                "mosaicImages", &mosaicImages);
+    MoImageProvider* imageProvider = new MoImageProvider(&mosaicImages);
     engine.addImageProvider(QLatin1String("imageProvider"),
                             imageProvider);
 
-    QString qmlPath = "qrc:/main.qml";
-    engine.load(QDir::toNativeSeparators(qmlPath));
+    engine.load(QUrl(QLatin1String("qrc:/main.qml")));
 
     QObject* topLevel = engine.rootObjects().value(0);
     QQuickWindow* window = qobject_cast<QQuickWindow*>(topLevel);
