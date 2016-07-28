@@ -31,7 +31,6 @@ ApplicationWindow {
         selectFolder: false
         folder: shortcuts.pictures
         onAccepted: {
-            console.log(targetFileDialog.fileUrl)
             mainWindow.targetURL = targetFileDialog.fileUrl
         }
     }
@@ -46,7 +45,6 @@ ApplicationWindow {
         modality: Qt.NonModal
         folder: shortcuts.pictures
         onAccepted: {
-            console.log(mosaicFileDialog.fileUrls)
             mosaicImages.imagesAdded(mosaicFileDialog.fileUrls)
         }
     }
