@@ -5,13 +5,14 @@ import QtQuick.Layouts 1.0
 
 
 ApplicationWindow {
+    id: mainWindow
     width: 800
     height: 600
 
     ColumnLayout {
         Button {
             text: qsTr("Select Target")
-            onClicked: masterFileDialog.open();
+            onClicked: targetFileDialog.open();
         }
         Button {
             text: qsTr("Add Mosaic Images")
@@ -19,14 +20,17 @@ ApplicationWindow {
         }
     }
 
+    property var targetURL
+
     FileDialog {
-        id: masterFileDialog
+        id: targetFileDialog
         title: "Select additional mosaic images"
         nameFilters: ["JPEG Images (*.jpg, *.jpeg, *.JPG, *.JPEG)"]
         selectExisting: true
         selectMultiple: false
         onAccepted: {
-            mainWindow.masterURL = masterFileDialog.fileURL
+            console.log(targetFileDialog.fileUrl)
+            mainWindow.targetURL = targetFileDialog.fileUrl
         }
     }
 
@@ -40,8 +44,8 @@ ApplicationWindow {
         modality: Qt.NonModal
         folder: shortcuts.pictures
         onAccepted: {
-            console.log(mosaicFileDialog.fileURLs)
-            mosaicImages.imagesAdded(mosaicFileDialog.fileURLs)
+            console.log(mosaicFileDialog.fileUrls)
+            mosaicImages.imagesAdded(mosaicFileDialog.fileUrls)
         }
     }
 
@@ -76,7 +80,7 @@ ApplicationWindow {
             sourceSize.width: gridView1.cellWidth - 2
             sourceSize.height: gridView1.cellHeight - 2
             fillMode: Image.PreserveAspectFit
-            source: {index == -1 ? '' : "image://imgProvider/" + index}
+            source: {index == -1 ? '' : "image://imageProvider/" + index}
             smooth: true
             visible: true
             cache: true
