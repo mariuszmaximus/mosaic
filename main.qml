@@ -1,6 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
-import QtQuick.Dialogs 1.2
+import QtQuick.Dialogs 1.0
 import QtQuick.Layouts 1.0
 
 
@@ -36,7 +36,11 @@ ApplicationWindow {
         nameFilters: ["JPEG Images (*.jpg, *.jpeg, *.JPG, *.JPEG)"]
         selectExisting: true
         selectMultiple: true
+        selectFolder: false
+        modality: Qt.NonModal
+        folder: shortcuts.pictures
         onAccepted: {
+            console.log(mosaicFileDialog.fileURLs)
             mosaicImages.imagesAdded(mosaicFileDialog.fileURLs)
         }
     }
@@ -45,7 +49,7 @@ ApplicationWindow {
       id: thumbnailView
       anchors.right: parent.right
       anchors.top: parent.top
-      width: 300
+      width: 600
       height: 500
       visible: true
       color: "gray"

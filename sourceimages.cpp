@@ -1,5 +1,7 @@
 #include "sourceimages.h"
 #include <QDebug>
+#include <iostream>
+
 
 MoSourceImages::MoSourceImages(QObject* parent) :
     QAbstractListModel(parent)
@@ -36,6 +38,8 @@ QImage MoSourceImages::getImage(const QString &id) const
 
 void MoSourceImages::imagesAdded(const QList<QUrl>& newImages)
 {
+    std::cout << "HERE" << std::endl;
+    std::cout << newImages.size() << std::endl;
   if (newImages.empty()) {
     return;
   }
