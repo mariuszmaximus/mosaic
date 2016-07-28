@@ -24,10 +24,12 @@ ApplicationWindow {
 
     FileDialog {
         id: targetFileDialog
-        title: "Select additional mosaic images"
+        title: "Select the mosaic target image"
         nameFilters: ["JPEG Images (*.jpg, *.jpeg, *.JPG, *.JPEG)"]
         selectExisting: true
         selectMultiple: false
+        selectFolder: false
+        folder: shortcuts.pictures
         onAccepted: {
             console.log(targetFileDialog.fileUrl)
             mainWindow.targetURL = targetFileDialog.fileUrl
