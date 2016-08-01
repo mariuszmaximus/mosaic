@@ -1,6 +1,2 @@
-TEMPLATE = app
-CONFIG += testcase
+include($$PWD/../test_case.pri)
 SOURCES = foo_test.cpp
-INCLUDEPATH += ../../thirdparty/googletest-release-1.7.0/include
-LIBS += -L$$OUT_PWD/../../thirdparty/googletest-release-1.7.0/ -lgtest
-
