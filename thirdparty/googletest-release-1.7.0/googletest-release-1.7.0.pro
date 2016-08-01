@@ -1,7 +1,7 @@
 TEMPLATE = lib
 TARGET = gtest
 INCLUDEPATH += include
-INCLUDEPATH += ${PWD}
+INCLUDEPATH += $$(PWD)
 SOURCES = \
     src/gtest-all.cc \
     src/gtest_main.cc
