@@ -1,5 +1,5 @@
 sudo: required
-dist: trusy
+dist: trusty
 language: cpp
 compiler:
  - gcc
