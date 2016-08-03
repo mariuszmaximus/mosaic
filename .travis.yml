@@ -1,6 +1,17 @@
 sudo: required
 dist: trusy
+language: cpp
+compiler:
+ - gcc
+
+before_install:
+ - QT_PPA=beineri/opt-qt56-trusty QT_VERSION=56
+ - sudo apt-add-repository -y ppa:${QT_PPA}
+ - sudo apt-get update
+ - sudo apt-get install -y qt${QT_VERSION}base qt${QT_VERSION}declarative
+
 script:
- - qmake mosaic_all.pro -r -spec linux-g++
+ - source /opt/qt${QT_VERSION}/bin/qt${QT_VERSION}-env.sh
+ - qmake mosaic_all.pro -r QMAKE_CC=$CC QMAKE_CXX=$CXX
  - make -j2
  - make check
