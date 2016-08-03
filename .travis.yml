@@ -5,7 +5,7 @@ compiler:
  - gcc
 
 before_install:
- - QT_PPA=beineri/opt-qt56-trusty QT_VERSION=56
+ - QT_PPA=beineri/opt-qt561-trusty QT_VERSION=56
  - sudo apt-add-repository -y ppa:${QT_PPA}
  - sudo apt-get update
  - sudo apt-get install -y qt${QT_VERSION}base qt${QT_VERSION}declarative
