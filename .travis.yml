@@ -5,9 +5,12 @@ compiler:
  - gcc
 
 before_install:
+ - export QT_VERSION=56
  - sudo add-apt-repository -y ppa:beineri/opt-qt561-trusty
  - sudo apt-get update -q
- - sudo apt-get -y install qt56declarative qt56quickcontrols qt56tools 
+ - sudo apt-get -y install qt${QT_VERSION}declarative
+ - sudo apt-get -y install qt${QT_VERSION}quickcontrols
+ - sudo apt-get -y install qt${QT_VERSION}tools 
 
 script:
  - source /opt/qt${QT_VERSION}/bin/qt${QT_VERSION}-env.sh
