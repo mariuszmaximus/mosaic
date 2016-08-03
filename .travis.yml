@@ -3,6 +3,7 @@ dist: trusy
 before_install:
  - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
  - sudo apt-get update -qq
+ - sudo apt dist-upgrade
  - sudo apt-get install ubuntu-sdk-dev
 script:
  - qmake mosaic_all.pro -r -spec linux-g++
