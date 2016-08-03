@@ -7,7 +7,7 @@ compiler:
 before_install:
  - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
  - sudo apt-get update -q
- - sudo apt-get install ubuntu-sdk-dev
+ - sudo apt-get install ubuntu-sdk
 
 script:
  - source /opt/qt${QT_VERSION}/bin/qt${QT_VERSION}-env.sh
