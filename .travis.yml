@@ -1,10 +1,10 @@
 sudo: required
 dist: trusy
 before_install:
- - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
+ - sudo add-apt-repository --yes ppa:beineri/opt-qt551-trusty
  - sudo apt-get update -qq
  - sudo apt dist-upgrade
- - sudo apt-get install ubuntu-sdk-dev
+ - sudo apt-get install qt55base qt55declarative qt55quickcontrols
 script:
  - qmake mosaic_all.pro -r -spec linux-g++
  - make -j2
