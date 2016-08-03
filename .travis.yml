@@ -1,8 +1,5 @@
 sudo: required
 dist: trusy
-before_install:
- - sudo apt-get update -qq
- - sudo apt dist-upgrade
 script:
  - qmake mosaic_all.pro -r -spec linux-g++
  - make -j2
