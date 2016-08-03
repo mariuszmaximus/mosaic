@@ -8,7 +8,6 @@ before_install:
  - sudo add-apt-repository -y ppa:beineri/opt-qt561-trusty
  - sudo apt-get update -q
  - sudo apt-get -y install qt56declarative qt56quickcontrols qt56tools 
- - sudo apt-get install ubuntu-sdk
 
 script:
  - source /opt/qt${QT_VERSION}/bin/qt${QT_VERSION}-env.sh
