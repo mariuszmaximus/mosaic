@@ -7,11 +7,7 @@ compiler:
 before_install:
  - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
  - sudo apt-get update -q
- - sudo apt-get install qtbase5-dev
- - #sudo apt-get install qt5-default
- - sudo apt-get install qtdeclarative5-dev
- - sudo apt-get install libqt5webkit5-dev 
- - sudo apt-get install qttools5-dev-tools
+ - sudo apt-get install ubuntu-sdk-dev
 
 script:
  - source /opt/qt${QT_VERSION}/bin/qt${QT_VERSION}-env.sh
