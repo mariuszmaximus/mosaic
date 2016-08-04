@@ -3,6 +3,10 @@
 
 #include <QObject>
 #include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
+
+#include <memory>
+
 
 class MoMosaicViewRenderer : public QObject, protected QOpenGLFunctions
 {
@@ -13,6 +17,10 @@ public:
 signals:
 
 public slots:
+    void paint();
+
+private:
+    std::shared_ptr<QOpenGLShaderProgram> shader;
 };
 
 #endif // MOMOSAICVIEWRENDERER_H
