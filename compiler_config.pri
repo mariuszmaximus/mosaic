@@ -1,3 +1,3 @@
 linux-g++ {
-    QMAKE_CXXFLAGS += "-Wall -Wshadow -Wextra -Werror"
+    QMAKE_CXXFLAGS += "-Wall -Wextra -Werror"
 }
