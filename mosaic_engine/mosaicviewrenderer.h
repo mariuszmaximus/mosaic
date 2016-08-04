@@ -18,8 +18,10 @@ signals:
 
 public slots:
     void paint();
+    void initGL();
 
 private:
+    bool initialized;
     std::shared_ptr<QOpenGLShaderProgram> shader;
 };
 
