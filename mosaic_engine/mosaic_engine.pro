@@ -4,9 +4,9 @@ TARGET = mosaic_engine
 
 include(../compiler_config.pri)
 
-SOURCES = foo.cpp \
+SOURCES = \
     mosaicview.cpp \
     mosaicviewrenderer.cpp
-HEADERS = foo.h \
+HEADERS = \
     mosaicview.h \
     mosaicviewrenderer.h
