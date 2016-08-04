@@ -2,6 +2,7 @@
 #include <mosaicview.h>
 
 TEST(MosaicView, CanBeConstructed) {
-    MoMosaicView view;
+    MoMosaicView* view = new MoMosaicView;
+    ASSERT_NE(view, nullptr);
+    delete view;
 }
-
