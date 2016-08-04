@@ -1,6 +1,7 @@
+QT += quick
 TEMPLATE = app
 CONFIG += testcase
-include(../../compiler_config.pri)
+include(../compiler_config.pri)
 
 INCLUDEPATH += \
     ../../thirdparty/googletest-release-1.7.0/include \

@@ -1,13 +1,14 @@
 #ifndef MOSAICVIEW_H
 #define MOSAICVIEW_H
 
-#include <QObject>
+#include <QtQuick/QQuickItem>
 
-class MoMosaicView : public QObject
-{
+
+class MoMosaicView : public QQuickItem {
     Q_OBJECT
 public:
-    explicit MoMosaicView(QObject *parent = 0);
+    MoMosaicView();
+    ~MoMosaicView() {}
 
 signals:
 
