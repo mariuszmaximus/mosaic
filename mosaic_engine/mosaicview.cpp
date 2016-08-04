@@ -1,6 +1,4 @@
 #include <mosaicview.h>
 
-MoMosaicView::MoMosaicView(QObject *parent) : QObject(parent)
-{
-
+MoMosaicView::MoMosaicView(QObject *parent) : QObject(parent) {
 }

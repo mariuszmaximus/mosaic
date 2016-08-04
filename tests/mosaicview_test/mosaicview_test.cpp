@@ -1,4 +1,7 @@
 #include <gtest/gtest.h>
+#include <mosaicview.h>
 
-TEST(MosaicView, CanBeConstructed) {}
+TEST(MosaicView, CanBeConstructed) {
+    MoMosaicView view;
+}
 

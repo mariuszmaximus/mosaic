@@ -1,5 +1,5 @@
-#ifndef MOMOSAICVIEW_H
-#define MOMOSAICVIEW_H
+#ifndef MOSAICVIEW_H
+#define MOSAICVIEW_H
 
 #include <QObject>
 
@@ -14,4 +14,4 @@ signals:
 public slots:
 };
 
-#endif // MOMOSAICVIEW_H
+#endif // MOSAICVIEW_H
