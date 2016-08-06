@@ -35,6 +35,13 @@ TEST(MoMosaicViewRenderer, CanChangeOutlineMode) {
     ASSERT_TRUE(view.showOutlines());
 }
 
+TEST(MoMosaicViewRenderer, SetModel) {
+    MoMosaicViewRenderer view;
+    view.setModel(nullptr);
+    std::shared_ptr<MoMosaicModel> model = view.getModel();
+    ASSERT_EQ(nullptr, model.get());
+}
+
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

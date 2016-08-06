@@ -64,3 +64,11 @@ void MoMosaicViewRenderer::setShowOutlines(bool yesNo) {
 bool MoMosaicViewRenderer::showOutlines() const {
     return showOutlines_;
 }
+
+void MoMosaicViewRenderer::setModel(std::shared_ptr<MoMosaicModel> model) {
+    model_ = model;
+}
+
+std::shared_ptr<MoMosaicModel> MoMosaicViewRenderer::getModel() const {
+    return model_;
+}

@@ -8,11 +8,17 @@
 #include <memory>
 
 
+class MoMosaicModel;
+
+
 class MoMosaicViewRenderer : public QObject, protected QOpenGLFunctions
 {
     Q_OBJECT
 public:
     explicit MoMosaicViewRenderer(QObject *parent = 0);
+
+    void setModel(std::shared_ptr<MoMosaicModel> model);
+    std::shared_ptr<MoMosaicModel> getModel() const;
 
 signals:
 
@@ -24,6 +30,7 @@ public slots:
 private:
     bool showOutlines_;
     std::unique_ptr<QOpenGLShaderProgram> program_;
+    std::shared_ptr<MoMosaicModel> model_;
 
     void initGL();
     void initShaders();
