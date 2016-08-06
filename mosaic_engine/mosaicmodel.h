@@ -9,6 +9,7 @@ public:
     MoMosaicModel();
 
     void resize(int size);
+    int size() const;
 
     void setXCoords(const float* xBegin, const float* xEnd);
     void getXCoords(float* xBegin);

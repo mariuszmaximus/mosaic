@@ -17,6 +17,11 @@ public:
     int numTiles;
 };
 
+TEST_F(MosaicModel, Resizing) {
+    model.resize(14);
+    ASSERT_EQ(14, model.size());
+}
+
 TEST_F(MosaicModel, CanSetXCoords) {
     float xVal = 2.0f;
     std::vector<float> xCoords(numTiles, xVal);

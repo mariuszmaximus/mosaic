@@ -11,6 +11,10 @@ void MoMosaicModel::resize(int size) {
     x.resize(size);
 }
 
+int MoMosaicModel::size() const {
+    return size_;
+}
+
 void MoMosaicModel::setXCoords(const float *xBegin, const float *xEnd) {
     if (std::distance(xBegin, xEnd) != size_) {
         throw std::runtime_error(
