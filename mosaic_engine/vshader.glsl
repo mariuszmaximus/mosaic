@@ -1,4 +1,4 @@
-#version 330
+#version 130
 attribute vec4 qt_Vertex;
 attribute vec4 qt_MultiTexCoord0;
 uniform mat4 qt_ModelViewProjectionMatrix;
