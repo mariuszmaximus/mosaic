@@ -6,10 +6,12 @@ include(../compiler_config.pri)
 
 SOURCES = \
     mosaicview.cpp \
-    mosaicviewrenderer.cpp
+    mosaicviewrenderer.cpp \
+    mosaicmodel.cpp
 HEADERS = \
     mosaicview.h \
-    mosaicviewrenderer.h
+    mosaicviewrenderer.h \
+    mosaicmodel.h
 
 DISTFILES +=
 
