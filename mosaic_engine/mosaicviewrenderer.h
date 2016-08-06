@@ -19,10 +19,11 @@ signals:
 public slots:
     void paint();
     void initGL();
+    void initShaders();
 
 private:
     bool initialized;
-    std::shared_ptr<QOpenGLShaderProgram> shader;
+    QOpenGLShaderProgram program;
 };
 
 #endif // MOMOSAICVIEWRENDERER_H
