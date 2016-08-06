@@ -76,6 +76,20 @@ TEST_F(MosaicModel, CanSetScales) {
     ASSERT_FLOAT_EQ(out[2], scaleVal);
 }
 
+TEST_F(MosaicModel, CannotSetTooManyValues) {
+    int numTilesBeingSet = numTiles + 1;
+    std::vector<float> x(numTilesBeingSet);
+    ASSERT_THROW(model.setXCoords(&x[0], &x[0] + numTilesBeingSet),
+            std::runtime_error);
+}
+
+TEST_F(MosaicModel, CannotSetTooFewValues) {
+    int numTilesBeingSet = numTiles - 1;
+    std::vector<float> x(numTilesBeingSet);
+    ASSERT_THROW(model.setXCoords(&x[0], &x[0] + numTilesBeingSet),
+            std::runtime_error);
+}
+
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
