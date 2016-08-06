@@ -15,11 +15,6 @@ TEST(MoMosaicViewRenderer, PaintDoesNotThrow) {
     ASSERT_NO_THROW(view.paint());
 }
 
-TEST(MoMosaicViewRenderer, CanInitializeGL) {
-    MoMosaicViewRenderer view;
-    ASSERT_NO_THROW(view.initGL());
-}
-
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
 
@@ -28,7 +23,7 @@ int main(int argc, char **argv) {
 
     QSurfaceFormat format;
     format.setMajorVersion(3);
-    format.setMinorVersion(3);
+    format.setMinorVersion(0);
 
     QOpenGLContext context;
     context.setFormat(format);
