@@ -1,34 +1,66 @@
 #include "mosaicviewrenderer.h"
 
 MoMosaicViewRenderer::MoMosaicViewRenderer(QObject *parent) :
-    QObject(parent), initialized(false) {
+    QObject(parent), showOutlines_(false) {
 }
 
 void MoMosaicViewRenderer::paint() {
-    if (!initialized) {
+    if (!program_) {
         initGL();
     }
 }
 
 void MoMosaicViewRenderer::initGL() {
-    if (!initialized) {
-        initialized = true;
+    static bool firstCall = true;
+    if (firstCall) {
+        firstCall = false;
         initializeOpenGLFunctions();
-        initShaders();
     }
+
+    initShaders();
 }
 
 void MoMosaicViewRenderer::initShaders() {
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/vshader.glsl")) {
+    program_.reset(new QOpenGLShaderProgram);
+    if (!program_->addShaderFromSourceFile(QOpenGLShader::Vertex,
+                                           vshaderFileName())) {
         throw std::runtime_error("Failed to add vertex shader.");
     }
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/fshader.glsl")) {
+    if (!program_->addShaderFromSourceFile(QOpenGLShader::Fragment,
+                                           fshaderFileName())) {
         throw std::runtime_error("Failed to add fragment shader.");
     }
-    if (!program.link()) {
+    if (!program_->link()) {
         throw std::runtime_error("Failed to link shader.");
     }
-    if (!program.bind()) {
+    if (!program_->bind()) {
         throw std::runtime_error("Failed to bind shader.");
     }
+}
+
+QString MoMosaicViewRenderer::vshaderFileName() const {
+    if (showOutlines_) {
+        return ":/shaders/vshader_outline.glsl";
+    } else {
+        return ":/shaders/vshader.glsl";
+    }
+}
+
+QString MoMosaicViewRenderer::fshaderFileName() const {
+    if (showOutlines_) {
+        return ":/shaders/fshader_outline.glsl";
+    } else {
+        return ":/shaders/fshader.glsl";
+
+    }
+}
+
+void MoMosaicViewRenderer::setShowOutlines(bool yesNo) {
+    if (showOutlines_ == yesNo) return;
+    showOutlines_ = yesNo;
+    initShaders();
+}
+
+bool MoMosaicViewRenderer::showOutlines() const {
+    return showOutlines_;
 }

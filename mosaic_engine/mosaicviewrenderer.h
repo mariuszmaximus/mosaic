@@ -18,13 +18,17 @@ signals:
 
 public slots:
     void paint();
+    void setShowOutlines(bool yesNo);
+    bool showOutlines() const;
 
 private:
-    bool initialized;
-    QOpenGLShaderProgram program;
+    bool showOutlines_;
+    std::unique_ptr<QOpenGLShaderProgram> program_;
 
     void initGL();
     void initShaders();
+    QString vshaderFileName() const;
+    QString fshaderFileName() const;
 };
 
 #endif // MOMOSAICVIEWRENDERER_H
