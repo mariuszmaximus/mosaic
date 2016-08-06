@@ -1,6 +1,6 @@
 #version 130
 uniform sampler2D qt_Texture0;
-varying vec4 qt_TexCoord0;
+in vec4 qt_TexCoord0;
 
 void main(void)
 {
