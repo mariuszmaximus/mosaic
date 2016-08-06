@@ -13,10 +13,13 @@ public:
 
     void setXCoords(const float* xBegin, const float* xEnd);
     void getXCoords(float* xBegin);
+    void setYCoords(const float* yBegin, const float* yEnd);
+    void getYCoords(float* yBegin);
 
 private:
     int size_;
     std::vector<float> x;
+    std::vector<float> y;
 };
 
 #endif // MOMOSAICMODEL_H

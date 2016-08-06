@@ -31,6 +31,15 @@ TEST_F(MosaicModel, CanSetXCoords) {
     ASSERT_FLOAT_EQ(out[2], xVal);
 }
 
+TEST_F(MosaicModel, CanSetYCoords) {
+    float yVal = 2.0f;
+    std::vector<float> yCoords(numTiles, yVal);
+    model.setYCoords(&yCoords[0], &yCoords[0] + numTiles);
+    std::vector<float> out(numTiles);
+    model.getYCoords(&out[0]);
+    ASSERT_FLOAT_EQ(out[2], yVal);
+}
+
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
