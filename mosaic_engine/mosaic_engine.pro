@@ -14,3 +14,6 @@ HEADERS = \
 DISTFILES += \
     vshader.vert \
     fshader.frag
+
+RESOURCES += \
+    engine_resources.qrc
