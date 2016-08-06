@@ -15,6 +15,27 @@ TEST(MoMosaicViewRenderer, PaintDoesNotThrow) {
     ASSERT_NO_THROW(view.paint());
 }
 
+TEST(MoMosaicViewRenderer, CanSetOutlineMode) {
+    MoMosaicViewRenderer view;
+    view.setShowOutlines(true);
+    ASSERT_TRUE(view.showOutlines());
+}
+
+TEST(MoMosaicViewRenderer, CanUnsetOutlineMode) {
+    MoMosaicViewRenderer view;
+    view.setShowOutlines(false);
+    ASSERT_FALSE(view.showOutlines());
+}
+
+TEST(MoMosaicViewRenderer, CanChangeOutlineMode) {
+    MoMosaicViewRenderer view;
+    view.setShowOutlines(false);
+    ASSERT_FALSE(view.showOutlines());
+    view.setShowOutlines(true);
+    ASSERT_TRUE(view.showOutlines());
+}
+
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
 
