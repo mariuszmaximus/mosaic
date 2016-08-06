@@ -19,10 +19,10 @@ void MoMosaicViewRenderer::initGL() {
 }
 
 void MoMosaicViewRenderer::initShaders() {
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl")) {
+    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/vshader.glsl")) {
         throw std::runtime_error("Failed to add vertex shader.");
     }
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fshader.glsl")) {
+    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/fshader.glsl")) {
         throw std::runtime_error("Failed to add fragment shader.");
     }
     if (!program.link()) {
