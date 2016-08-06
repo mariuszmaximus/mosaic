@@ -17,11 +17,6 @@ TEST(MoMosaicViewRenderer, PaintDoesNotThrow) {
 
 TEST(MoMosaicViewRenderer, CanInitializeGL) {
     MoMosaicViewRenderer view;
-    QOpenGLContext context;
-    context.create();
-    QOffscreenSurface surface;
-    surface.create();
-    context.makeCurrent(&surface);
     ASSERT_NO_THROW(view.initGL());
 }
 
