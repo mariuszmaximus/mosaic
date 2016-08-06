@@ -40,6 +40,24 @@ TEST_F(MosaicModel, CanSetYCoords) {
     ASSERT_FLOAT_EQ(out[2], yVal);
 }
 
+TEST_F(MosaicModel, CanSetRotations) {
+    float rotVal = 2.0f;
+    std::vector<float> rotations(numTiles, rotVal);
+    model.setRotations(&rotations[0], &rotations[0] + numTiles);
+    std::vector<float> out(numTiles);
+    model.getRotations(&out[0]);
+    ASSERT_FLOAT_EQ(out[2], rotVal);
+}
+
+TEST_F(MosaicModel, CanSetScales) {
+    float scaleVal = 2.0f;
+    std::vector<float> scales(numTiles, scaleVal);
+    model.setScales(&scales[0], &scales[0] + numTiles);
+    std::vector<float> out(numTiles);
+    model.getScales(&out[0]);
+    ASSERT_FLOAT_EQ(out[2], scaleVal);
+}
+
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
