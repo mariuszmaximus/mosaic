@@ -10,3 +10,7 @@ SOURCES = \
 HEADERS = \
     mosaicview.h \
     mosaicviewrenderer.h
+
+DISTFILES += \
+    vshader.vert \
+    fshader.frag
