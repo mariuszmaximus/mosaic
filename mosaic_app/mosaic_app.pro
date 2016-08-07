@@ -4,7 +4,8 @@ CONFIG += c++11
 
 RESOURCES += qml.qrc
 
-INCLUDEPATH += $$(PWD)
+INCLUDEPATH += $$PWD/../mosaic_engine
+
 
 include(../compiler_config.pri)
 
@@ -25,3 +26,5 @@ SOURCES += main.cpp \
     sourceimages.cpp \
     thumbnail.cpp \
     imageprovider.cpp
+
+LIBS += -L$$OUT_PWD/../mosaic_engine -lmosaic_engine

@@ -7,6 +7,7 @@
 
 #include <sourceimages.h>
 #include <imageprovider.h>
+#include <mosaicview.h>
 
 
 int main(int argc, char *argv[]) {
@@ -14,6 +15,8 @@ int main(int argc, char *argv[]) {
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+
+    qmlRegisterType<MoMosaicView>("MoMosaic", 1, 0, "MoMosaicView");
 
     MoSourceImages mosaicImages;
     engine.rootContext()->setContextProperty(
