@@ -1,14 +1,14 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
-import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.1
+import QtQuick.Dialogs 1.2
 import MoMosaic 1.0
 
 
 ApplicationWindow {
     id: mainWindow
     width: 900
-    height: 600
+    height: 650
 
     property var targetURL
 
@@ -24,38 +24,33 @@ ApplicationWindow {
         }
     }
 
-
-    FileDialog {
+    JPEGFileChooser {
         id: targetFileDialog
-        title: "Select the mosaic target image"
-        nameFilters: ["JPEG Images (*.jpg, *.jpeg, *.JPG, *.JPEG)"]
-        selectExisting: true
+        title: "Select target image"
         selectMultiple: false
-        selectFolder: false
-        folder: shortcuts.pictures
         onAccepted: {
             mainWindow.targetURL = targetFileDialog.fileUrl
         }
     }
 
-    FileDialog {
+    JPEGFileChooser {
         id: mosaicFileDialog
         title: "Select additional mosaic images"
-        nameFilters: ["JPEG Images (*.jpg, *.jpeg, *.JPG, *.JPEG)"]
-        selectExisting: true
         selectMultiple: true
-        selectFolder: false
-        modality: Qt.NonModal
-        folder: shortcuts.pictures
         onAccepted: {
             mosaicImages.imagesAdded(mosaicFileDialog.fileUrls)
         }
     }
 
     MosaicFlippable {
-        anchors.right: parent.right
-        anchors.top:parent.top
-        anchors.rightMargin: 10
-        anchors.topMargin: 10
+        width: 700
+        height: 600
+        anchors {
+            top: parent.top
+            right: parent.right
+            rightMargin: 10
+            topMargin: 10
+        }
     }
 }
+
