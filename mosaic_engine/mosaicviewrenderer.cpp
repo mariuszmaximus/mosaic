@@ -1,5 +1,8 @@
 #include "mosaicviewrenderer.h"
 
+#include <QQuickWindow>
+
+
 MoMosaicViewRenderer::MoMosaicViewRenderer(QObject *parent) :
     QObject(parent), showOutlines_(false) {
 }
@@ -71,4 +74,12 @@ void MoMosaicViewRenderer::setModel(std::shared_ptr<MoMosaicModel> model) {
 
 std::shared_ptr<MoMosaicModel> MoMosaicViewRenderer::getModel() const {
     return model_;
+}
+
+void MoMosaicViewRenderer::setViewportSize(const QSize &size) {
+    viewportSize_ = size;
+}
+
+void MoMosaicViewRenderer::setWindow(QQuickWindow *win) {
+    window_ = win;
 }

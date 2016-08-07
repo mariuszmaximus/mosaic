@@ -28,3 +28,4 @@ SOURCES += main.cpp \
     imageprovider.cpp
 
 LIBS += -L$$OUT_PWD/../mosaic_engine -lmosaic_engine
+QMAKE_RPATHDIR += $$OUT_PWD/../mosaic_engine

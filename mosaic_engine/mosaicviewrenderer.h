@@ -9,6 +9,7 @@
 
 
 class MoMosaicModel;
+class QQuickWindow;
 
 
 class MoMosaicViewRenderer : public QObject, protected QOpenGLFunctions
@@ -19,6 +20,8 @@ public:
 
     void setModel(std::shared_ptr<MoMosaicModel> model);
     std::shared_ptr<MoMosaicModel> getModel() const;
+    void setViewportSize(const QSize &size);
+    void setWindow(QQuickWindow *window);
 
 signals:
 
@@ -31,6 +34,8 @@ private:
     bool showOutlines_;
     std::unique_ptr<QOpenGLShaderProgram> program_;
     std::shared_ptr<MoMosaicModel> model_;
+    QSize viewportSize_;
+    QQuickWindow *window_;
 
     void initGL();
     void initShaders();
