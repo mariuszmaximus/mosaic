@@ -1,8 +1,8 @@
 import QtQuick 2.7
+import MoMosaic 1.0
 
 
 Rectangle {
-
     Component {
         id: listDelegate
         Rectangle {
@@ -48,9 +48,8 @@ Rectangle {
                 visible: true
             }
         }
-        back: Rectangle {
-            color: "blue"
-            anchors.fill: parent
+        back: MoMosaicView {
+            id: mosaicView
         }
 
         transform: Rotation {
