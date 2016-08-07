@@ -14,6 +14,13 @@ ApplicationWindow {
 
 
     ColumnLayout {
+        spacing: 10
+        anchors {
+            top: parent.top
+            left: parent.left
+            leftMargin: 10
+            topMargin: 10
+        }
         Button {
             text: qsTr("Select Target")
             onClicked: targetFileDialog.open();
