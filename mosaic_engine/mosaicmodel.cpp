@@ -8,12 +8,12 @@ MoMosaicModel::MoMosaicModel() : size_(0) {
 
 void MoMosaicModel::resize(int size) {
     size_ = size;
-    widths.resize(size);
-    heights.resize(size);
-    x.resize(size);
-    y.resize(size);
-    rotations.resize(size);
-    scales.resize(size);
+    widths_.resize(size);
+    heights_.resize(size);
+    x_.resize(size);
+    y_.resize(size);
+    rotations_.resize(size);
+    scales_.resize(size);
 }
 
 int MoMosaicModel::size() const {
@@ -27,11 +27,11 @@ void MoMosaicModel::setWidths(const float *widthsBegin,
                     "Number of elements in [widthsBegin, widthsEnd) "
                     "doesn't match size of MoMosaicModel.");
     }
-    std::copy(widthsBegin, widthsEnd, widths.begin());
+    std::copy(widthsBegin, widthsEnd, widths_.begin());
 }
 
 void MoMosaicModel::getWidths(float *widthsBegin) const {
-    std::copy(widths.cbegin(), widths.cend(), widthsBegin);
+    std::copy(widths_.cbegin(), widths_.cend(), widthsBegin);
 }
 
 void MoMosaicModel::setHeights(const float *heightsBegin,
@@ -41,11 +41,11 @@ void MoMosaicModel::setHeights(const float *heightsBegin,
                     "Number of elements in [heightsBegin, heightsEnd) "
                     "doesn't match size of MoMosaicModel.");
     }
-    std::copy(heightsBegin, heightsEnd, heights.begin());
+    std::copy(heightsBegin, heightsEnd, heights_.begin());
 }
 
 void MoMosaicModel::getHeights(float *heightsBegin) const {
-    std::copy(heights.cbegin(), heights.cend(), heightsBegin);
+    std::copy(heights_.cbegin(), heights_.cend(), heightsBegin);
 }
 
 void MoMosaicModel::setXCoords(const float *xBegin, const float *xEnd) {
@@ -54,11 +54,11 @@ void MoMosaicModel::setXCoords(const float *xBegin, const float *xEnd) {
                     "Number of elements in [xBegin, xEnd) "
                     "doesn't match size of MoMosaicModel.");
     }
-    std::copy(xBegin, xEnd, x.begin());
+    std::copy(xBegin, xEnd, x_.begin());
 }
 
 void MoMosaicModel::getXCoords(float *xBegin) const {
-    std::copy(x.cbegin(), x.cend(), xBegin);
+    std::copy(x_.cbegin(), x_.cend(), xBegin);
 }
 
 
@@ -68,11 +68,11 @@ void MoMosaicModel::setYCoords(const float *yBegin, const float *yEnd) {
                     "Number of elements in [yBegin, yEnd) "
                     "doesn't match size of MoMosaicModel.");
     }
-    std::copy(yBegin, yEnd, y.begin());
+    std::copy(yBegin, yEnd, y_.begin());
 }
 
 void MoMosaicModel::getYCoords(float *yBegin) const {
-    std::copy(y.cbegin(), y.cend(), yBegin);
+    std::copy(y_.cbegin(), y_.cend(), yBegin);
 }
 
 void MoMosaicModel::setRotations(const float *rotationsBegin,
@@ -82,11 +82,11 @@ void MoMosaicModel::setRotations(const float *rotationsBegin,
                     "Number of elements in [rotationsBegin, rotationsEnd) "
                     "doesn't match size of MoMosaicModel.");
     }
-    std::copy(rotationsBegin, rotationsEnd, rotations.begin());
+    std::copy(rotationsBegin, rotationsEnd, rotations_.begin());
 }
 
 void MoMosaicModel::getRotations(float *rotationsBegin) const {
-    std::copy(rotations.cbegin(), rotations.cend(), rotationsBegin);
+    std::copy(rotations_.cbegin(), rotations_.cend(), rotationsBegin);
 }
 
 void MoMosaicModel::setScales(const float *scalesBegin,
@@ -96,9 +96,9 @@ void MoMosaicModel::setScales(const float *scalesBegin,
               "Number of elements in [scalesBegin, scalesEnd) "
               "doesn't match size of MoMosaicModel.");
     }
-    std::copy(scalesBegin, scalesEnd, scales.begin());
+    std::copy(scalesBegin, scalesEnd, scales_.begin());
 }
 
 void MoMosaicModel::getScales(float *scalesBegin) const {
-    std::copy(scales.cbegin(), scales.cend(), scalesBegin);
+    std::copy(scales_.cbegin(), scales_.cend(), scalesBegin);
 }
