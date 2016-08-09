@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
           "mainDriver", &mainDriver);
 
     MoMosaicImageProvider* mosaicImageProvider = new MoMosaicImageProvider();
+    mosaicImageProvider->setModel(mainDriver.mosaicModel());
     engine.addImageProvider(QLatin1String("mosaicImageProvider"),
                             mosaicImageProvider);
 
