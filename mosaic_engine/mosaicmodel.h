@@ -34,6 +34,8 @@ public:
                       const float* scalesEnd);
     void getScales(float* scalesBegin) const;
 
+    void setTargetImage(const QImage& image);
+
 private:
     int size_;
     std::vector<float> widths_;
@@ -42,6 +44,7 @@ private:
     std::vector<float> y_;
     std::vector<float> rotations_;
     std::vector<float> scales_;
+    QImage targetImage_;
 };
 
 #endif // MOMOSAICMODEL_H

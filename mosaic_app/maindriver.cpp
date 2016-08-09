@@ -31,8 +31,8 @@ std::vector<std::string> MoMainDriver::getFileNames(
 }
 
 void MoMainDriver::setTargetImage(const QUrl& newTarget) {
-    Q_UNUSED(newTarget);
-    qDebug() << "setTargetImage";
+    QImage image(newTarget.fileName());
+    mosaicModel_.setTargetImage(image);
 }
 
 void MoMainDriver::targetImageChanged() {
