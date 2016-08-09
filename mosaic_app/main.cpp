@@ -16,14 +16,16 @@ int main(int argc, char *argv[]) {
 
     QQmlApplicationEngine engine;
 
-    qmlRegisterType<MoMosaicView>("MoMosaic", 1, 0, "MoMosaicView");
-
     MoSourceImages mosaicImages;
     engine.rootContext()->setContextProperty(
           "mosaicImages", &mosaicImages);
     MoImageProvider* imageProvider = new MoImageProvider(&mosaicImages);
     engine.addImageProvider(QLatin1String("imageProvider"),
                             imageProvider);
+
+    MoMosaicView* mosaicView = new MoMosaicView();
+    engine.addImageProvider(QLatin1String("mosaicProvider"),
+                            mosaicView);
 
     engine.load(QUrl(QLatin1String("qrc:/main.qml")));
 

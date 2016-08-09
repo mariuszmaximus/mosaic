@@ -1,16 +1,14 @@
 #ifndef MOSAICVIEW_H
 #define MOSAICVIEW_H
 
-#include <QtQuick/QQuickItem>
-#include <QtQuick/QQuickWindow>
+#include <QQuickImageProvider>
 #include <memory>
 
 class MoMosaicModel;
 class MoMosaicViewRenderer;
 
 
-class MoMosaicView : public QQuickItem {
-    Q_OBJECT
+class MoMosaicView : public QQuickImageProvider {
 public:
     MoMosaicView();
     ~MoMosaicView();
@@ -20,11 +18,8 @@ public:
 signals:
 
 public slots:
-    void sync();
-    void cleanup();
 
 private slots:
-    void handleWindowChanged(QQuickWindow *win);
 
 private:
     bool initialized;
