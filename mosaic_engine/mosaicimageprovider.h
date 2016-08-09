@@ -2,6 +2,8 @@
 #define MOSAICVIEW_H
 
 #include <QQuickImageProvider>
+#include <QUrl>
+
 #include <memory>
 
 class MoMosaicModel;
@@ -14,10 +16,14 @@ public:
     ~MoMosaicImageProvider();
     void setModel(std::shared_ptr<MoMosaicModel> model);
     std::shared_ptr<MoMosaicModel> getModel() const;
+    QImage requestImage(const QString &id, QSize *size,
+                        const QSize &requestedSize);
+    QImage emptyImage(const QSize& size) const;
 
 signals:
 
 public slots:
+    void setTargetImage(const QUrl& url);
 
 private slots:
 

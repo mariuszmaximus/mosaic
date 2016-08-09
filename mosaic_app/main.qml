@@ -45,9 +45,15 @@ ApplicationWindow {
         id: targetThumbnail
         source: "image://mosaicImageProvider/targetImage"
         asynchronous: true
+        anchors {
+            bottom: parent.bottom
+            left: parent.left
+            leftMargin: 10
+            bottomMargin: 10
+        }
         sourceSize {
-            width: 40
-            height: 40
+            width: 100
+            height: 100
         }
         fillMode: Image.PreserveAspectFit
         smooth: true
@@ -61,6 +67,7 @@ ApplicationWindow {
         selectMultiple: false
         onAccepted: {
             mainWindow.targetURL = targetFileDialog.fileUrl
+            mainDriver.targetImage = targetFileDialog.fileUrl
         }
     }
 
