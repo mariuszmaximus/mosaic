@@ -30,6 +30,31 @@ ApplicationWindow {
         }
     }
 
+    MosaicFlippable {
+        width: 700
+        height: 600
+        anchors {
+            top: parent.top
+            right: parent.right
+            rightMargin: 10
+            topMargin: 10
+        }
+    }
+
+    Image {
+        id: targetThumbnail
+        source: "image://mosaicImageProvider/targetImage"
+        asynchronous: true
+        sourceSize {
+            width: 40
+            height: 40
+        }
+        fillMode: Image.PreserveAspectFit
+        smooth: true
+        visible: true
+        cache: true
+    }
+
     JPEGFileChooser {
         id: targetFileDialog
         title: "Select target image"
@@ -45,17 +70,6 @@ ApplicationWindow {
         selectMultiple: true
         onAccepted: {
             mosaicImages.imagesAdded(mosaicFileDialog.fileUrls)
-        }
-    }
-
-    MosaicFlippable {
-        width: 700
-        height: 600
-        anchors {
-            top: parent.top
-            right: parent.right
-            rightMargin: 10
-            topMargin: 10
         }
     }
 }
