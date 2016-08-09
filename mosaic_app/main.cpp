@@ -7,7 +7,7 @@
 
 #include <sourceimages.h>
 #include <imageprovider.h>
-#include <mosaicview.h>
+#include <mosaicimageprovider.h>
 
 
 int main(int argc, char *argv[]) {
@@ -19,13 +19,13 @@ int main(int argc, char *argv[]) {
     MoSourceImages mosaicImages;
     engine.rootContext()->setContextProperty(
           "mosaicImages", &mosaicImages);
-    MoImageProvider* imageProvider = new MoImageProvider(&mosaicImages);
-    engine.addImageProvider(QLatin1String("imageProvider"),
-                            imageProvider);
+    MoImageProvider* sourceImageProvider = new MoImageProvider(&mosaicImages);
+    engine.addImageProvider(QLatin1String("sourceImageProvider"),
+                            sourceImageProvider);
 
-    MoMosaicView* mosaicView = new MoMosaicView();
-    engine.addImageProvider(QLatin1String("mosaicProvider"),
-                            mosaicView);
+    MoMosaicImageProvider* mosaicImageProvider = new MoMosaicImageProvider();
+    engine.addImageProvider(QLatin1String("mosaicImageProvider"),
+                            mosaicImageProvider);
 
     engine.load(QUrl(QLatin1String("qrc:/main.qml")));
 

@@ -8,10 +8,10 @@ class MoMosaicModel;
 class MoMosaicViewRenderer;
 
 
-class MoMosaicView : public QQuickImageProvider {
+class MoMosaicImageProvider : public QQuickImageProvider {
 public:
-    MoMosaicView();
-    ~MoMosaicView();
+    MoMosaicImageProvider();
+    ~MoMosaicImageProvider();
     void setModel(std::shared_ptr<MoMosaicModel> model);
     std::shared_ptr<MoMosaicModel> getModel() const;
 
@@ -27,7 +27,7 @@ private:
 
     void initGL();
 
-    Q_DISABLE_COPY(MoMosaicView)
+    Q_DISABLE_COPY(MoMosaicImageProvider)
 };
 
 #endif // MOSAICVIEW_H
