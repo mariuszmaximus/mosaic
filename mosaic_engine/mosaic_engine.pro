@@ -5,13 +5,13 @@ TARGET = mosaic_engine
 include(../compiler_config.pri)
 
 SOURCES = \
-    mosaicview.cpp \
     mosaicviewrenderer.cpp \
-    mosaicmodel.cpp
+    mosaicmodel.cpp \
+    mosaicimageprovider.cpp
 HEADERS = \
-    mosaicview.h \
     mosaicviewrenderer.h \
-    mosaicmodel.h
+    mosaicmodel.h \
+    mosaicimageprovider.h
 
 DISTFILES +=
 

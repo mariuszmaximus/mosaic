@@ -1,30 +1,25 @@
 #ifndef MOSAICVIEW_H
 #define MOSAICVIEW_H
 
-#include <QtQuick/QQuickItem>
-#include <QtQuick/QQuickWindow>
+#include <QQuickImageProvider>
 #include <memory>
 
 class MoMosaicModel;
 class MoMosaicViewRenderer;
 
 
-class MoMosaicView : public QQuickItem {
-    Q_OBJECT
+class MoMosaicImageProvider : public QQuickImageProvider {
 public:
-    MoMosaicView();
-    ~MoMosaicView();
+    MoMosaicImageProvider();
+    ~MoMosaicImageProvider();
     void setModel(std::shared_ptr<MoMosaicModel> model);
     std::shared_ptr<MoMosaicModel> getModel() const;
 
 signals:
 
 public slots:
-    void sync();
-    void cleanup();
 
 private slots:
-    void handleWindowChanged(QQuickWindow *win);
 
 private:
     bool initialized;
@@ -32,7 +27,7 @@ private:
 
     void initGL();
 
-    Q_DISABLE_COPY(MoMosaicView)
+    Q_DISABLE_COPY(MoMosaicImageProvider)
 };
 
 #endif // MOSAICVIEW_H
