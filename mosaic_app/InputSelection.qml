@@ -5,21 +5,28 @@ import QtQuick.Controls 2.0
 
 
 Item {
-    ColumnLayout {
+    RowLayout {
         spacing: 10
-        anchors {
-            top: parent.top
-            left: parent.left
-            leftMargin: 10
-            topMargin: 10
+        anchors.fill: parent
+        anchors.margins: 10
+        ColumnLayout {
+            id: buttons
+            spacing: 10
+            Button {
+                text: qsTr("Select Target")
+                onClicked: targetFileDialog.open();
+            }
+            Button {
+                text: qsTr("Add Mosaic Images")
+                onClicked: mosaicFileDialog.open();
+            }
         }
-        Button {
-            text: qsTr("Select Target")
-            onClicked: targetFileDialog.open();
-        }
-        Button {
-            text: qsTr("Add Mosaic Images")
-            onClicked: mosaicFileDialog.open();
+        MosaicFlippable {
+            width: 300
+            height: 300
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            id: mosaicSourceThumbnails
         }
     }
 
@@ -40,16 +47,4 @@ Item {
             mosaicImages.imagesAdded(mosaicFileDialog.fileUrls)
         }
     }
-
-    MosaicFlippable {
-        width: 700
-        height: 600
-        anchors {
-            top: parent.top
-            right: parent.right
-            rightMargin: 10
-            topMargin: 10
-        }
-    }
-
 }
