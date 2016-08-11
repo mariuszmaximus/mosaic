@@ -7,7 +7,7 @@
 
 MoMosaicImageProvider::MoMosaicImageProvider() :
     QQuickImageProvider(QQuickImageProvider::Image),
-    renderer_(new MoMosaicViewRenderer) {
+    renderer_(0) {
 }
 
 MoMosaicImageProvider::~MoMosaicImageProvider() {

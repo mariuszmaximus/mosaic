@@ -5,8 +5,7 @@
 
 
 MoMainDriver::MoMainDriver(QObject *parent) :
-    QObject(parent),
-    mosaicModel_(new MoMosaicModel){
+    QObject(parent) {
 }
 
 void MoMainDriver::start(QAbstractListModel* inputImages, QUrl targetUrl) {
@@ -33,13 +32,9 @@ std::vector<std::string> MoMainDriver::getFileNames(
 
 void MoMainDriver::setTargetImage(const QUrl& newTarget) {
     QImage image(newTarget.fileName());
-    mosaicModel_->setTargetImage(image);
+    mosaicModel_.setTargetImage(image);
 }
 
 void MoMainDriver::targetImageChanged() {
     qDebug() << "targetImageChanged";
-}
-
-std::shared_ptr<MoMosaicModel> MoMainDriver::mosaicModel() {
-    return mosaicModel_;
 }
