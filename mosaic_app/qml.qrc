@@ -3,5 +3,7 @@
         <file>main.qml</file>
         <file>MosaicFlippable.qml</file>
         <file>JPEGFileChooser.qml</file>
+        <file>InputSelection.qml</file>
+        <file>MosaicMonitor.qml</file>
     </qresource>
 </RCC>

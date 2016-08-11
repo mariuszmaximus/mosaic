@@ -1,8 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
-import QtQuick.Layouts 1.1
-import QtQuick.Dialogs 1.2
 import MoMosaic 1.0
+import QtQuick.Window 2.0
 
 
 ApplicationWindow {
@@ -13,51 +12,22 @@ ApplicationWindow {
     property var targetURL
 
 
-    ColumnLayout {
-        spacing: 10
-        anchors {
-            top: parent.top
-            left: parent.left
-            leftMargin: 10
-            topMargin: 10
-        }
-        Button {
-            text: qsTr("Select Target")
-            onClicked: targetFileDialog.open();
-        }
-        Button {
-            text: qsTr("Add Mosaic Images")
-            onClicked: mosaicFileDialog.open();
-        }
+    SwipeView {
+        id: swipeView
+        currentIndex: tabBar.currentIndex
+        anchors.fill: parent
+        InputSelection {}
+        MosaicMonitor {}
     }
 
-    JPEGFileChooser {
-        id: targetFileDialog
-        title: "Select target image"
-        selectMultiple: false
-        onAccepted: {
-            mainWindow.targetURL = targetFileDialog.fileUrl
+    footer: TabBar {
+        id: tabBar
+        currentIndex: swipeView.currentIndex
+        TabButton {
+            text: qsTr("select inputs")
         }
-    }
-
-    JPEGFileChooser {
-        id: mosaicFileDialog
-        title: "Select additional mosaic images"
-        selectMultiple: true
-        onAccepted: {
-            mosaicImages.imagesAdded(mosaicFileDialog.fileUrls)
-        }
-    }
-
-    MosaicFlippable {
-        width: 700
-        height: 600
-        anchors {
-            top: parent.top
-            right: parent.right
-            rightMargin: 10
-            topMargin: 10
+        TabButton {
+            text: qsTr("show mosaic")
         }
     }
 }
-
