@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
-#include <mosaicimageprovider.h>
+#include <mosaicview.h>
 
-TEST(MoMosaicImageProvider, CanBeConstructed) {
-    MoMosaicImageProvider* view = new MoMosaicImageProvider;
+TEST(MoMosaicView, CanBeConstructed) {
+    MoMosaicView* view = new MoMosaicView;
     ASSERT_NE(view, nullptr);
     delete view;
 }

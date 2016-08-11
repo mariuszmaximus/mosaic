@@ -1,4 +1,5 @@
 import QtQuick 2.7
+import MoMosaic 1.0
 
 
 Rectangle {
@@ -47,9 +48,8 @@ Rectangle {
                 visible: true
             }
         }
-        back: Rectangle {
-            anchors.fill:parent
-            color: "green"
+        back: MoMosaicView {
+            id: mosaicView
         }
 
         transform: Rotation {
