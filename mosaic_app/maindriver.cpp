@@ -1,7 +1,6 @@
 #include <maindriver.h>
 #include <QDir>
 #include <sourceimages.h>
-#include <QDebug>
 
 
 MoMainDriver::MoMainDriver(QObject *parent) :
@@ -28,13 +27,4 @@ std::vector<std::string> MoMainDriver::getFileNames(
         }
     }
     return fileNames;
-}
-
-void MoMainDriver::setTargetImage(const QUrl& newTarget) {
-    Q_UNUSED(newTarget);
-    qDebug() << "setTargetImage";
-}
-
-void MoMainDriver::targetImageChanged() {
-    qDebug() << "targetImageChanged";
 }

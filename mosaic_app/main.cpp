@@ -8,7 +8,6 @@
 #include <sourceimages.h>
 #include <imageprovider.h>
 #include <mosaicimageprovider.h>
-#include <maindriver.h>
 
 
 int main(int argc, char *argv[]) {
@@ -23,10 +22,6 @@ int main(int argc, char *argv[]) {
     MoImageProvider* sourceImageProvider = new MoImageProvider(&mosaicImages);
     engine.addImageProvider(QLatin1String("sourceImageProvider"),
                             sourceImageProvider);
-
-    MoMainDriver mainDriver;
-    engine.rootContext()->setContextProperty(
-          "mainDriver", &mainDriver);
 
     MoMosaicImageProvider* mosaicImageProvider = new MoMosaicImageProvider();
     engine.addImageProvider(QLatin1String("mosaicImageProvider"),
