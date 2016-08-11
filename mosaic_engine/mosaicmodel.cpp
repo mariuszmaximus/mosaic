@@ -102,7 +102,3 @@ void MoMosaicModel::setScales(const float *scalesBegin,
 void MoMosaicModel::getScales(float *scalesBegin) const {
     std::copy(scales_.cbegin(), scales_.cend(), scalesBegin);
 }
-
-void MoMosaicModel::setTargetImage(const QImage& image) {
-    targetImage_ = image;
-}
