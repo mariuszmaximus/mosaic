@@ -10,12 +10,12 @@ Rectangle {
             color: "gray"
             Image {
                 id: frontIcon
-                asynchronous: true
+                asynchronous: true;
                 anchors.centerIn: parent
                 sourceSize.width: gridView1.cellWidth - 2
                 sourceSize.height: gridView1.cellHeight - 2
                 fillMode: Image.PreserveAspectFit
-                source: {index == -1 ? '' : "image://sourceImageProvider/" + index}
+                source: {index == -1 ? '' : "image://imageProvider/" + index}
                 smooth: true
                 visible: true
                 cache: true
