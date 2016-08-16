@@ -7,6 +7,12 @@ TEST(MoMosaicEvolution, CanBeConstructed) {
     delete view;
 }
 
+TEST(MoMosaicEvolution, CurrentModelIsNullBeforeInitialStateIsSet) {
+    MoMosaicEvolution view;
+    MoMosaicModel* model = view.getCurrentModel();
+    ASSERT_NE(model, nullptr);
+}
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
