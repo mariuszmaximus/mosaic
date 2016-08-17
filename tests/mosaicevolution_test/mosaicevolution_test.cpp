@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <mosaicevolution.h>
+#include <mosaicmodel.h>
 
 TEST(MoMosaicEvolution, CanBeConstructed) {
     MoMosaicEvolution* view = new MoMosaicEvolution;
@@ -7,10 +8,10 @@ TEST(MoMosaicEvolution, CanBeConstructed) {
     delete view;
 }
 
-TEST(MoMosaicEvolution, CurrentModelIsNullBeforeInitialStateIsSet) {
+TEST(MoMosaicEvolution, ModelIsEmptyBeforeSettingInitialState) {
     MoMosaicEvolution view;
     MoMosaicModel* model = view.getCurrentModel();
-    ASSERT_NE(model, nullptr);
+    ASSERT_EQ(0, model->size());
 }
 
 int main(int argc, char **argv) {

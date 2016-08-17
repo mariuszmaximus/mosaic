@@ -10,15 +10,16 @@ class MoMosaicEvolution::MoMosaicEvolutionImpl {
 public:
     MoMosaicEvolutionImpl() : model_() {}
     MoMosaicModel* getCurrentModel() {
-        return model_.get();
+        return &model_;
     }
 
 private:
-    std::unique_ptr<MoMosaicModel> model_;
+    MoMosaicModel model_;
     std::vector<std::unique_ptr<MoMosaicUpdate> > updates_;
 };
 
-MoMosaicEvolution::MoMosaicEvolution() {
+MoMosaicEvolution::MoMosaicEvolution() :
+    impl_(new MoMosaicEvolutionImpl) {
 }
 
 MoMosaicEvolution::~MoMosaicEvolution() {
