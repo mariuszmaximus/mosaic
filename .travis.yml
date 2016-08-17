@@ -9,9 +9,8 @@ env:
  - RUN_OPENGL_TESTS=true
 
 matrix:
- - allow_failures:
-   - env:
-     - RUN_OPENGL_TESTS=true
+ allow_failures:
+ - env: RUN_OPENGL_TESTS=true
 
 before_install:
 # Get Qt dev packages
