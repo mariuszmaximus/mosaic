@@ -2,18 +2,23 @@
 #define MOMOSAICEVOLUTION_H
 
 #include <memory>
+#include <vector>
+
 
 class MoMosaicModel;
 class MoMosaicUpdate;
+class MoTargetImage;
+class MoMosaicTile;
 
 
 class MoMosaicEvolution {
 public:
   MoMosaicEvolution();
   ~MoMosaicEvolution();
-  void constructInitialState();
+  void constructInitialState(const MoTargetImage& targetImage,
+                             const std::vector<MoMosaicTile>& tiles);
   void takeStep();
-  void addUpdate(MoMosaicUpdate&& update);
+  void addUpdate(std::unique_ptr<MoMosaicUpdate>&& update);
   MoMosaicModel* getCurrentModel();
 private:
   class MoMosaicEvolutionImpl;

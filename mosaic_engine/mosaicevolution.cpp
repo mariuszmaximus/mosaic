@@ -12,6 +12,11 @@ public:
     MoMosaicModel* getCurrentModel() {
         return &model_;
     }
+    void takeStep() {
+    }
+    void addUpdate(std::unique_ptr<MoMosaicUpdate>&& update) {
+        updates_.emplace_back(std::move(update));
+    }
 
 private:
     MoMosaicModel model_;
@@ -27,4 +32,12 @@ MoMosaicEvolution::~MoMosaicEvolution() {
 
 MoMosaicModel* MoMosaicEvolution::getCurrentModel() {
     return impl_->getCurrentModel();
+}
+
+void MoMosaicEvolution::takeStep() {
+    impl_->takeStep();
+}
+
+void MoMosaicEvolution::addUpdate(std::unique_ptr<MoMosaicUpdate>&& update) {
+    impl_->addUpdate(std::move(update));
 }
