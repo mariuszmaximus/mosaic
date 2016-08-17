@@ -8,7 +8,7 @@
 class MoMosaicModel;
 class MoMosaicUpdate;
 class MoTargetImage;
-class MoMosaicTile;
+class MoTile;
 
 
 class MoMosaicEvolution {
@@ -16,7 +16,7 @@ public:
   MoMosaicEvolution();
   ~MoMosaicEvolution();
   void constructInitialState(const MoTargetImage& targetImage,
-                             const std::vector<MoMosaicTile>& tiles);
+                             const std::vector<MoTile>& tiles);
   void takeStep();
   void addUpdate(std::unique_ptr<MoMosaicUpdate>&& update);
   MoMosaicModel* getCurrentModel();

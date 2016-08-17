@@ -1,9 +1,16 @@
 #include "mosaicmodel.h"
 
 #include <stdexcept>
+#include <QtGlobal>
 
 
 MoMosaicModel::MoMosaicModel() : size_(0) {
+}
+
+void MoMosaicModel::constructInitialState(const MoTargetImage& targetImage,
+                                          const std::vector<MoTile>& tiles) {
+    Q_UNUSED(targetImage);
+    Q_UNUSED(tiles);
 }
 
 void MoMosaicModel::resize(int size) {

@@ -2,6 +2,8 @@
 #include <mosaicevolution.h>
 #include <mosaicmodel.h>
 #include <mosaicupdate.h>
+#include <tile.h>
+#include <targetimage.h>
 
 
 TEST(MoMosaicEvolution, CanBeConstructed) {
@@ -26,6 +28,14 @@ TEST_F(MosaicEvolution, CanTakeStepWithoutUpdaters) {
 TEST_F(MosaicEvolution, CanAddUpdate) {
     std::unique_ptr<MoMosaicUpdate> update(new MoMosaicUpdate);
     ASSERT_NO_THROW(evolution.addUpdate(std::move(update)));
+}
+
+TEST_F(MosaicEvolution, IdentityUpdateDoesNotChangeModel) {
+    std::unique_ptr<MoMosaicUpdate> update(new MoMosaicUpdate);
+    evolution.addUpdate(std::move(update));
+    std::vector<MoTile> tiles;
+    evolution.constructInitialState(MoTargetImage(),
+                                    tiles);
 }
 
 int main(int argc, char **argv) {

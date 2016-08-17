@@ -9,13 +9,17 @@ SOURCES = \
     mosaicviewrenderer.cpp \
     mosaicmodel.cpp \
     mosaicevolution.cpp \
-    mosaicupdate.cpp
+    mosaicupdate.cpp \
+    tile.cpp \
+    targetimage.cpp
 HEADERS = \
     mosaicview.h \
     mosaicviewrenderer.h \
     mosaicmodel.h \
     mosaicevolution.h \
-    mosaicupdate.h
+    mosaicupdate.h \
+    tile.h \
+    targetimage.h
 
 DISTFILES +=
 

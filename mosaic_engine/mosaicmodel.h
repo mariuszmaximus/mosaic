@@ -3,10 +3,16 @@
 
 #include <vector>
 
+class MoTargetImage;
+class MoTile;
+
 
 class MoMosaicModel {
 public:
     MoMosaicModel();
+
+    void constructInitialState(const MoTargetImage& targetImage,
+                               const std::vector<MoTile>& tiles);
 
     void resize(int size);
     int size() const;
