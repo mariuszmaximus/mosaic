@@ -5,13 +5,13 @@ compiler:
  - gcc
 
 env:
- - HAVE_OPENGL=false
- - HAVE_OPENGL=true
+ - RUN_OPENGL_TESTS=false
+ - RUN_OPENGL_TESTS=true
 
 matrix:
  - allow_failures:
    - env:
-     - HAVE_OPENGL=true
+     - RUN_OPENGL_TESTS=true
 
 before_install:
 # Get Qt dev packages

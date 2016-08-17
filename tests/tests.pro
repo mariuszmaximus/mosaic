@@ -4,7 +4,7 @@ SUBDIRS += mosaicmodel_test
 SUBDIRS += mosaicview_test
 SUBDIRS += targetimage_test
 
-HAVE_OPENGL=$$(HAVE_OPENGL)
-equals(HAVE_OPENGL, "true") {
+RUN_OPENGL_TESTS=$$(RUN_OPENGL_TESTS)
+equals(RUN_OPENGL_TESTS, "true") {
   SUBDIRS += mosaicviewrenderer_test
 }
