@@ -4,6 +4,15 @@ language: cpp
 compiler:
  - gcc
 
+env:
+ - HAVE_OPENGL=false
+ - HAVE_OPENGL=true
+
+matrix:
+ - allow_failures:
+   - env:
+     - HAVE_OPENGL=true
+
 before_install:
 # Get Qt dev packages
  - export QT_VERSION=56
