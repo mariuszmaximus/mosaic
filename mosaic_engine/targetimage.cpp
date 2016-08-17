@@ -3,10 +3,18 @@
 MoTargetImage::MoTargetImage(QImage image,
                              QSize targetSize) :
     image_(image),
-    targetSize_(targetSize) {
+    size_(targetSize) {
 }
 
-MoTargetImage createTestImage() {
+QSize MoTargetImage::getSize() const {
+    return size_;
+}
+
+QImage MoTargetImage::getImage() const {
+    return image_;
+}
+
+MoTargetImage moCreateTestImage() {
     QSize size(22, 33);
     QImage image(size, QImage::Format_ARGB32);
     image.fill(QColor(200, 100, 10));

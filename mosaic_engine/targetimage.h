@@ -7,12 +7,14 @@
 class MoTargetImage {
 public:
     MoTargetImage(QImage image, QSize targetSize);
+    QSize getSize() const;
+    QImage getImage() const;
 
 private:
     QImage image_;
-    QSize targetSize_;
+    QSize size_;
 };
 
-MoTargetImage createTestImage();
+MoTargetImage moCreateTestImage();
 
 #endif // MOTARGETIMAGE_H

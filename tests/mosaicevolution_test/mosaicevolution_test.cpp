@@ -34,7 +34,7 @@ TEST_F(MosaicEvolution, IdentityUpdateDoesNotChangeModel) {
     std::unique_ptr<MoMosaicUpdate> update(new MoMosaicUpdate);
     evolution.addUpdate(std::move(update));
     std::vector<MoTile> tiles;
-    evolution.constructInitialState(createTestImage(),
+    evolution.constructInitialState(moCreateTestImage(),
                                     tiles);
 }
 
