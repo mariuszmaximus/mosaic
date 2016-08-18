@@ -12,6 +12,7 @@ public:
     void setImage(const QImage& image);
     const QImage* getImage() const;
     QImage* getImage();
+
 private:
     QImage image_;
 };

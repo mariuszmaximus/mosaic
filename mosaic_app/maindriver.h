@@ -2,22 +2,26 @@
 #define MAINDRIVER_H
 
 #include <QObject>
-#include <QAbstractListModel>
 #include <QUrl>
 #include <vector>
-#include <string>
+#include <mosaicevolution.h>
+
+class QString;
+class QAbstractListModel;
 
 
-class MoMainDriver : public QObject
-{
+class MoMainDriver : public QObject {
     Q_OBJECT
 public:
     explicit MoMainDriver(QObject *parent = 0);
 
 public slots:
     void start(QAbstractListModel* inputImages, QUrl targetUrl);
+
 private:
-    std::vector<std::string> getFileNames(
+    MoMosaicEvolution evolution_;
+
+    std::vector<QString> getFileNames(
             QAbstractListModel* inputImages) const;
 };
 
