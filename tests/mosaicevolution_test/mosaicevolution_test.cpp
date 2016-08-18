@@ -25,13 +25,19 @@ TEST_F(MosaicEvolution, CanTakeStepWithoutUpdaters) {
     ASSERT_NO_THROW(evolution.takeStep());
 }
 
+struct IdentityUpdate : public MoMosaicUpdate {
+    void update(MoMosaicModel *model) {
+        Q_UNUSED(model);
+    }
+};
+
 TEST_F(MosaicEvolution, CanAddUpdate) {
-    std::unique_ptr<MoMosaicUpdate> update(new MoMosaicUpdate);
+    std::unique_ptr<MoMosaicUpdate> update(new IdentityUpdate);
     ASSERT_NO_THROW(evolution.addUpdate(std::move(update)));
 }
 
 TEST_F(MosaicEvolution, IdentityUpdateDoesNotChangeModel) {
-    std::unique_ptr<MoMosaicUpdate> update(new MoMosaicUpdate);
+    std::unique_ptr<MoMosaicUpdate> update(new IdentityUpdate);
     evolution.addUpdate(std::move(update));
     std::vector<MoTile> tiles;
     evolution.constructInitialState(moCreateTestImage(),

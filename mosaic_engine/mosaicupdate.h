@@ -1,11 +1,12 @@
 #ifndef MOMOSAICUPDATE_H
 #define MOMOSAICUPDATE_H
 
+class MoMosaicModel;
 
-class MoMosaicUpdate
-{
+class MoMosaicUpdate {
 public:
-    MoMosaicUpdate();
+    virtual ~MoMosaicUpdate();
+    virtual void update(MoMosaicModel* model) = 0;
 };
 
 #endif // MOMOSAICUPDATE_H

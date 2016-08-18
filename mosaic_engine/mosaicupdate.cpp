@@ -1,6 +1,3 @@
 #include "mosaicupdate.h"
 
-MoMosaicUpdate::MoMosaicUpdate()
-{
-
-}
+MoMosaicUpdate::~MoMosaicUpdate() {}
