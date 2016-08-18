@@ -3,8 +3,8 @@
 
 #include <vector>
 
-class MoTargetImage;
-class MoTile;
+#include <targetimage.h>
+#include <tile.h>
 
 
 class MoMosaicModel {
@@ -41,12 +41,14 @@ public:
 
 private:
     int size_;
-    std::vector<float> widths;
-    std::vector<float> heights;
-    std::vector<float> x;
-    std::vector<float> y;
-    std::vector<float> rotations;
-    std::vector<float> scales;
+    std::vector<float> widths_;
+    std::vector<float> heights_;
+    std::vector<float> x_;
+    std::vector<float> y_;
+    std::vector<float> rotations_;
+    std::vector<float> scales_;
+    MoTargetImage targetImage_;
+    std::vector<MoTile> tiles_;
 };
 
 #endif // MOMOSAICMODEL_H

@@ -2,8 +2,7 @@
 #define MOTILE_H
 
 
-class MoTile
-{
+class MoTile {
 public:
     MoTile();
 };
