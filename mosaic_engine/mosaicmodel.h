@@ -17,12 +17,7 @@ public:
     void resize(int size);
     int size() const;
 
-    void setWidths(const float* widthsBegin,
-                   const float* widthsEnd);
     void getWidths(float* widthsBegin) const;
-
-    void setHeights(const float* heightsBegin,
-                    const float* heightsEnd);
     void getHeights(float* heightsBegin) const;
 
     void setXCoords(const float* xBegin, const float* xEnd);
@@ -41,8 +36,6 @@ public:
 
 private:
     int size_;
-    std::vector<float> widths_;
-    std::vector<float> heights_;
     std::vector<float> x_;
     std::vector<float> y_;
     std::vector<float> rotations_;

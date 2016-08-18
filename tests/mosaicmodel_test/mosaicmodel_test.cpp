@@ -22,24 +22,6 @@ TEST_F(MosaicModel, Resizing) {
     ASSERT_EQ(14, model.size());
 }
 
-TEST_F(MosaicModel, CanSetWidths) {
-    float widthVal = 2.0f;
-    std::vector<float> widths(numTiles, widthVal);
-    model.setWidths(&widths[0], &widths[0] + numTiles);
-    std::vector<float> out(numTiles);
-    model.getWidths(&out[0]);
-    ASSERT_FLOAT_EQ(out[2], widthVal);
-}
-
-TEST_F(MosaicModel, CanSetHeights) {
-    float heightVal = 2.0f;
-    std::vector<float> heights(numTiles, heightVal);
-    model.setHeights(&heights[0], &heights[0] + numTiles);
-    std::vector<float> out(numTiles);
-    model.getHeights(&out[0]);
-    ASSERT_FLOAT_EQ(out[2], heightVal);
-}
-
 TEST_F(MosaicModel, CanSetXCoords) {
     float xVal = 2.0f;
     std::vector<float> xCoords(numTiles, xVal);

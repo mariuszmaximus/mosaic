@@ -13,8 +13,6 @@ void MoMosaicModel::constructInitialState(const MoTargetImage& targetImage,
     // TODO: Scale tiles to required size
     tiles_ = tiles;
     size_ = tiles.size();
-    widths_.resize(tiles.size());
-    heights_.resize(tiles.size());
     x_.resize(tiles.size());
     y_.resize(tiles.size());
     rotations_.resize(tiles.size());
@@ -23,8 +21,6 @@ void MoMosaicModel::constructInitialState(const MoTargetImage& targetImage,
 
 void MoMosaicModel::resize(int size) {
     size_ = size;
-    widths_.resize(size);
-    heights_.resize(size);
     x_.resize(size);
     y_.resize(size);
     rotations_.resize(size);
@@ -35,32 +31,22 @@ int MoMosaicModel::size() const {
     return size_;
 }
 
-void MoMosaicModel::setWidths(const float *widthsBegin,
-                               const float *widthsEnd) {
-    if (std::distance(widthsBegin, widthsEnd) != size_) {
-        throw std::runtime_error(
-                    "Number of elements in [widthsBegin, widthsEnd) "
-                    "doesn't match size of MoMosaicModel.");
-    }
-    std::copy(widthsBegin, widthsEnd, widths_.begin());
-}
-
 void MoMosaicModel::getWidths(float *widthsBegin) const {
-    std::copy(widths_.cbegin(), widths_.cend(), widthsBegin);
-}
-
-void MoMosaicModel::setHeights(const float *heightsBegin,
-                               const float *heightsEnd) {
-    if (std::distance(heightsBegin, heightsEnd) != size_) {
-        throw std::runtime_error(
-                    "Number of elements in [heightsBegin, heightsEnd) "
-                    "doesn't match size of MoMosaicModel.");
+    int n = tiles_.size();
+    for (int i = 0; i < n; ++i) {
+        // TODO: figure out what the right dimensions are here
+        // Currently we do screen space?
+        widthsBegin[i] = scales_[i] * tiles_[i].getImage()->width();
     }
-    std::copy(heightsBegin, heightsEnd, heights_.begin());
 }
 
 void MoMosaicModel::getHeights(float *heightsBegin) const {
-    std::copy(heights_.cbegin(), heights_.cend(), heightsBegin);
+    int n = tiles_.size();
+    for (int i = 0; i < n; ++i) {
+        // TODO: figure out what the right dimensions are here
+        // Currently we do screen space?
+        heightsBegin[i] = scales_[i] * tiles_[i].getImage()->height();
+    }
 }
 
 void MoMosaicModel::setXCoords(const float *xBegin, const float *xEnd) {
