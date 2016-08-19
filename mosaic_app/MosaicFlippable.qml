@@ -42,7 +42,7 @@ Rectangle {
             cellWidth: 50
             cellHeight: 50
             delegate: listDelegate
-            model: mosaicImages
+            model: sourceImages
             visible: true
         }
     }

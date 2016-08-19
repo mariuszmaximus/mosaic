@@ -8,6 +8,7 @@
 #include <sourceimages.h>
 #include <imageprovider.h>
 #include <mosaicview.h>
+#include <maindriver.h>
 
 
 int main(int argc, char *argv[]) {
@@ -18,12 +19,17 @@ int main(int argc, char *argv[]) {
 
     qmlRegisterType<MoMosaicView>("MoMosaic", 1, 0, "MoMosaicView");
 
-    MoSourceImages mosaicImages;
+    // register some variables with QML engine.
+    MoSourceImages sourceImages;
     engine.rootContext()->setContextProperty(
-          "mosaicImages", &mosaicImages);
-    MoImageProvider* imageProvider = new MoImageProvider(&mosaicImages);
+                "sourceImages", &sourceImages);
+    MoImageProvider imageProvider(&sourceImages);
     engine.addImageProvider(QLatin1String("imageProvider"),
-                            imageProvider);
+                            &imageProvider);
+    MoMainDriver mainDriver;
+    mainDriver.setSourceImages(&sourceImages);
+    engine.rootContext()->setContextProperty(QLatin1String("mainDriver"),
+                                             &mainDriver);
 
     engine.load(QUrl(QLatin1String("qrc:/main.qml")));
 

@@ -15,11 +15,14 @@ class MoMainDriver : public QObject {
 public:
     explicit MoMainDriver(QObject *parent = 0);
 
+    void setSourceImages(QAbstractListModel* sourceImages);
+
 public slots:
-    void start(QAbstractListModel* inputImages, QUrl targetUrl);
+    void start(QUrl targetUrl);
 
 private:
     MoMosaicEvolution evolution_;
+    QAbstractListModel* sourceImages_;
 
     std::vector<QString> getFileNames(
             QAbstractListModel* inputImages) const;

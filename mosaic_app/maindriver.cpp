@@ -2,6 +2,7 @@
 #include <QDir>
 #include <QAbstractListModel>
 #include <QString>
+#include <QDebug>
 #include <sourceimages.h>
 #include <algorithm>
 
@@ -10,24 +11,32 @@
 
 
 MoMainDriver::MoMainDriver(QObject *parent) :
-    QObject(parent) {
+    QObject(parent),
+    sourceImages_(0) {
 }
 
-MoTile loadTile(QString fn) {
+static MoTile loadTile(QString fn) {
+    qDebug() << "loadTile(fn), fn == " << fn;
     QImage image(fn);
     MoTile tile(image);
     return tile;
 }
 
-void MoMainDriver::start(QAbstractListModel* inputImages, QUrl targetUrl) {
+void MoMainDriver::setSourceImages(QAbstractListModel *sourceImages) {
+    sourceImages_ = sourceImages;
+}
+
+void MoMainDriver::start(QUrl targetUrl) {
+    qDebug() << "targetUrl == " << targetUrl;
     QImage img(QDir::toNativeSeparators(targetUrl.toLocalFile()));
     MoTargetImage targetImage(img, img.size());
 
-    std::vector<QString> inputFiles = getFileNames(inputImages);
+    std::vector<QString> inputFiles = getFileNames(sourceImages_);
     std::vector<MoTile> tiles;
     std::transform(inputFiles.cbegin(), inputFiles.cend(),
                    std::back_inserter(tiles),
                    loadTile);
+    qDebug() << "tiles.size() == " << tiles.size();
 
     evolution_.constructInitialState(targetImage, tiles);
 }

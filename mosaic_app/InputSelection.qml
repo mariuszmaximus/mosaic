@@ -44,7 +44,7 @@ Item {
         title: "Select additional mosaic images"
         selectMultiple: true
         onAccepted: {
-            mosaicImages.imagesAdded(mosaicFileDialog.fileUrls)
+            sourceImages.imagesAdded(mosaicFileDialog.fileUrls)
         }
     }
 }

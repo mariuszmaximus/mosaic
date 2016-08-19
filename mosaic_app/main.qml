@@ -11,7 +11,6 @@ ApplicationWindow {
 
     property var targetURL
 
-
     SwipeView {
         id: swipeView
         currentIndex: tabBar.currentIndex
@@ -28,6 +27,9 @@ ApplicationWindow {
         }
         TabButton {
             text: qsTr("show mosaic")
+            onPressed: {
+                mainDriver.start(targetURL)
+            }
         }
     }
 }
