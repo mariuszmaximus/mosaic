@@ -16,15 +16,9 @@ QML_IMPORT_PATH =
 include(deployment.pri)
 
 HEADERS += \
-    maindriver.h \
-    sourceimages.h \
-    thumbnail.h \
     imageprovider.h
 
 SOURCES += main.cpp \
-    maindriver.cpp \
-    sourceimages.cpp \
-    thumbnail.cpp \
     imageprovider.cpp
 
 LIBS += -L$$OUT_PWD/../mosaic_engine -lmosaic_engine
