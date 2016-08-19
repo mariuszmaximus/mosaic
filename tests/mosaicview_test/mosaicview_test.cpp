@@ -2,9 +2,8 @@
 #include <mosaicview.h>
 
 TEST(MoMosaicView, CanBeConstructed) {
-    MoMosaicView* view = new MoMosaicView;
+    std::unique_ptr<MoMosaicView> view(new MoMosaicView);
     ASSERT_NE(view, nullptr);
-    delete view;
 }
 
 int main(int argc, char **argv) {

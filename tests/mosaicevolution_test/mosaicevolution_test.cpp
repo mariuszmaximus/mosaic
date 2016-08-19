@@ -4,12 +4,12 @@
 #include <mosaicupdate.h>
 #include <tile.h>
 #include <targetimage.h>
+#include <memory>
 
 
 TEST(MoMosaicEvolution, CanBeConstructed) {
-    MoMosaicEvolution* evolution = new MoMosaicEvolution;
+    std::unique_ptr<MoMosaicEvolution> evolution(new MoMosaicEvolution);
     ASSERT_NE(evolution, nullptr);
-    delete evolution;
 }
 
 struct MosaicEvolution : public ::testing::Test {

@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 #include <mosaicmodel.h>
+#include <memory>
 
 TEST(MoMosaicModel, CanBeConstructed) {
-    MoMosaicModel* model = new MoMosaicModel;
+    std::unique_ptr<MoMosaicModel> model(new MoMosaicModel);
     ASSERT_NE(model, nullptr);
-    delete model;
 }
 
 class MosaicModel : public ::testing::Test {
