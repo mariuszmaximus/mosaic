@@ -14,6 +14,7 @@ class MoMainDriver : public QObject {
     Q_OBJECT
 public:
     explicit MoMainDriver(QObject *parent = 0);
+    ~MoMainDriver();
 
     void setSourceImages(QAbstractListModel* sourceImages);
 
@@ -26,6 +27,9 @@ private:
 
     std::vector<QString> getFileNames(
             QAbstractListModel* inputImages) const;
+
+    struct EvolutionRunner;
+    std::unique_ptr<EvolutionRunner> evolutionRunner_;
 };
 
 #endif // MAINDRIVER_H

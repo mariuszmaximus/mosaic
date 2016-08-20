@@ -10,7 +10,8 @@
 #include <tile.h>
 #include <targetimage.h>
 
-struct EvolutionRunner : public QThread {
+
+struct MoMainDriver::EvolutionRunner : public QThread {
     EvolutionRunner(MoMosaicEvolution* evolution) : evolution_(evolution) {}
     virtual void run() {
         qDebug() << "in runner.run().";
@@ -25,10 +26,13 @@ struct EvolutionRunner : public QThread {
     MoMosaicEvolution* evolution_;
 };
 
+
 MoMainDriver::MoMainDriver(QObject *parent) :
     QObject(parent),
     sourceImages_(0) {
 }
+
+MoMainDriver::~MoMainDriver() {}
 
 static MoTile loadTile(QString fn) {
     qDebug() << "loadTile(fn), fn == " << fn;
@@ -54,10 +58,10 @@ void MoMainDriver::start(QUrl targetUrl) {
     qDebug() << "tiles.size() == " << tiles.size();
 
     evolution_.constructInitialState(targetImage, tiles);
-    EvolutionRunner* runner = new EvolutionRunner(&evolution_);
+    evolutionRunner_.reset(new EvolutionRunner(&evolution_));
     qDebug() << "before runner start";
     // For now we just leak this thread
-    runner->start();
+    evolutionRunner_->start();
 }
 
 std::vector<QString> MoMainDriver::getFileNames(
