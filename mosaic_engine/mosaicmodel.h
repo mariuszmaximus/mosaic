@@ -10,6 +10,11 @@
 class MoMosaicModel {
 public:
     MoMosaicModel();
+    MoMosaicModel(const MoMosaicModel&) = default;
+    MoMosaicModel& operator=(const MoMosaicModel&) = default;
+    MoMosaicModel(MoMosaicModel&&) = default;
+    MoMosaicModel& operator=(MoMosaicModel&&) = default;
+    ~MoMosaicModel() {}
 
     void constructInitialState(const MoTargetImage& targetImage,
                                const std::vector<MoTile>& tiles);

@@ -14,7 +14,8 @@ SOURCES = \
     sourceimages.cpp \
     tile.cpp \
     targetimage.cpp \
-    thumbnail.cpp
+    thumbnail.cpp \
+    evolutionrunner.cpp
 HEADERS = \
     maindriver.h \
     mosaicview.h \
@@ -25,7 +26,8 @@ HEADERS = \
     sourceimages.h \
     tile.h \
     targetimage.h \
-    thumbnail.h
+    thumbnail.h \
+    evolutionrunner.h
 
 DISTFILES +=
 

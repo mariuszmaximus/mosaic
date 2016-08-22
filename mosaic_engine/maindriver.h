@@ -8,6 +8,7 @@
 
 class QString;
 class QAbstractListModel;
+class MoEvolutionRunner;
 
 
 class MoMainDriver : public QObject {
@@ -28,8 +29,7 @@ private:
     std::vector<QString> getFileNames(
             QAbstractListModel* inputImages) const;
 
-    struct EvolutionRunner;
-    std::unique_ptr<EvolutionRunner> evolutionRunner_;
+    std::unique_ptr<MoEvolutionRunner> evolutionRunner_;
 };
 
 #endif // MAINDRIVER_H
