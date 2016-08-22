@@ -32,7 +32,6 @@ void MoMainDriver::setSourceImages(QAbstractListModel *sourceImages) {
 }
 
 void MoMainDriver::start(QUrl targetUrl) {
-    qDebug() << "targetUrl == " << targetUrl;
     QImage img(QDir::toNativeSeparators(targetUrl.toLocalFile()));
     MoTargetImage targetImage(img, img.size());
 
@@ -41,12 +40,13 @@ void MoMainDriver::start(QUrl targetUrl) {
     std::transform(inputFiles.cbegin(), inputFiles.cend(),
                    std::back_inserter(tiles),
                    loadTile);
-    qDebug() << "tiles.size() == " << tiles.size();
 
     evolution_.constructInitialState(targetImage, tiles);
     evolutionRunner_.reset(new MoEvolutionRunner);
     evolutionRunner_->setEvolution(&evolution_);
-    qDebug() << "before runner start";
+    qRegisterMetaType<std::shared_ptr<MoMosaicModel> >();
+    connect(evolutionRunner_.get(), &MoEvolutionRunner::modelChanged,
+            this, &MoMainDriver::setCurrentModel);
     evolutionRunner_->start();
 }
 
@@ -65,4 +65,13 @@ std::vector<QString> MoMainDriver::getFileNames(
         }
     }
     return fileNames;
+}
+
+std::shared_ptr<MoMosaicModel> MoMainDriver::getCurrentModel() {
+    return currentModel_;
+}
+
+void MoMainDriver::setCurrentModel(std::shared_ptr<MoMosaicModel> newModel) {
+    qDebug() << "in MoMainDriver::setCurrentModel.";
+    currentModel_ = newModel;
 }

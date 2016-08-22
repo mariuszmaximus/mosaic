@@ -5,9 +5,10 @@
 
 
 MoEvolutionRunner::MoEvolutionRunner(QObject* parent) :
-        QThread(parent),
-        evolution_(0) {
-    }
+    QThread(parent),
+    evolution_(0),
+    notificationPeriod_(1000) {
+}
 
 MoEvolutionRunner::~MoEvolutionRunner() {}
 
@@ -16,11 +17,24 @@ void MoEvolutionRunner::setEvolution(MoMosaicEvolution* evolution) {
 }
 
 void MoEvolutionRunner::run() {
-    qDebug() << "in runner.run().";
     int i = 0;
     while (1) {
-        qDebug() << "Taking step" << i;
+        if (i % notificationPeriod_ == 0) {
+            qDebug() << " i == " << i;
+            std::shared_ptr<MoMosaicModel> currentModel =
+                    std::make_shared<MoMosaicModel>(
+                        *evolution_->getCurrentModel());
+            emit modelChanged(currentModel);
+        }
         evolution_->takeStep();
         ++i;
     }
+}
+
+int MoEvolutionRunner::getNotificationPeriod() const {
+    return notificationPeriod_;
+}
+
+void MoEvolutionRunner::setNotificationPeriod(int period) {
+   notificationPeriod_ = period;
 }

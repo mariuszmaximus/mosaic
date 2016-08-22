@@ -9,6 +9,8 @@
 class MoMosaicEvolution;
 class MoMosaicModel;
 
+Q_DECLARE_METATYPE(std::shared_ptr<MoMosaicModel>)
+
 
 class MoEvolutionRunner : public QThread {
     Q_OBJECT
@@ -19,13 +21,15 @@ public:
     void setEvolution(MoMosaicEvolution* evolution);
     virtual void run();
 
+    void setNotificationPeriod(int period);
+    int getNotificationPeriod() const;
+
 signals:
     void modelChanged(std::shared_ptr<MoMosaicModel> newModel);
 
 private:
     MoMosaicEvolution* evolution_;
+    int notificationPeriod_;
 };
-
-
 
 #endif // MOEVOLUTIONRUNNER_H
