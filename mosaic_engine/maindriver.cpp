@@ -44,7 +44,6 @@ void MoMainDriver::start(QUrl targetUrl) {
     evolution_.constructInitialState(targetImage, tiles);
     evolutionRunner_.reset(new MoEvolutionRunner);
     evolutionRunner_->setEvolution(&evolution_);
-    qRegisterMetaType<std::shared_ptr<MoMosaicModel> >();
     connect(evolutionRunner_.get(), &MoEvolutionRunner::modelChanged,
             this, &MoMainDriver::setCurrentModel);
     evolutionRunner_->start();
@@ -74,4 +73,5 @@ std::shared_ptr<MoMosaicModel> MoMainDriver::getCurrentModel() {
 void MoMainDriver::setCurrentModel(std::shared_ptr<MoMosaicModel> newModel) {
     qDebug() << "in MoMainDriver::setCurrentModel.";
     currentModel_ = newModel;
+    emit modelChanged(newModel);
 }

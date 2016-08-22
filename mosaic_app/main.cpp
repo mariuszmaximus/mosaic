@@ -30,8 +30,18 @@ int main(int argc, char *argv[]) {
     mainDriver.setSourceImages(&sourceImages);
     engine.rootContext()->setContextProperty(QLatin1String("mainDriver"),
                                              &mainDriver);
-
     engine.load(QUrl(QLatin1String("qrc:/main.qml")));
+
+
+    QObject* mosaicView =
+            engine.rootObjects().value(0)->findChild<QObject*>(QString("mosaicView"));
+    if (mosaicView) {
+        QObject::connect(&mainDriver, &MoMainDriver::modelChanged,
+                         static_cast<MoMosaicView*>(mosaicView),
+                         &MoMosaicView::setModel);
+    } else {
+        qDebug() << "mosaicView not found.";
+    }
 
     QObject* topLevel = engine.rootObjects().value(0);
     QQuickWindow* window = qobject_cast<QQuickWindow*>(topLevel);

@@ -9,6 +9,7 @@
 class QString;
 class QAbstractListModel;
 class MoEvolutionRunner;
+class MoMosaicModel;
 
 
 class MoMainDriver : public QObject {
@@ -23,6 +24,9 @@ public:
 public slots:
     void start(QUrl targetUrl);
     void setCurrentModel(std::shared_ptr<MoMosaicModel> newModel);
+
+signals:
+    void modelChanged(std::shared_ptr<MoMosaicModel> newModel);
 
 private:
     MoMosaicEvolution evolution_;

@@ -14,12 +14,12 @@ class MoMosaicView : public QQuickItem {
 public:
     MoMosaicView();
     ~MoMosaicView();
-    void setModel(std::shared_ptr<MoMosaicModel> model);
     std::shared_ptr<MoMosaicModel> getModel() const;
 
 signals:
 
 public slots:
+    void setModel(std::shared_ptr<MoMosaicModel> model);
     void sync();
     void cleanup();
 

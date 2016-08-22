@@ -5,7 +5,8 @@
 #include <mosaicviewrenderer.h>
 
 
-MoMosaicView::MoMosaicView() : renderer_(0) {
+MoMosaicView::MoMosaicView() :
+    renderer_(0) {
     connect(this, &QQuickItem::windowChanged,
             this, &MoMosaicView::handleWindowChanged);
 }
