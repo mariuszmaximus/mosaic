@@ -7,7 +7,7 @@
 MoEvolutionRunner::MoEvolutionRunner(QObject* parent) :
     QThread(parent),
     evolution_(0),
-    notificationPeriod_(1000) {
+    notificationPeriod_(10) {
     qRegisterMetaType<std::shared_ptr<MoMosaicModel> >();
 }
 

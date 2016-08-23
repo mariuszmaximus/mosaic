@@ -15,6 +15,9 @@ public:
     }
 
     void takeStep() {
+        for (auto update = updates_.begin(); update != updates_.end(); ++update) {
+            (*update)->update(&model_);
+        }
     }
 
     void addUpdate(std::unique_ptr<MoMosaicUpdate>&& update) {
