@@ -24,11 +24,15 @@ public:
     void setNotificationPeriod(int period);
     int getNotificationPeriod() const;
 
+public slots:
+    void pause();
+
 signals:
     void modelChanged(std::shared_ptr<MoMosaicModel> newModel);
 
 private:
     MoMosaicEvolution* evolution_;
+    int running_;
     int notificationPeriod_;
 };
 

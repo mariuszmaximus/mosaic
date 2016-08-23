@@ -11,6 +11,7 @@
 #include <sourceimages.h>
 #include <mosaicmodel.h>
 #include <evolutionrunner.h>
+#include <mosaicupdatedelay.h>
 
 
 MoMainDriver::MoMainDriver(QObject *parent) :
@@ -18,7 +19,9 @@ MoMainDriver::MoMainDriver(QObject *parent) :
     sourceImages_(0) {
 }
 
-MoMainDriver::~MoMainDriver() {}
+MoMainDriver::~MoMainDriver() {
+    evolutionRunner_->terminate();
+}
 
 static MoTile loadTile(QString fn) {
     qDebug() << "loadTile(fn), fn == " << fn;
@@ -42,6 +45,12 @@ void MoMainDriver::start(QUrl targetUrl) {
                    loadTile);
 
     evolution_.constructInitialState(targetImage, tiles);
+    evolution_.addUpdate(std::unique_ptr<MoMosaicUpdate>(
+                             new MoMosaicUpdateDelay));
+
+    if (evolutionRunner_) {
+        evolutionRunner_->terminate();
+    }
     evolutionRunner_.reset(new MoEvolutionRunner);
     evolutionRunner_->setEvolution(&evolution_);
     connect(evolutionRunner_.get(), &MoEvolutionRunner::modelChanged,

@@ -19,7 +19,8 @@ void MoEvolutionRunner::setEvolution(MoMosaicEvolution* evolution) {
 
 void MoEvolutionRunner::run() {
     int i = 0;
-    while (1) {
+    running_ = 1;
+    while (running_) {
         if (i % notificationPeriod_ == 0) {
             qDebug() << " i == " << i;
             std::shared_ptr<MoMosaicModel> currentModel =
@@ -34,6 +35,10 @@ void MoEvolutionRunner::run() {
 
 int MoEvolutionRunner::getNotificationPeriod() const {
     return notificationPeriod_;
+}
+
+void MoEvolutionRunner::pause() {
+    running_ = 0;
 }
 
 void MoEvolutionRunner::setNotificationPeriod(int period) {
