@@ -23,9 +23,9 @@ int main(int argc, char *argv[]) {
     MoSourceImages sourceImages;
     engine.rootContext()->setContextProperty(
                 "sourceImages", &sourceImages);
-    MoImageProvider imageProvider(&sourceImages);
+    MoImageProvider* imageProvider = new MoImageProvider(&sourceImages);
     engine.addImageProvider(QLatin1String("imageProvider"),
-                            &imageProvider);
+                            imageProvider);
     MoMainDriver mainDriver;
     mainDriver.setSourceImages(&sourceImages);
     engine.rootContext()->setContextProperty(QLatin1String("mainDriver"),
