@@ -1,16 +1,26 @@
 #include "mosaicviewrenderer.h"
 
 #include <QQuickWindow>
+#include <QOpenGLFramebufferObjectFormat>
 
 
-MoMosaicViewRenderer::MoMosaicViewRenderer(QObject *parent) :
-    QObject(parent), showOutlines_(false) {
+MoMosaicViewRenderer::MoMosaicViewRenderer() :
+    showOutlines_(false) {
+}
+
+QOpenGLFramebufferObject* MoMosaicViewRenderer::createFramebufferObject(
+        const QSize &size){
+    QOpenGLFramebufferObjectFormat format;
+    format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
+    format.setSamples(4);
+    return new QOpenGLFramebufferObject(size, format);
 }
 
 void MoMosaicViewRenderer::paint() {
     if (!program_) {
         initGL();
     }
+    qDebug() << "In MoMosaicViewRenderer::paint()";
 }
 
 void MoMosaicViewRenderer::initGL() {
@@ -82,4 +92,8 @@ void MoMosaicViewRenderer::setViewportSize(const QSize &size) {
 
 void MoMosaicViewRenderer::setWindow(QQuickWindow *win) {
     window_ = win;
+}
+
+void MoMosaicViewRenderer::render() {
+    qDebug() << "In MosaicViewRenderer::render";
 }

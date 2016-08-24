@@ -25,8 +25,12 @@ std::shared_ptr<MoMosaicModel> MoMosaicView::getModel() const {
     return renderer_->getModel();
 }
 
+QQuickFramebufferObject::Renderer *MoMosaicView::createRenderer() const {
+    return new MoMosaicViewRenderer;
+}
+
 void MoMosaicView::handleWindowChanged(QQuickWindow *win) {
-     if (win) {
+    if (win) {
         connect(win, &QQuickWindow::beforeSynchronizing, this, &MoMosaicView::sync, Qt::DirectConnection);
         connect(win, &QQuickWindow::sceneGraphInvalidated, this, &MoMosaicView::cleanup, Qt::DirectConnection);
         win->setClearBeforeRendering(false);
@@ -35,11 +39,7 @@ void MoMosaicView::handleWindowChanged(QQuickWindow *win) {
 }
 
 void MoMosaicView::sync() {
-    if (!renderer_) {
-        renderer_ = new MoMosaicViewRenderer;
-        connect(window(), &QQuickWindow::beforeRendering, renderer_,
-                &MoMosaicViewRenderer::paint, Qt::DirectConnection);
-    }
+    qDebug() << "in MoMosaicView::sync";
     renderer_->setViewportSize(window()->size() * window()->devicePixelRatio());
     renderer_->setWindow(window());
 }

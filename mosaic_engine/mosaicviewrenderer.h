@@ -2,6 +2,7 @@
 #define MOMOSAICVIEWRENDERER_H
 
 #include <QObject>
+#include <QQuickFramebufferObject>
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
 
@@ -12,16 +13,21 @@ class MoMosaicModel;
 class QQuickWindow;
 
 
-class MoMosaicViewRenderer : public QObject, protected QOpenGLFunctions
+class MoMosaicViewRenderer :
+        public QQuickFramebufferObject::Renderer,
+        protected QOpenGLFunctions
 {
-    Q_OBJECT
 public:
-    explicit MoMosaicViewRenderer(QObject *parent = 0);
+    explicit MoMosaicViewRenderer();
+
+    QOpenGLFramebufferObject *createFramebufferObject(const QSize &size);
 
     void setModel(std::shared_ptr<MoMosaicModel> model);
     std::shared_ptr<MoMosaicModel> getModel() const;
     void setViewportSize(const QSize &size);
     void setWindow(QQuickWindow *window);
+
+    void render();
 
 signals:
 
