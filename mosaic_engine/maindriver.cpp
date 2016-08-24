@@ -63,7 +63,10 @@ void MoMainDriver::shutDownEvolutionRunner()
     if (evolutionRunner_) {
         evolutionRunner_->stop();
         if (!evolutionRunner_->wait(100)) {
+            qDebug() << "evolutionRunner_ failed to shut down in 0.1 s. Terminating.";
             evolutionRunner_->terminate();
+        } else {
+            qDebug() << "evolutionRunner_ successfully shut down in 0.1 s.";
         }
         evolutionRunner_.reset(nullptr);
     }
