@@ -20,7 +20,7 @@ MoMainDriver::MoMainDriver(QObject *parent) :
 }
 
 MoMainDriver::~MoMainDriver() {
-    evolutionRunner_->terminate();
+    shutDownEvolutionRunner();
 }
 
 static MoTile loadTile(QString fn) {
@@ -56,6 +56,21 @@ void MoMainDriver::start(QUrl targetUrl) {
     connect(evolutionRunner_.get(), &MoEvolutionRunner::modelChanged,
             this, &MoMainDriver::setCurrentModel);
     evolutionRunner_->start();
+}
+
+void MoMainDriver::shutDownEvolutionRunner()
+{
+    if (evolutionRunner_) {
+        evolutionRunner_->stop();
+        if (!evolutionRunner_->wait(100)) {
+            evolutionRunner_->terminate();
+        }
+        evolutionRunner_.reset(nullptr);
+    }
+}
+
+void MoMainDriver::stop() {
+    shutDownEvolutionRunner();
 }
 
 std::vector<QString> MoMainDriver::getFileNames(

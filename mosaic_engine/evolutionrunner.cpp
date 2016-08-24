@@ -37,7 +37,8 @@ int MoEvolutionRunner::getNotificationPeriod() const {
     return notificationPeriod_;
 }
 
-void MoEvolutionRunner::pause() {
+void MoEvolutionRunner::stop() {
+    qDebug() << "In MoEvolutionRunner::stop()";
     running_ = 0;
 }
 

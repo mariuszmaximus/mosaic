@@ -25,7 +25,7 @@ public:
     int getNotificationPeriod() const;
 
 public slots:
-    void pause();
+    void stop();
 
 signals:
     void modelChanged(std::shared_ptr<MoMosaicModel> newModel);

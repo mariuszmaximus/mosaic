@@ -17,6 +17,7 @@ MoMosaicView::~MoMosaicView() {
 
 
 void MoMosaicView::setModel(std::shared_ptr<MoMosaicModel> model) {
+    qDebug() << "In MoMosaicView::setModel.";
     renderer_->setModel(model);
 }
 

@@ -24,6 +24,9 @@ ApplicationWindow {
         currentIndex: swipeView.currentIndex
         TabButton {
             text: qsTr("select inputs")
+            onPressed: {
+                mainDriver.stop()
+            }
         }
         TabButton {
             text: qsTr("show mosaic")

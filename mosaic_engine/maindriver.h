@@ -22,6 +22,7 @@ public:
     std::shared_ptr<MoMosaicModel> getCurrentModel();
 
 public slots:
+    void stop();
     void start(QUrl targetUrl);
     void setCurrentModel(std::shared_ptr<MoMosaicModel> newModel);
 
@@ -32,11 +33,13 @@ private:
     MoMosaicEvolution evolution_;
     QAbstractListModel* sourceImages_;
 
-    std::vector<QString> getFileNames(
-            QAbstractListModel* inputImages) const;
-
     std::unique_ptr<MoEvolutionRunner> evolutionRunner_;
     std::shared_ptr<MoMosaicModel> currentModel_;
+
+    // Some helper functions
+    std::vector<QString> getFileNames(
+            QAbstractListModel* inputImages) const;
+    void shutDownEvolutionRunner();
 };
 
 #endif // MAINDRIVER_H
