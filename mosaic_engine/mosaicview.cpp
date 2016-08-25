@@ -6,13 +6,12 @@
 
 
 MoMosaicView::MoMosaicView() :
-    renderer_(0) {
+    renderer_(new MoMosaicViewRenderer) {
     connect(this, &QQuickItem::windowChanged,
             this, &MoMosaicView::handleWindowChanged);
 }
 
 MoMosaicView::~MoMosaicView() {
-    delete renderer_;
 }
 
 
@@ -45,8 +44,5 @@ void MoMosaicView::sync() {
 }
 
 void MoMosaicView::cleanup() {
-    if (renderer_) {
-        delete renderer_;
-        renderer_ = 0;
-    }
+    renderer_.reset(nullptr);
 }

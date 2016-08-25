@@ -95,5 +95,8 @@ void MoMosaicViewRenderer::setWindow(QQuickWindow *win) {
 }
 
 void MoMosaicViewRenderer::render() {
+    static int i = 0;
     qDebug() << "In MosaicViewRenderer::render";
+    qDebug() << " Call no. " << i;
+    ++i;
 }

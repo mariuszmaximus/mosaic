@@ -30,7 +30,7 @@ private slots:
 
 private:
     bool initialized;
-    MoMosaicViewRenderer* renderer_;
+    std::unique_ptr<MoMosaicViewRenderer> renderer_;
 
     void initGL();
 
