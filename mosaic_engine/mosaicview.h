@@ -22,7 +22,6 @@ signals:
 
 public slots:
     void setModel(std::shared_ptr<MoMosaicModel> model);
-    void sync();
     void cleanup();
 
 private slots:

@@ -6,21 +6,44 @@
 
 MoMosaicViewRenderer::MoMosaicViewRenderer() :
     showOutlines_(false) {
+    qDebug() << ">>>>>>>>>>> In MoMosaicViewRenderer::MoMosaicViewRenderer";
 }
+
+MoMosaicViewRenderer::~MoMosaicViewRenderer() {}
 
 QOpenGLFramebufferObject* MoMosaicViewRenderer::createFramebufferObject(
         const QSize &size){
+    qDebug() << "In MoMosaicViewRenderer::createFramebufferObject";
     QOpenGLFramebufferObjectFormat format;
     format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
     format.setSamples(4);
     return new QOpenGLFramebufferObject(size, format);
 }
 
-void MoMosaicViewRenderer::paint() {
-    if (!program_) {
+void MoMosaicViewRenderer::render() {
+    static long int i = 0;
+    if (i == 0) {
         initGL();
     }
-    qDebug() << "In MoMosaicViewRenderer::paint()";
+    qDebug() << "In MosaicViewRenderer::render";
+    qDebug() << " Call no. " << i;
+    ++i;
+
+    glClearColor(0.1f, 0.1f, 0.2f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glFrontFace(GL_CW);
+    glCullFace(GL_FRONT);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_DEPTH_TEST);
+
+    if (window_) {
+        window_->resetOpenGLState();
+    }
+}
+
+void MoMosaicViewRenderer::synchronize(QQuickFramebufferObject *item) {
+    Q_UNUSED(item);
 }
 
 void MoMosaicViewRenderer::initGL() {
@@ -92,11 +115,4 @@ void MoMosaicViewRenderer::setViewportSize(const QSize &size) {
 
 void MoMosaicViewRenderer::setWindow(QQuickWindow *win) {
     window_ = win;
-}
-
-void MoMosaicViewRenderer::render() {
-    static int i = 0;
-    qDebug() << "In MosaicViewRenderer::render";
-    qDebug() << " Call no. " << i;
-    ++i;
 }

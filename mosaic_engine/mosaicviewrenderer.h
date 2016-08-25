@@ -18,21 +18,20 @@ class MoMosaicViewRenderer :
         protected QOpenGLFunctions
 {
 public:
-    explicit MoMosaicViewRenderer();
+    MoMosaicViewRenderer();
+    ~MoMosaicViewRenderer();
 
-    QOpenGLFramebufferObject *createFramebufferObject(const QSize &size);
+    void render() Q_DECL_OVERRIDE;
+    void synchronize(QQuickFramebufferObject* item) Q_DECL_OVERRIDE;
+    QOpenGLFramebufferObject *createFramebufferObject(const QSize &size) Q_DECL_OVERRIDE;
 
     void setModel(std::shared_ptr<MoMosaicModel> model);
     std::shared_ptr<MoMosaicModel> getModel() const;
     void setViewportSize(const QSize &size);
     void setWindow(QQuickWindow *window);
 
-    void render();
-
-signals:
 
 public slots:
-    void paint();
     void setShowOutlines(bool yesNo);
     bool showOutlines() const;
 
