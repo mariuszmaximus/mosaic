@@ -7,16 +7,36 @@
 MoMosaicModel::MoMosaicModel() : size_(0), targetImage_(QImage(), QSize()) {
 }
 
+static float computeTileArea(const std::vector<MoTile>& tiles) {
+    float area = 0.0f;
+    for (auto t : tiles) {
+        const QImage* i = t.getImage();
+        area += i->width() * i->height();
+    }
+    return area;
+}
+
 void MoMosaicModel::constructInitialState(const MoTargetImage& targetImage,
                                           const std::vector<MoTile>& tiles) {
     targetImage_ = targetImage;
-    // TODO: Scale tiles to required size
     tiles_ = tiles;
     size_ = tiles.size();
+
     x_.resize(tiles.size());
+    std::fill(x_.begin(), x_.end(), 0.0f);
+
     y_.resize(tiles.size());
+    std::fill(y_.begin(), y_.end(), 0.0f);
+
     rotations_.resize(tiles.size());
+    std::fill(rotations_.begin(), rotations_.end(), 0.0f);
+
+    float totalTileArea = computeTileArea(tiles_);
+    QSize targetSize = targetImage.getSize();
+    float targetArea = targetSize.width() * targetSize.height();
     scales_.resize(tiles.size());
+    std::fill(scales_.begin(), scales_.end(),
+              1.2f * targetArea / totalTileArea);
 }
 
 void MoMosaicModel::resize(int size) {
