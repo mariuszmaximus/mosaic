@@ -1,7 +1,7 @@
 #ifndef MOSAICVIEW_H
 #define MOSAICVIEW_H
 
-#include <QtQuick/QQuickItem>
+#include <QtQuick/QQuickFramebufferObject>
 #include <QtQuick/QQuickWindow>
 #include <memory>
 
@@ -9,18 +9,19 @@ class MoMosaicModel;
 class MoMosaicViewRenderer;
 
 
-class MoMosaicView : public QQuickItem {
+class MoMosaicView : public QQuickFramebufferObject {
     Q_OBJECT
 public:
     MoMosaicView();
     ~MoMosaicView();
     std::shared_ptr<MoMosaicModel> getModel() const;
 
+    QQuickFramebufferObject::Renderer* createRenderer() const;
+
 signals:
 
 public slots:
     void setModel(std::shared_ptr<MoMosaicModel> model);
-    void sync();
     void cleanup();
 
 private slots:
@@ -28,7 +29,7 @@ private slots:
 
 private:
     bool initialized;
-    MoMosaicViewRenderer* renderer_;
+    std::unique_ptr<MoMosaicViewRenderer> renderer_;
 
     void initGL();
 

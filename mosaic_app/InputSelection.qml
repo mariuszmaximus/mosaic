@@ -4,7 +4,8 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Controls 2.0
 
 
-Item {
+Rectangle {
+    color: "#202020"
     RowLayout {
         spacing: 10
         anchors.fill: parent

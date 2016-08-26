@@ -4,6 +4,7 @@ import MoMosaic 1.0
 Item {
     MoMosaicView {
         id: mosaicView
+        anchors.fill: parent
         objectName: "mosaicView"
     }
 }
