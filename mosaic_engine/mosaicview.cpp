@@ -1,13 +1,10 @@
 #include <mosaicview.h>
 
-#include <QDebug>
-
 #include <mosaicviewrenderer.h>
 
 
 MoMosaicView::MoMosaicView() :
     renderer_(new MoMosaicViewRenderer) {
-    qDebug() << ">>>>>>>>>>> In MoMosaicView ctor";
     connect(this, &QQuickItem::windowChanged,
             this, &MoMosaicView::handleWindowChanged);
 }
@@ -16,7 +13,6 @@ MoMosaicView::~MoMosaicView() {
 }
 
 void MoMosaicView::setModel(std::shared_ptr<MoMosaicModel> model) {
-    qDebug() << "In MoMosaicView::setModel.";
     renderer_->setModel(model);
     this->update();
 }
@@ -34,7 +30,6 @@ void MoMosaicView::handleWindowChanged(QQuickWindow *win) {
         connect(win, &QQuickWindow::sceneGraphInvalidated, this, &MoMosaicView::cleanup, Qt::DirectConnection);
         win->setClearBeforeRendering(false);
     }
-   qDebug() << "in MoMosaicView::handleWindowChanged";
 }
 
 void MoMosaicView::cleanup() {

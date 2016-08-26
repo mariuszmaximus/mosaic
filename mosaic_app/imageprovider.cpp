@@ -1,6 +1,6 @@
 #include "imageprovider.h"
 #include "sourceimages.h"
-#include <QDebug>
+
 
 MoImageProvider::MoImageProvider(MoSourceImages* sourceImages) :
     QQuickImageProvider(QQuickImageProvider::Image),

@@ -2,7 +2,6 @@
 #include <QDir>
 #include <QAbstractListModel>
 #include <QString>
-#include <QDebug>
 #include <QThread>
 #include <algorithm>
 
@@ -24,7 +23,6 @@ MoMainDriver::~MoMainDriver() {
 }
 
 static MoTile loadTile(QString fn) {
-    qDebug() << "loadTile(fn), fn == " << fn;
     QImage image(fn);
     MoTile tile(image);
     return tile;
@@ -63,10 +61,7 @@ void MoMainDriver::shutDownEvolutionRunner()
     if (evolutionRunner_) {
         evolutionRunner_->stop();
         if (!evolutionRunner_->wait(100)) {
-            qDebug() << "evolutionRunner_ failed to shut down in 0.1 s. Terminating.";
             evolutionRunner_->terminate();
-        } else {
-            qDebug() << "evolutionRunner_ successfully shut down in 0.1 s.";
         }
         evolutionRunner_.reset(nullptr);
     }
@@ -98,7 +93,6 @@ std::shared_ptr<MoMosaicModel> MoMainDriver::getCurrentModel() {
 }
 
 void MoMainDriver::setCurrentModel(std::shared_ptr<MoMosaicModel> newModel) {
-    qDebug() << "in MoMainDriver::setCurrentModel.";
     currentModel_ = newModel;
     emit modelChanged(newModel);
 }

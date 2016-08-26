@@ -6,14 +6,12 @@
 
 MoMosaicViewRenderer::MoMosaicViewRenderer() :
     showOutlines_(false) {
-    qDebug() << ">>>>>>>>>>> In MoMosaicViewRenderer::MoMosaicViewRenderer";
 }
 
 MoMosaicViewRenderer::~MoMosaicViewRenderer() {}
 
 QOpenGLFramebufferObject* MoMosaicViewRenderer::createFramebufferObject(
         const QSize &size){
-    qDebug() << "In MoMosaicViewRenderer::createFramebufferObject";
     QOpenGLFramebufferObjectFormat format;
     format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
     format.setSamples(4);
@@ -25,8 +23,6 @@ void MoMosaicViewRenderer::render() {
     if (i == 0) {
         initGL();
     }
-    qDebug() << "In MosaicViewRenderer::render";
-    qDebug() << " Call no. " << i;
     ++i;
 
     glClearColor(0.1f, 0.1f, 0.2f, 1.0f);

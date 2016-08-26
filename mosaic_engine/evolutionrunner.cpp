@@ -1,7 +1,6 @@
 #include "evolutionrunner.h"
 #include <mosaicevolution.h>
 #include <mosaicmodel.h>
-#include <QDebug>
 
 
 MoEvolutionRunner::MoEvolutionRunner(QObject* parent) :
@@ -22,7 +21,6 @@ void MoEvolutionRunner::run() {
     running_ = 1;
     while (running_) {
         if (i % notificationPeriod_ == 0) {
-            qDebug() << " i == " << i;
             std::shared_ptr<MoMosaicModel> currentModel =
                     std::make_shared<MoMosaicModel>(
                         *evolution_->getCurrentModel());
@@ -38,7 +36,6 @@ int MoEvolutionRunner::getNotificationPeriod() const {
 }
 
 void MoEvolutionRunner::stop() {
-    qDebug() << "In MoEvolutionRunner::stop()";
     running_ = 0;
 }
 
