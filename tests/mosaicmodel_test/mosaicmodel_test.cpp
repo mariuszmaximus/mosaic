@@ -1,6 +1,12 @@
 #include <gtest/gtest.h>
 #include <mosaicmodel.h>
 #include <memory>
+#include <random>
+
+
+static std::random_device rd;
+static std::mt19937 gen(rd());
+
 
 TEST(MoMosaicModel, CanBeConstructed) {
     std::unique_ptr<MoMosaicModel> model(new MoMosaicModel);
@@ -70,6 +76,47 @@ TEST_F(MosaicModel, CannotSetTooFewValues) {
     std::vector<float> x(numTilesBeingSet);
     ASSERT_THROW(model.setXCoords(&x[0], &x[0] + numTilesBeingSet),
             std::runtime_error);
+}
+
+QImage createImage(int width, int height) {
+    QImage image(width, height, QImage::Format_ARGB32);
+    static std::uniform_int_distribution<> dis(0, 255);
+    int r = dis(gen);
+    int g = dis(gen);
+    int b = dis(gen);
+    image.fill(QColor(r, g, b));
+    return image;
+}
+
+QImage createImageRandomSize() {
+    static const int min = 20;
+    static const int max = 100;
+    static std::uniform_int_distribution<> dis(min, max);
+    int width = dis(gen);
+    int height = dis(gen);
+    return createImage(width, height);
+}
+
+TEST_F(MosaicModel, InitialPositionsAreInsideTarget) {
+    int targetWidth = 50;
+    int targetHeight = 30;
+    MoTargetImage targetImage(createImageRandomSize(),
+                              QSize(targetWidth, targetHeight));
+    std::vector<MoTile> tiles;
+    tiles.push_back(MoTile());
+    tiles.push_back(MoTile());
+    model.constructInitialState(targetImage, tiles);
+    std::vector<float> x(model.size());
+    std::vector<float> y(model.size());
+    model.getXCoords(&x[0]);
+    model.getYCoords(&y[0]);
+    for (int i = 0; i < model.size(); ++i) {
+        // TODO: Units!
+        EXPECT_LE(0, x[i]);
+        EXPECT_GE(targetWidth, x[i]);
+        EXPECT_LE(0, y[i]);
+        EXPECT_GE(targetHeight, y[i]);
+    }
 }
 
 

@@ -42,6 +42,13 @@ private:
     QSize viewportSize_;
     QQuickWindow *window_;
 
+    int positionsX_;
+    int positionsY_;
+    int widths_;
+    int heights_;
+    int scales_;
+    int rotations_;
+
     void initGL();
     void initShaders();
     QString vshaderFileName() const;

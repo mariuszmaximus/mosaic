@@ -2,6 +2,7 @@
 
 #include <QQuickWindow>
 #include <QOpenGLFramebufferObjectFormat>
+#include <mosaicview.h>
 
 
 MoMosaicViewRenderer::MoMosaicViewRenderer() :
@@ -39,7 +40,9 @@ void MoMosaicViewRenderer::render() {
 }
 
 void MoMosaicViewRenderer::synchronize(QQuickFramebufferObject *item) {
-    Q_UNUSED(item);
+    MoMosaicView* mosaicView = static_cast<MoMosaicView*>(item);
+    std::shared_ptr<MoMosaicModel> model = mosaicView->getModel();
+
 }
 
 void MoMosaicViewRenderer::initGL() {
