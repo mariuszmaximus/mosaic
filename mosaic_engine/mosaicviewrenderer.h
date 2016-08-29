@@ -47,6 +47,8 @@ private:
     std::vector<float> xH_;
     std::vector<float> yH_;
     std::vector<float> zH_;
+    std::vector<float> widths_;
+    std::vector<float> heights_;
 
     int xD_;
     int yD_;

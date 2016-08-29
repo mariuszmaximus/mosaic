@@ -37,10 +37,24 @@ void MoMosaicViewRenderer::render() {
     xH_.resize(model_.size() * 4);
     yH_.resize(model_.size() * 4);
     zH_.resize(model_.size() * 4);
-    for (int i = 0; i < model_.size(); ++i) {
-        xH_[i * 4 + 0] = i;
+    widths_.resize(model_.size());
+    heights_.resize(model_.size());
+    model_.getWidths(&widths_[0]);
+    model_.getHeights(&heights_[0]);
 
-        yH_[i * 4 + 0] = i;
+    const float* x = model_.getXCoords();
+    const float* y = model_.getYCoords();
+
+    for (int i = 0; i < model_.size(); ++i) {
+        xH_[i * 4 + 0] = x[i] -0.5f * widths_[i];
+        xH_[i * 4 + 1] = x[i] +0.5f * widths_[i];
+        xH_[i * 4 + 2] = x[i] +0.5f * widths_[i];
+        xH_[i * 4 + 3] = x[i] -0.5f * widths_[i];
+
+        yH_[i * 4 + 0] = y[i] -0.5f * heights_[i];
+        yH_[i * 4 + 1] = y[i] -0.5f * heights_[i];
+        yH_[i * 4 + 2] = y[i] +0.5f * heights_[i];
+        yH_[i * 4 + 3] = y[i] +0.5f * heights_[i];
 
         zH_[i * 4 + 0] = i;
         zH_[i * 4 + 1] = i;
