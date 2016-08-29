@@ -75,7 +75,10 @@ void MoMosaicViewRenderer::render() {
     program_->setAttributeArray(xD_, &xH_[0], 1);
     program_->setAttributeArray(yD_, &yH_[0], 1);
     program_->setAttributeArray(zD_, &zH_[0], 1);
+    // TODO: should be using Triangle fans here.
     glDrawArrays(GL_TRIANGLES, 0, 6 * model_.size());
+    GLenum err = glGetError();
+    qDebug() << err;
     program_->disableAttributeArray(zD_);
     program_->disableAttributeArray(yD_);
     program_->disableAttributeArray(xD_);
