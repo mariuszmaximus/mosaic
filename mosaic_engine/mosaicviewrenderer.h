@@ -44,8 +44,13 @@ private:
 
     MoMosaicModel model_;
 
+    std::vector<float> xH_;
+    std::vector<float> yH_;
+    std::vector<float> zH_;
+
     int xD_;
     int yD_;
+    int zD_;
 
     void initGL();
     void initShaders();

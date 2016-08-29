@@ -34,6 +34,20 @@ void MoMosaicViewRenderer::render() {
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
 
+    xH_.resize(model_.size() * 4);
+    yH_.resize(model_.size() * 4);
+    zH_.resize(model_.size() * 4);
+    for (int i = 0; i < model_.size(); ++i) {
+        xH_[i * 4 + 0] = i;
+
+        yH_[i * 4 + 0] = i;
+
+        zH_[i * 4 + 0] = i;
+        zH_[i * 4 + 1] = i;
+        zH_[i * 4 + 2] = i;
+        zH_[i * 4 + 3] = i;
+    }
+
     if (window_) {
         window_->resetOpenGLState();
     }
@@ -53,6 +67,7 @@ void MoMosaicViewRenderer::initGL() {
     initShaders();
     xD_ = program_->attributeLocation("x");
     yD_ = program_->attributeLocation("y");
+    zD_ = program_->attributeLocation("z");
 }
 
 void MoMosaicViewRenderer::initShaders() {
