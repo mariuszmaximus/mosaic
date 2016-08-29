@@ -18,7 +18,9 @@ void MoMosaicView::setModel(std::shared_ptr<MoMosaicModel> model) {
 }
 
 std::shared_ptr<MoMosaicModel> MoMosaicView::getModel() const {
-    return renderer_->getModel();
+    std::shared_ptr<MoMosaicModel> theModel =
+            std::make_shared<MoMosaicModel>(renderer_->getModel());
+    return theModel;
 }
 
 QQuickFramebufferObject::Renderer *MoMosaicView::createRenderer() const {

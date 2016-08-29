@@ -6,7 +6,7 @@
 
 
 MoMosaicViewRenderer::MoMosaicViewRenderer() :
-    showOutlines_(false) {
+    showOutlines_(true) {
 }
 
 MoMosaicViewRenderer::~MoMosaicViewRenderer() {}
@@ -41,8 +41,7 @@ void MoMosaicViewRenderer::render() {
 
 void MoMosaicViewRenderer::synchronize(QQuickFramebufferObject *item) {
     MoMosaicView* mosaicView = static_cast<MoMosaicView*>(item);
-    std::shared_ptr<MoMosaicModel> model = mosaicView->getModel();
-
+    model_ = *mosaicView->getModel();
 }
 
 void MoMosaicViewRenderer::initGL() {
@@ -51,8 +50,9 @@ void MoMosaicViewRenderer::initGL() {
         firstCall = false;
         initializeOpenGLFunctions();
     }
-
     initShaders();
+    xD_ = program_->attributeLocation("x");
+    yD_ = program_->attributeLocation("y");
 }
 
 void MoMosaicViewRenderer::initShaders() {
@@ -101,10 +101,10 @@ bool MoMosaicViewRenderer::showOutlines() const {
 }
 
 void MoMosaicViewRenderer::setModel(std::shared_ptr<MoMosaicModel> model) {
-    model_ = model;
+    model_ = *model;
 }
 
-std::shared_ptr<MoMosaicModel> MoMosaicViewRenderer::getModel() const {
+MoMosaicModel MoMosaicViewRenderer::getModel() const {
     return model_;
 }
 
