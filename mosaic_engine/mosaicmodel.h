@@ -26,18 +26,26 @@ public:
     void getHeights(float* heightsBegin) const;
 
     void setXCoords(const float* xBegin, const float* xEnd);
-    void getXCoords(float* xBegin) const;
+    float* getXCoords();
+    const float* getXCoords() const;
+    void copyXCoords(float* xBegin) const;
 
     void setYCoords(const float* yBegin, const float* yEnd);
-    void getYCoords(float* yBegin) const;
+    float* getYCoords();
+    const float* getYCoords() const;
+    void copyYCoords(float* yBegin) const;
 
     void setRotations(const float* rotationsBegin,
                       const float* rotationsEnd);
-    void getRotations(float* rotationsBegin) const;
+    float* getRotations();
+    const float* getRotations() const;
+    void copyRotations(float* rotationsBegin) const;
 
     void setScales(const float* scalesBegin,
                       const float* scalesEnd);
-    void getScales(float* scalesBegin) const;
+    float* getScales();
+    const float* getScales() const;
+    void copyScales(float* scalesBegin) const;
 
 private:
     int size_;

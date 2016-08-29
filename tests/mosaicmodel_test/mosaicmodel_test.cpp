@@ -29,7 +29,7 @@ TEST_F(MosaicModel, CanSetXCoords) {
     std::vector<float> xCoords(numTiles, xVal);
     model.setXCoords(&xCoords[0], &xCoords[0] + numTiles);
     std::vector<float> out(numTiles);
-    model.getXCoords(&out[0]);
+    model.copyXCoords(&out[0]);
     ASSERT_FLOAT_EQ(out[2], xVal);
 }
 
@@ -38,7 +38,7 @@ TEST_F(MosaicModel, CanSetYCoords) {
     std::vector<float> yCoords(numTiles, yVal);
     model.setYCoords(&yCoords[0], &yCoords[0] + numTiles);
     std::vector<float> out(numTiles);
-    model.getYCoords(&out[0]);
+    model.copyYCoords(&out[0]);
     ASSERT_FLOAT_EQ(out[2], yVal);
 }
 
@@ -47,7 +47,7 @@ TEST_F(MosaicModel, CanSetRotations) {
     std::vector<float> rotations(numTiles, rotVal);
     model.setRotations(&rotations[0], &rotations[0] + numTiles);
     std::vector<float> out(numTiles);
-    model.getRotations(&out[0]);
+    model.copyRotations(&out[0]);
     ASSERT_FLOAT_EQ(out[2], rotVal);
 }
 
@@ -56,7 +56,7 @@ TEST_F(MosaicModel, CanSetScales) {
     std::vector<float> scales(numTiles, scaleVal);
     model.setScales(&scales[0], &scales[0] + numTiles);
     std::vector<float> out(numTiles);
-    model.getScales(&out[0]);
+    model.copyScales(&out[0]);
     ASSERT_FLOAT_EQ(out[2], scaleVal);
 }
 
@@ -85,8 +85,8 @@ TEST_F(MosaicModel, InitialPositionsAreInsideTarget) {
     model.constructInitialState(targetImage, tiles);
     std::vector<float> x(model.size());
     std::vector<float> y(model.size());
-    model.getXCoords(&x[0]);
-    model.getYCoords(&y[0]);
+    model.copyXCoords(&x[0]);
+    model.copyYCoords(&y[0]);
     float S = targetImage.getWorldSize();
     float minX = -targetWidth / (2.0 * S);
     float maxX = -minX;

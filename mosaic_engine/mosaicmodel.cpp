@@ -78,8 +78,24 @@ void MoMosaicModel::setXCoords(const float *xBegin, const float *xEnd) {
     std::copy(xBegin, xEnd, x_.begin());
 }
 
-void MoMosaicModel::getXCoords(float *xBegin) const {
+void MoMosaicModel::copyXCoords(float *xBegin) const {
     std::copy(x_.cbegin(), x_.cend(), xBegin);
+}
+
+const float* MoMosaicModel::getXCoords() const {
+    if (size_ > 0) {
+        return &x_[0];
+    } else {
+        return nullptr;
+    }
+}
+
+float* MoMosaicModel::getXCoords() {
+    if (size_ > 0) {
+        return &x_[0];
+    } else {
+        return nullptr;
+    }
 }
 
 
@@ -92,8 +108,24 @@ void MoMosaicModel::setYCoords(const float *yBegin, const float *yEnd) {
     std::copy(yBegin, yEnd, y_.begin());
 }
 
-void MoMosaicModel::getYCoords(float *yBegin) const {
+void MoMosaicModel::copyYCoords(float *yBegin) const {
     std::copy(y_.cbegin(), y_.cend(), yBegin);
+}
+
+const float* MoMosaicModel::getYCoords() const {
+    if (size_ > 0) {
+        return &y_[0];
+    } else {
+        return nullptr;
+    }
+}
+
+float* MoMosaicModel::getYCoords() {
+    if (size_ > 0) {
+        return &y_[0];
+    } else {
+        return nullptr;
+    }
 }
 
 void MoMosaicModel::setRotations(const float *rotationsBegin,
@@ -106,8 +138,24 @@ void MoMosaicModel::setRotations(const float *rotationsBegin,
     std::copy(rotationsBegin, rotationsEnd, rotations_.begin());
 }
 
-void MoMosaicModel::getRotations(float *rotationsBegin) const {
+void MoMosaicModel::copyRotations(float *rotationsBegin) const {
     std::copy(rotations_.cbegin(), rotations_.cend(), rotationsBegin);
+}
+
+const float* MoMosaicModel::getRotations() const {
+    if (size_ > 0) {
+        return &rotations_[0];
+    } else {
+        return nullptr;
+    }
+}
+
+float* MoMosaicModel::getRotations() {
+    if (size_ > 0) {
+        return &rotations_[0];
+    } else {
+        return nullptr;
+    }
 }
 
 void MoMosaicModel::setScales(const float *scalesBegin,
@@ -120,6 +168,22 @@ void MoMosaicModel::setScales(const float *scalesBegin,
     std::copy(scalesBegin, scalesEnd, scales_.begin());
 }
 
-void MoMosaicModel::getScales(float *scalesBegin) const {
+void MoMosaicModel::copyScales(float *scalesBegin) const {
     std::copy(scales_.cbegin(), scales_.cend(), scalesBegin);
+}
+
+const float* MoMosaicModel::getScales() const {
+    if (size_ > 0) {
+        return &scales_[0];
+    } else {
+        return nullptr;
+    }
+}
+
+float* MoMosaicModel::getScales() {
+    if (size_ > 0) {
+        return &scales_[0];
+    } else {
+        return nullptr;
+    }
 }
