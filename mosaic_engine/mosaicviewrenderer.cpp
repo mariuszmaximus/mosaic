@@ -46,19 +46,22 @@ void MoMosaicViewRenderer::render() {
     const float* y = model_.getYCoords();
 
     for (int i = 0; i < model_.size(); ++i) {
-        xH_[i * 6 + 0] = x[i] -0.5f * widths_[i];
-        xH_[i * 6 + 1] = x[i] +0.5f * widths_[i];
-        xH_[i * 6 + 2] = x[i] +0.5f * widths_[i];
-        xH_[i * 6 + 3] = x[i] +0.5f * widths_[i];
-        xH_[i * 6 + 4] = x[i] -0.5f * widths_[i];
-        xH_[i * 6 + 5] = x[i] -0.5f * widths_[i];
+        qDebug() << i;
+        qDebug() << widths_[i];
+        qDebug() << heights_[i];
+        xH_[i * 6 + 0] = x[i] - 0.5f * widths_[i];
+        xH_[i * 6 + 1] = x[i] + 0.5f * widths_[i];
+        xH_[i * 6 + 2] = x[i] + 0.5f * widths_[i];
+        xH_[i * 6 + 3] = x[i] + 0.5f * widths_[i];
+        xH_[i * 6 + 4] = x[i] - 0.5f * widths_[i];
+        xH_[i * 6 + 5] = x[i] - 0.5f * widths_[i];
 
-        yH_[i * 6 + 0] = y[i] -0.5f * heights_[i];
-        yH_[i * 6 + 1] = y[i] -0.5f * heights_[i];
-        yH_[i * 6 + 2] = y[i] +0.5f * heights_[i];
-        yH_[i * 6 + 3] = y[i] +0.5f * heights_[i];
-        yH_[i * 6 + 4] = y[i] +0.5f * heights_[i];
-        yH_[i * 6 + 5] = y[i] -0.5f * heights_[i];
+        yH_[i * 6 + 0] = y[i] - 0.5f * heights_[i];
+        yH_[i * 6 + 1] = y[i] - 0.5f * heights_[i];
+        yH_[i * 6 + 2] = y[i] + 0.5f * heights_[i];
+        yH_[i * 6 + 3] = y[i] + 0.5f * heights_[i];
+        yH_[i * 6 + 4] = y[i] + 0.5f * heights_[i];
+        yH_[i * 6 + 5] = y[i] - 0.5f * heights_[i];
 
         zH_[i * 6 + 0] = i;
         zH_[i * 6 + 1] = i;
