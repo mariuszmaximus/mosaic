@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 #include <targetimage.h>
+#include <cmath>
+
 
 TEST(MoTargetImage, CanBeConstructed) {
     moCreateTestImage();
@@ -15,6 +17,14 @@ TEST(MoTargetImage, GetImage) {
     MoTargetImage targetImage(QImage(), QSize(100, 200));
     QImage image(targetImage.getImage());
     ASSERT_TRUE(image.isNull());
+}
+
+TEST(MoTargetImage, GetWorldSize) {
+    int width = 200;
+    int height = 100;
+    MoTargetImage targetImage(QImage(), QSize(width, height));
+    float worldSize = targetImage.getWorldSize();
+    ASSERT_FLOAT_EQ(std::sqrt(width * height), worldSize);
 }
 
 

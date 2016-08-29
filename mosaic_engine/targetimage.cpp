@@ -1,4 +1,6 @@
 #include "targetimage.h"
+#include <cmath>
+
 
 MoTargetImage::MoTargetImage(QImage image,
                              QSize targetSize) :
@@ -12,6 +14,10 @@ QSize MoTargetImage::getSize() const {
 
 QImage MoTargetImage::getImage() const {
     return image_;
+}
+
+float MoTargetImage::getWorldSize() const {
+    return std::sqrt(size_.width() * size_.height());
 }
 
 MoTargetImage moCreateTestImage() {

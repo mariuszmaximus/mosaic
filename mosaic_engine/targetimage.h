@@ -9,6 +9,7 @@ public:
     MoTargetImage(QImage image, QSize targetSize);
     QSize getSize() const;
     QImage getImage() const;
+    float getWorldSize() const;
 
 private:
     QImage image_;
