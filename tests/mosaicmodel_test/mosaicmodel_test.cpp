@@ -2,7 +2,6 @@
 #include <mosaicmodel.h>
 #include <test_utilities.h>
 #include <memory>
-#include <cmath>
 
 
 TEST(MoMosaicModel, CanBeConstructed) {
@@ -88,7 +87,7 @@ TEST_F(MosaicModel, InitialPositionsAreInsideTarget) {
     std::vector<float> y(model.size());
     model.getXCoords(&x[0]);
     model.getYCoords(&y[0]);
-    float S = std::sqrt(targetWidth * targetHeight);
+    float S = targetImage.getWorldSize();
     float minX = -targetWidth / (2.0 * S);
     float maxX = -minX;
     float minY = -targetHeight / (2.0 * S);
