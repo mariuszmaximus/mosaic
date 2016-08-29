@@ -34,9 +34,9 @@ void MoMosaicViewRenderer::render() {
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
 
-    xH_.resize(model_.size() * 4);
-    yH_.resize(model_.size() * 4);
-    zH_.resize(model_.size() * 4);
+    xH_.resize(model_.size() * 6);
+    yH_.resize(model_.size() * 6);
+    zH_.resize(model_.size() * 6);
     widths_.resize(model_.size());
     heights_.resize(model_.size());
     model_.getWidths(&widths_[0]);
@@ -46,21 +46,41 @@ void MoMosaicViewRenderer::render() {
     const float* y = model_.getYCoords();
 
     for (int i = 0; i < model_.size(); ++i) {
-        xH_[i * 4 + 0] = x[i] -0.5f * widths_[i];
-        xH_[i * 4 + 1] = x[i] +0.5f * widths_[i];
-        xH_[i * 4 + 2] = x[i] +0.5f * widths_[i];
-        xH_[i * 4 + 3] = x[i] -0.5f * widths_[i];
+        xH_[i * 6 + 0] = x[i] -0.5f * widths_[i];
+        xH_[i * 6 + 1] = x[i] +0.5f * widths_[i];
+        xH_[i * 6 + 2] = x[i] +0.5f * widths_[i];
+        xH_[i * 6 + 3] = x[i] +0.5f * widths_[i];
+        xH_[i * 6 + 4] = x[i] -0.5f * widths_[i];
+        xH_[i * 6 + 5] = x[i] -0.5f * widths_[i];
 
-        yH_[i * 4 + 0] = y[i] -0.5f * heights_[i];
-        yH_[i * 4 + 1] = y[i] -0.5f * heights_[i];
-        yH_[i * 4 + 2] = y[i] +0.5f * heights_[i];
-        yH_[i * 4 + 3] = y[i] +0.5f * heights_[i];
+        yH_[i * 6 + 0] = y[i] -0.5f * heights_[i];
+        yH_[i * 6 + 1] = y[i] -0.5f * heights_[i];
+        yH_[i * 6 + 2] = y[i] +0.5f * heights_[i];
+        yH_[i * 6 + 3] = y[i] +0.5f * heights_[i];
+        yH_[i * 6 + 4] = y[i] +0.5f * heights_[i];
+        yH_[i * 6 + 5] = y[i] -0.5f * heights_[i];
 
-        zH_[i * 4 + 0] = i;
-        zH_[i * 4 + 1] = i;
-        zH_[i * 4 + 2] = i;
-        zH_[i * 4 + 3] = i;
+        zH_[i * 6 + 0] = i;
+        zH_[i * 6 + 1] = i;
+        zH_[i * 6 + 2] = i;
+        zH_[i * 6 + 3] = i;
+        zH_[i * 6 + 4] = i;
+        zH_[i * 6 + 5] = i;
     }
+
+    program_->bind();
+    program_->enableAttributeArray(xD_);
+    program_->enableAttributeArray(yD_);
+    program_->enableAttributeArray(zD_);
+    program_->setAttributeArray(xD_, &xH_[0], 1);
+    program_->setAttributeArray(yD_, &yH_[0], 1);
+    program_->setAttributeArray(zD_, &zH_[0], 1);
+    glDrawArrays(GL_TRIANGLES, 0, 6 * model_.size());
+    program_->disableAttributeArray(zD_);
+    program_->disableAttributeArray(yD_);
+    program_->disableAttributeArray(xD_);
+    program_->release();
+
 
     if (window_) {
         window_->resetOpenGLState();
