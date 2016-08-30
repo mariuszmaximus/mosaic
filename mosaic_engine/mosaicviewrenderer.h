@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QQuickFramebufferObject>
-#include <QOpenGLFunctions>
+#include <QOpenGLFunctions_3_3_Core>
 #include <QOpenGLShaderProgram>
 #include <mosaicmodel.h>
 
@@ -16,7 +16,7 @@ class QQuickWindow;
 
 class MoMosaicViewRenderer :
         public QQuickFramebufferObject::Renderer,
-        protected QOpenGLFunctions
+        protected QOpenGLFunctions_3_3_Core
 {
 public:
     MoMosaicViewRenderer();
@@ -44,15 +44,13 @@ private:
 
     MoMosaicModel model_;
 
-    std::vector<float> xH_;
-    std::vector<float> yH_;
-    std::vector<float> zH_;
-    std::vector<float> widths_;
-    std::vector<float> heights_;
+    std::vector<float> widthsH_;
+    std::vector<float> heightsH_;
 
     int xD_;
     int yD_;
-    int zD_;
+    int widthsD_;
+    int heightsD_;
 
     void initGL();
     void initShaders();
