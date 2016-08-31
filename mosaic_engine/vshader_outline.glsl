@@ -6,11 +6,12 @@ in float height;
 uniform float targetWidth = 1.0f;
 uniform float targetHeight = 1.0f;
 
+
 const vec2 pos[] = vec2[4](
   vec2(-0.5f,  0.5f),
   vec2(-0.5f, -0.5f),
-  vec2(0.5f,   0.5f),
-  vec2(0.5f,  -0.5f)
+  vec2( 0.5f,  0.5f),
+  vec2( 0.5f, -0.5f)
 );
 
 void main(void)

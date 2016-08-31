@@ -51,22 +51,30 @@ void MoMosaicViewRenderer::render() {
 
     program_->enableAttributeArray(xD_);
     program_->setAttributeArray(xD_, &xH_[0], 1);
+    glVertexAttribDivisor(xD_, 1);
 
     program_->enableAttributeArray(yD_);
     program_->setAttributeArray(yD_, &yH_[0], 1);
+    glVertexAttribDivisor(yD_, 1);
 
     program_->enableAttributeArray(widthsD_);
     program_->setAttributeArray(widthsD_, &widthsH_[0], 1);
+    glVertexAttribDivisor(widthsD_, 1);
 
     program_->enableAttributeArray(heightsD_);
     program_->setAttributeArray(heightsD_, &heightsH_[0], 1);
+    glVertexAttribDivisor(heightsD_, 1);
 
     glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, model_.size());
     GLenum err = glGetError();
     qDebug() << err;
 
-    program_->enableAttributeArray(heightsD_);
-    program_->enableAttributeArray(widthsD_);
+    glVertexAttribDivisor(xD_, 0);
+    glVertexAttribDivisor(yD_, 0);
+    glVertexAttribDivisor(widthsD_, 0);
+    glVertexAttribDivisor(heightsD_, 0);
+    program_->disableAttributeArray(heightsD_);
+    program_->disableAttributeArray(widthsD_);
     program_->disableAttributeArray(yD_);
     program_->disableAttributeArray(xD_);
     program_->release();
