@@ -32,6 +32,7 @@ QImage MoSourceImages::getImage(const QString &id) const {
 }
 
 void MoSourceImages::imagesAdded(const QList<QUrl>& newImages) {
+    qDebug() << newImages;
     if (newImages.empty()) {
         return;
     }

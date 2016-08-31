@@ -32,11 +32,14 @@ int main(int argc, char *argv[]) {
                                  "The mosaic tile pictures.");
     parser.process(app);
 
-    QString targetFileName = parser.value("t");
-    qInfo() << "Using target image: " << targetFileName;
+    QString targetFileName;
+    if (parser.isSet("t")) {
+        parser.value("t");
+        qInfo() << "Using target image: " << targetFileName;
+    }
 
     QStringList sourceFileNames = parser.positionalArguments();
-    qInfo() << "Using source files: " << sourceFileNames;
+    qInfo() << "Source files provided: " << sourceFileNames;
 
 
     // Register types and create objects for QML code
@@ -47,6 +50,15 @@ int main(int argc, char *argv[]) {
     MoSourceImages sourceImages;
     engine.rootContext()->setContextProperty(
                 "sourceImages", &sourceImages);
+    if (!sourceFileNames.empty()) {
+        QList<QUrl> imageURLs;
+        for (auto path : sourceFileNames) {
+            imageURLs.push_back(QUrl::fromLocalFile(path));
+        }
+        sourceImages.imagesAdded(imageURLs);
+    }
+
+
     MoImageProvider* imageProvider = new MoImageProvider(&sourceImages);
     engine.addImageProvider(QLatin1String("imageProvider"),
                             imageProvider);

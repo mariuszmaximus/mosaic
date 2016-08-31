@@ -36,7 +36,7 @@ Rectangle {
         title: "Select target image"
         selectMultiple: false
         onAccepted: {
-            mainWindow.targetURL = targetFileDialog.fileUrl
+            mainDriver.targetURL = targetFileDialog.fileUrl
         }
     }
 

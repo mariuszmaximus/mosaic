@@ -14,6 +14,8 @@ class MoMosaicModel;
 
 class MoMainDriver : public QObject {
     Q_OBJECT
+
+    Q_PROPERTY(QUrl targetURL MEMBER targetUrl_ READ getTargetURL WRITE setTargetURL NOTIFY targetURLChanged)
 public:
     explicit MoMainDriver(QObject *parent = 0);
     ~MoMainDriver();
@@ -23,15 +25,19 @@ public:
 
 public slots:
     void stop();
-    void start(QUrl targetUrl);
+    void start();
     void setCurrentModel(std::shared_ptr<MoMosaicModel> newModel);
+    void setTargetURL(QUrl targetUrl);
+    QUrl getTargetURL();
 
 signals:
     void modelChanged(std::shared_ptr<MoMosaicModel> newModel);
+    void targetURLChanged(QUrl newURL);
 
 private:
     MoMosaicEvolution evolution_;
     QAbstractListModel* sourceImages_;
+    QUrl targetUrl_;
 
     std::unique_ptr<MoEvolutionRunner> evolutionRunner_;
     std::shared_ptr<MoMosaicModel> currentModel_;

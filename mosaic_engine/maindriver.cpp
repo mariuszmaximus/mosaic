@@ -3,6 +3,7 @@
 #include <QAbstractListModel>
 #include <QString>
 #include <QThread>
+#include <QDebug>
 #include <algorithm>
 
 #include <tile.h>
@@ -32,8 +33,8 @@ void MoMainDriver::setSourceImages(QAbstractListModel *sourceImages) {
     sourceImages_ = sourceImages;
 }
 
-void MoMainDriver::start(QUrl targetUrl) {
-    QImage img(QDir::toNativeSeparators(targetUrl.toLocalFile()));
+void MoMainDriver::start() {
+    QImage img(QDir::toNativeSeparators(targetUrl_.toLocalFile()));
     MoTargetImage targetImage(img, img.size());
 
     std::vector<QString> inputFiles = getFileNames(sourceImages_);
@@ -95,4 +96,14 @@ std::shared_ptr<MoMosaicModel> MoMainDriver::getCurrentModel() {
 void MoMainDriver::setCurrentModel(std::shared_ptr<MoMosaicModel> newModel) {
     currentModel_ = newModel;
     emit modelChanged(newModel);
+}
+
+void MoMainDriver::setTargetURL(QUrl targetUrl) {
+    qDebug() << targetUrl;
+    targetUrl_ = targetUrl;
+    emit targetURLChanged(targetUrl_);
+}
+
+QUrl MoMainDriver::getTargetURL() {
+    return targetUrl_;
 }
