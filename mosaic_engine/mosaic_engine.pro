@@ -7,7 +7,6 @@ include(../compiler_config.pri)
 SOURCES = \
     maindriver.cpp \
     mosaicview.cpp \
-    mosaicviewrenderer.cpp \
     mosaicmodel.cpp \
     mosaicevolution.cpp \
     mosaicupdate.cpp \
@@ -16,11 +15,11 @@ SOURCES = \
     targetimage.cpp \
     thumbnail.cpp \
     evolutionrunner.cpp \
-    mosaicupdatedelay.cpp
+    mosaicupdatedelay.cpp \
+    mosaicrenderer.cpp
 HEADERS = \
     maindriver.h \
     mosaicview.h \
-    mosaicviewrenderer.h \
     mosaicmodel.h \
     mosaicevolution.h \
     mosaicupdate.h \
@@ -29,7 +28,8 @@ HEADERS = \
     targetimage.h \
     thumbnail.h \
     evolutionrunner.h \
-    mosaicupdatedelay.h
+    mosaicupdatedelay.h \
+    mosaicrenderer.h
 
 DISTFILES +=
 

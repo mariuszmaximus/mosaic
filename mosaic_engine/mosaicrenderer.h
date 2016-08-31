@@ -14,13 +14,13 @@ class MoMosaicModel;
 class QQuickWindow;
 
 
-class MoMosaicViewRenderer :
+class MoMosaicRenderer :
         public QQuickFramebufferObject::Renderer,
         protected QOpenGLFunctions_3_3_Core
 {
 public:
-    MoMosaicViewRenderer();
-    ~MoMosaicViewRenderer();
+    MoMosaicRenderer();
+    ~MoMosaicRenderer();
 
     void render() Q_DECL_OVERRIDE;
     void synchronize(QQuickFramebufferObject* item) Q_DECL_OVERRIDE;

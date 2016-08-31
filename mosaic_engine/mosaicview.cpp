@@ -1,10 +1,10 @@
 #include <mosaicview.h>
 
-#include <mosaicviewrenderer.h>
+#include <mosaicrenderer.h>
 
 
 MoMosaicView::MoMosaicView() :
-    renderer_(new MoMosaicViewRenderer) {
+    renderer_(new MoMosaicRenderer) {
     connect(this, &QQuickItem::windowChanged,
             this, &MoMosaicView::handleWindowChanged);
 }
@@ -24,7 +24,7 @@ std::shared_ptr<MoMosaicModel> MoMosaicView::getModel() const {
 }
 
 QQuickFramebufferObject::Renderer *MoMosaicView::createRenderer() const {
-    return new MoMosaicViewRenderer;
+    return new MoMosaicRenderer;
 }
 
 void MoMosaicView::handleWindowChanged(QQuickWindow *win) {

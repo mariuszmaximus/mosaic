@@ -1,42 +1,42 @@
 #include <gtest/gtest.h>
-#include <mosaicviewrenderer.h>
+#include <mosaicrenderer.h>
 #include <QOffscreenSurface>
 #include <QGuiApplication>
 
 
-TEST(MoMosaicViewRenderer, CanBeConstructed) {
-    MoMosaicViewRenderer* view = new MoMosaicViewRenderer;
+TEST(MoMosaicRenderer, CanBeConstructed) {
+    MoMosaicRenderer* view = new MoMosaicRenderer;
     ASSERT_NE(view, nullptr);
     delete view;
 }
 
-TEST(MoMosaicViewRenderer, PaintDoesNotThrow) {
-    MoMosaicViewRenderer view;
+TEST(MoMosaicRenderer, PaintDoesNotThrow) {
+    MoMosaicRenderer view;
     ASSERT_NO_THROW(view.paint());
 }
 
-TEST(MoMosaicViewRenderer, CanSetOutlineMode) {
-    MoMosaicViewRenderer view;
+TEST(MoMosaicRenderer, CanSetOutlineMode) {
+    MoMosaicRenderer view;
     view.setShowOutlines(true);
     ASSERT_TRUE(view.showOutlines());
 }
 
-TEST(MoMosaicViewRenderer, CanUnsetOutlineMode) {
-    MoMosaicViewRenderer view;
+TEST(MoMosaicRenderer, CanUnsetOutlineMode) {
+    MoMosaicRenderer view;
     view.setShowOutlines(false);
     ASSERT_FALSE(view.showOutlines());
 }
 
-TEST(MoMosaicViewRenderer, CanChangeOutlineMode) {
-    MoMosaicViewRenderer view;
+TEST(MoMosaicRenderer, CanChangeOutlineMode) {
+    MoMosaicRenderer view;
     view.setShowOutlines(false);
     ASSERT_FALSE(view.showOutlines());
     view.setShowOutlines(true);
     ASSERT_TRUE(view.showOutlines());
 }
 
-TEST(MoMosaicViewRenderer, SetModel) {
-    MoMosaicViewRenderer view;
+TEST(MoMosaicRenderer, SetModel) {
+    MoMosaicRenderer view;
     view.setModel(nullptr);
     std::shared_ptr<MoMosaicModel> model = view.getModel();
     ASSERT_EQ(nullptr, model.get());

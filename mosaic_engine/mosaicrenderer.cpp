@@ -1,17 +1,17 @@
-#include "mosaicviewrenderer.h"
+#include "mosaicrenderer.h"
 
 #include <QQuickWindow>
 #include <QOpenGLFramebufferObjectFormat>
 #include <mosaicview.h>
 
 
-MoMosaicViewRenderer::MoMosaicViewRenderer() :
+MoMosaicRenderer::MoMosaicRenderer() :
     showOutlines_(true) {
 }
 
-MoMosaicViewRenderer::~MoMosaicViewRenderer() {}
+MoMosaicRenderer::~MoMosaicRenderer() {}
 
-QOpenGLFramebufferObject* MoMosaicViewRenderer::createFramebufferObject(
+QOpenGLFramebufferObject* MoMosaicRenderer::createFramebufferObject(
         const QSize &size){
     QOpenGLFramebufferObjectFormat format;
     format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
@@ -19,7 +19,7 @@ QOpenGLFramebufferObject* MoMosaicViewRenderer::createFramebufferObject(
     return new QOpenGLFramebufferObject(size, format);
 }
 
-void MoMosaicViewRenderer::render() {
+void MoMosaicRenderer::render() {
     static long int i = 0;
     if (i == 0) {
         initGL();
@@ -85,12 +85,12 @@ void MoMosaicViewRenderer::render() {
     }
 }
 
-void MoMosaicViewRenderer::synchronize(QQuickFramebufferObject *item) {
+void MoMosaicRenderer::synchronize(QQuickFramebufferObject *item) {
     MoMosaicView* mosaicView = static_cast<MoMosaicView*>(item);
     model_ = *mosaicView->getModel();
 }
 
-void MoMosaicViewRenderer::initGL() {
+void MoMosaicRenderer::initGL() {
     static bool firstCall = true;
     if (firstCall) {
         firstCall = false;
@@ -103,7 +103,7 @@ void MoMosaicViewRenderer::initGL() {
     heightsD_ = program_->attributeLocation("height");
 }
 
-void MoMosaicViewRenderer::initShaders() {
+void MoMosaicRenderer::initShaders() {
     program_.reset(new QOpenGLShaderProgram);
     if (!program_->addShaderFromSourceFile(QOpenGLShader::Vertex,
                                            vshaderFileName())) {
@@ -121,7 +121,7 @@ void MoMosaicViewRenderer::initShaders() {
     }
 }
 
-QString MoMosaicViewRenderer::vshaderFileName() const {
+QString MoMosaicRenderer::vshaderFileName() const {
     if (showOutlines_) {
         return ":/shaders/vshader_outline.glsl";
     } else {
@@ -129,7 +129,7 @@ QString MoMosaicViewRenderer::vshaderFileName() const {
     }
 }
 
-QString MoMosaicViewRenderer::fshaderFileName() const {
+QString MoMosaicRenderer::fshaderFileName() const {
     if (showOutlines_) {
         return ":/shaders/fshader_outline.glsl";
     } else {
@@ -138,28 +138,28 @@ QString MoMosaicViewRenderer::fshaderFileName() const {
     }
 }
 
-void MoMosaicViewRenderer::setShowOutlines(bool yesNo) {
+void MoMosaicRenderer::setShowOutlines(bool yesNo) {
     if (showOutlines_ == yesNo) return;
     showOutlines_ = yesNo;
     initShaders();
 }
 
-bool MoMosaicViewRenderer::showOutlines() const {
+bool MoMosaicRenderer::showOutlines() const {
     return showOutlines_;
 }
 
-void MoMosaicViewRenderer::setModel(std::shared_ptr<MoMosaicModel> model) {
+void MoMosaicRenderer::setModel(std::shared_ptr<MoMosaicModel> model) {
     model_ = *model;
 }
 
-MoMosaicModel MoMosaicViewRenderer::getModel() const {
+MoMosaicModel MoMosaicRenderer::getModel() const {
     return model_;
 }
 
-void MoMosaicViewRenderer::setViewportSize(const QSize &size) {
+void MoMosaicRenderer::setViewportSize(const QSize &size) {
     viewportSize_ = size;
 }
 
-void MoMosaicViewRenderer::setWindow(QQuickWindow *win) {
+void MoMosaicRenderer::setWindow(QQuickWindow *win) {
     window_ = win;
 }

@@ -6,7 +6,7 @@
 #include <memory>
 
 class MoMosaicModel;
-class MoMosaicViewRenderer;
+class MoMosaicRenderer;
 
 
 class MoMosaicView : public QQuickFramebufferObject {
@@ -29,7 +29,7 @@ private slots:
 
 private:
     bool initialized;
-    std::unique_ptr<MoMosaicViewRenderer> renderer_;
+    std::unique_ptr<MoMosaicRenderer> renderer_;
 
     void initGL();
 
