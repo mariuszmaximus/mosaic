@@ -26,7 +26,7 @@ void MoMosaicRenderer::render() {
     }
     ++i;
 
-    glClearColor(0.1f, 0.1f, 0.2f, 1.0f);
+    glClearColor(0.1f, 0.1f, 0.25f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glFrontFace(GL_CW);
@@ -48,6 +48,9 @@ void MoMosaicRenderer::render() {
 
     int targetHeight = program_->uniformLocation("targetHeight");
     glUniform1f(targetHeight, 1000.0f);
+
+    int numTiles = program_->uniformLocation("numTiles");
+    glUniform1i(numTiles, model_.size());
 
     program_->enableAttributeArray(xD_);
     program_->setAttributeArray(xD_, &xH_[0], 1);
