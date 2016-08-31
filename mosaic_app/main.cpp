@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     QGuiApplication::setApplicationVersion("0.0.1");
     QGuiApplication app(argc, argv);
 
-    // Deal with command line arguments
+    // Parse command line arguments
     QCommandLineParser parser;
     parser.setApplicationDescription("MoMosaic");
     parser.addHelpOption();
@@ -32,35 +32,18 @@ int main(int argc, char *argv[]) {
                                  "The mosaic tile pictures.");
     parser.process(app);
 
-    QString targetFileName;
-    if (parser.isSet("t")) {
-        parser.value("t");
-        qInfo() << "Using target image: " << targetFileName;
-    }
-
-    QStringList sourceFileNames = parser.positionalArguments();
-    qInfo() << "Source files provided: " << sourceFileNames;
-
-
     // Register types and create objects for QML code
     QQmlApplicationEngine engine;
     qmlRegisterType<MoMosaicView>("MoMosaic", 1, 0, "MoMosaicView");
+
 
     // register some variables with QML engine.
     MoSourceImages sourceImages;
     engine.rootContext()->setContextProperty(
                 "sourceImages", &sourceImages);
-    if (!sourceFileNames.empty()) {
-        QList<QUrl> imageURLs;
-        for (auto path : sourceFileNames) {
-            imageURLs.push_back(QUrl::fromLocalFile(path));
-        }
-        sourceImages.imagesAdded(imageURLs);
-    }
-
 
     MoImageProvider* imageProvider = new MoImageProvider(&sourceImages);
-    engine.addImageProvider(QLatin1String("imageProvider"),
+    engine.addImageProvider(QLatin1String("imageprovider"),
                             imageProvider);
     MoMainDriver mainDriver;
     mainDriver.setSourceImages(&sourceImages);
@@ -82,6 +65,26 @@ int main(int argc, char *argv[]) {
     QObject* topLevel = engine.rootObjects().value(0);
     QQuickWindow* window = qobject_cast<QQuickWindow*>(topLevel);
     window->show();
+
+
+    // Set file names from command line
+    QStringList sourceFileNames = parser.positionalArguments();
+    qInfo() << "Source files provided: " << sourceFileNames;
+    if (!sourceFileNames.empty()) {
+        QList<QUrl> imageURLs;
+        for (auto path : sourceFileNames) {
+            imageURLs.push_back(QUrl::fromLocalFile(path));
+        }
+        sourceImages.imagesAdded(imageURLs);
+    }
+
+    QString targetFileName;
+    if (parser.isSet("t")) {
+        targetFileName = parser.value("t");
+        qInfo() << "Using target image: " << targetFileName;
+        mainDriver.setTargetUrl(QUrl::fromLocalFile(targetFileName));
+    }
+
 
     return app.exec();
 }

@@ -98,12 +98,11 @@ void MoMainDriver::setCurrentModel(std::shared_ptr<MoMosaicModel> newModel) {
     emit modelChanged(newModel);
 }
 
-void MoMainDriver::setTargetURL(QUrl targetUrl) {
-    qDebug() << targetUrl;
+void MoMainDriver::setTargetUrl(QUrl targetUrl) {
     targetUrl_ = targetUrl;
-    emit targetURLChanged(targetUrl_);
+    emit targetUrlChanged(targetUrl_);
 }
 
-QUrl MoMainDriver::getTargetURL() {
+QUrl MoMainDriver::getTargetUrl() {
     return targetUrl_;
 }
