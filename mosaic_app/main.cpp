@@ -1,3 +1,8 @@
+#include <QtGlobal>
+#include <QtDebug>
+#include <QGuiApplication>
+#include <QCommandLineParser>
+#include <QCommandLineOption>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickWindow>
@@ -12,11 +17,30 @@
 
 
 int main(int argc, char *argv[]) {
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QGuiApplication::setApplicationName("mosaic_cmd");
+    QGuiApplication::setApplicationVersion("0.0.1");
     QGuiApplication app(argc, argv);
 
-    QQmlApplicationEngine engine;
+    // Deal with command line arguments
+    QCommandLineParser parser;
+    parser.setApplicationDescription("MoMosaic");
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.addOption({"t", "The target picture.", "targetFileName"});
+    parser.addPositionalArgument("sources",
+                                 "The mosaic tile pictures.");
+    parser.process(app);
 
+    QString targetFileName = parser.value("t");
+    qInfo() << "Using target image: " << targetFileName;
+
+    QStringList sourceFileNames = parser.positionalArguments();
+    qInfo() << "Using source files: " << sourceFileNames;
+
+
+    // Register types and create objects for QML code
+    QQmlApplicationEngine engine;
     qmlRegisterType<MoMosaicView>("MoMosaic", 1, 0, "MoMosaicView");
 
     // register some variables with QML engine.

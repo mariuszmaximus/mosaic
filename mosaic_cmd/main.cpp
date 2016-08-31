@@ -15,13 +15,14 @@ int main(int argc, char *argv[]) {
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addOption({"t", "The target picture.", "targetFileName"});
-    parser.addOption({"s", "The mosaic tile pictures.", "sourceFileNames"});
+    parser.addPositionalArgument("sources",
+                                 "The mosaic tile pictures.");
     parser.process(app);
 
     QString targetFileName = parser.value("t");
     qInfo() << "Using target image: " << targetFileName;
 
-    QString sourceFileNames = parser.value("s");
+    QStringList sourceFileNames = parser.positionalArguments();
     qInfo() << "Using source files: " << sourceFileNames;
 
     return app.exec();
