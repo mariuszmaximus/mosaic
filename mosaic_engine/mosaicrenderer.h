@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QQuickFramebufferObject>
+#include <QOpenGLBuffer>
 #include <QOpenGLFunctions_3_3_Core>
 #include <QOpenGLShaderProgram>
 #include <mosaicmodel.h>
@@ -51,6 +52,14 @@ private:
     int yD_;
     int widthsD_;
     int heightsD_;
+
+    QOpenGLBuffer xBuffer_;
+    QOpenGLBuffer yBuffer_;
+    QOpenGLBuffer widthBuffer_;
+    QOpenGLBuffer heightBuffer_;
+
+    void ensureBuffersHaveBeenCreated();
+    void ensureBuffersAreLargeEnough(size_t size);
 
     void initGL();
     void initShaders();

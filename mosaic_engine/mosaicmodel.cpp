@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <QtGlobal>
+#include <QtDebug>
 
 
 MoMosaicModel::MoMosaicModel() : size_(0), targetImage_(QImage(), QSize()) {
@@ -18,6 +19,7 @@ static float computeTileArea(const std::vector<MoTile>& tiles) {
 
 void MoMosaicModel::constructInitialState(const MoTargetImage& targetImage,
                                           const std::vector<MoTile>& tiles) {
+    qDebug() << " tiles.size() == " << tiles.size();
     targetImage_ = targetImage;
     tiles_ = tiles;
     size_ = tiles.size();
