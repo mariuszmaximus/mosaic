@@ -25,16 +25,10 @@ void MoMosaicModel::constructInitialState(const MoTargetImage& targetImage,
     size_ = tiles.size();
 
     x_.resize(tiles.size());
-//    std::fill(x_.begin(), x_.end(), 0.0f);
-    for (size_t i = 0; i < tiles.size(); ++i) {
-        x_[i] = 1000.0f * i;
-    }
+    std::fill(x_.begin(), x_.end(), 0.0f);
 
     y_.resize(tiles.size());
-    for (size_t i = 0; i < tiles.size(); ++i) {
-        y_[i] = 1000.0f * i;
-    }
- //   std::fill(y_.begin(), y_.end(), 0.0f);
+    std::fill(y_.begin(), y_.end(), 0.0f);
 
     rotations_.resize(tiles.size());
     std::fill(rotations_.begin(), rotations_.end(), 0.0f);
