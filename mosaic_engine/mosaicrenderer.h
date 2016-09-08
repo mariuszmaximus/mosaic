@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QQuickFramebufferObject>
 #include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
 #include <QOpenGLFunctions_3_3_Core>
 #include <QOpenGLShaderProgram>
 #include <mosaicmodel.h>
@@ -48,23 +49,22 @@ private:
     std::vector<float> widthsH_;
     std::vector<float> heightsH_;
 
-    int xD_;
-    int yD_;
-    int widthsD_;
-    int heightsD_;
-
+    QOpenGLVertexArrayObject vao_;
     QOpenGLBuffer xBuffer_;
     QOpenGLBuffer yBuffer_;
     QOpenGLBuffer widthBuffer_;
     QOpenGLBuffer heightBuffer_;
+    int currentBufferSize_;
 
-    void ensureBuffersHaveBeenCreated();
     void ensureBuffersAreLargeEnough(size_t size);
+    bool vaoInitialized_;
+    void ensureVAOIsSetUp();
 
     void initGL();
     void initShaders();
     QString vshaderFileName() const;
     QString fshaderFileName() const;
+    void setVertexAttribDivisor(int loc, int value);
 };
 
 #endif // MOMOSAICVIEWRENDERER_H

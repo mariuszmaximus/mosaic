@@ -29,7 +29,8 @@ HEADERS = \
     thumbnail.h \
     evolutionrunner.h \
     mosaicupdatedelay.h \
-    mosaicrenderer.h
+    mosaicrenderer.h \
+    utilities.h
 
 DISTFILES +=
 

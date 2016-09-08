@@ -5,14 +5,7 @@
 #include <QQuickWindow>
 #include <QOpenGLFramebufferObjectFormat>
 #include <mosaicview.h>
-
-#define CHECKED_CALL(call, message)            \
-    do {                                       \
-        if (!(call)) {                         \
-            throw std::runtime_error(message); \
-        }                                      \
-    } while(0)
-
+#include <utilities.h>
 
 
 MoMosaicRenderer::MoMosaicRenderer() :
@@ -20,11 +13,18 @@ MoMosaicRenderer::MoMosaicRenderer() :
     xBuffer_(QOpenGLBuffer::VertexBuffer),
     yBuffer_(QOpenGLBuffer::VertexBuffer),
     widthBuffer_(QOpenGLBuffer::VertexBuffer),
-    heightBuffer_(QOpenGLBuffer::VertexBuffer)
+    heightBuffer_(QOpenGLBuffer::VertexBuffer),
+    currentBufferSize_(0),
+    vaoInitialized_(false)
 {
 }
 
-MoMosaicRenderer::~MoMosaicRenderer() {}
+MoMosaicRenderer::~MoMosaicRenderer() {
+    xBuffer_.destroy();
+    yBuffer_.destroy();
+    widthBuffer_.destroy();
+    heightBuffer_.destroy();
+}
 
 QOpenGLFramebufferObject* MoMosaicRenderer::createFramebufferObject(
         const QSize &size){
@@ -41,19 +41,29 @@ void MoMosaicRenderer::render() {
     }
     ++i;
 
-    glClearColor(0.1f, 0.1f, 0.25f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.3f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    MO_CHECK_GL_ERROR;
 
     glFrontFace(GL_CW);
     glCullFace(GL_FRONT);
-    glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    MO_CHECK_GL_ERROR;
+
+    ensureVAOIsSetUp();
+    MO_CHECK_GL_ERROR;
+
+    ensureBuffersAreLargeEnough(model_.size());
+    MO_CHECK_GL_ERROR;
 
     float* xH_ = model_.getXCoords();
     float* yH_ = model_.getYCoords();
     for (int i = 0; i < model_.size(); ++i) {
-        xH_[i] += 100.0f * i;
-        yH_[i] += 100.0f * i;
+        xH_[i] = 800.0f * (i - 0.5);
+        yH_[i] = 700.0f * (i - 0.5);
+        qDebug() << "--------------- xH_[i] == " << xH_[i];
+        qDebug() << "--------------- yH_[i] == " << yH_[i];
     }
     widthsH_.resize(model_.size());
     model_.getWidths(&widthsH_[0]);
@@ -62,50 +72,47 @@ void MoMosaicRenderer::render() {
 
     qDebug() << "model_.size() == " << model_.size();
 
-    program_->bind();
-    // TODO: I think we need a vertex array object here
-
-    // Fill Buffers
-    ensureBuffersHaveBeenCreated();
-    ensureBuffersAreLargeEnough(model_.size());
-
-    CHECKED_CALL(xBuffer_.bind(), "Failed to bind buffer");
+    xBuffer_.bind();
     xBuffer_.write(0, xH_, model_.size() * sizeof(float));
-    program_->enableAttributeArray("x");
-    glVertexAttribPointer(xD_, 1, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glVertexAttribDivisor(xD_, 1);
+    xBuffer_.release();
+    MO_CHECK_GL_ERROR;
 
-    CHECKED_CALL(yBuffer_.bind(), "Failed to bind buffer");
+    yBuffer_.bind();
     yBuffer_.write(0, yH_, model_.size() * sizeof(float));
-    program_->enableAttributeArray("y");
-    glVertexAttribPointer(yD_, 1, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glVertexAttribDivisor(yD_, 1);
+    yBuffer_.release();
+    MO_CHECK_GL_ERROR;
 
-    // TODO: can do these without copying by mapping
-    CHECKED_CALL(widthBuffer_.bind(), "Failed to bind buffer");
+    widthBuffer_.bind();
     widthBuffer_.write(0, &widthsH_[0], model_.size() * sizeof(float));
-    program_->enableAttributeArray("width");
-    glVertexAttribPointer(widthsD_, 1, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glVertexAttribDivisor(widthsD_, 1);
+    widthBuffer_.release();
+    MO_CHECK_GL_ERROR;
 
-    CHECKED_CALL(heightBuffer_.bind(), "Failed to bind buffer");
+    heightBuffer_.bind();
     heightBuffer_.write(0, &heightsH_[0], model_.size() * sizeof(float));
-    program_->enableAttributeArray("height");
-    glVertexAttribPointer(heightsD_, 1, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glVertexAttribDivisor(heightsD_, 1);
-    program_->disableAttributeArray(heightsD_);
+    heightBuffer_.release();
+    MO_CHECK_GL_ERROR;
 
-    program_->setUniformValue("targetWidth", 1000.0f);
-    program_->setUniformValue("targetHeight", 1000.0f);
-    program_->setUniformValue("numTiles", static_cast<int>(model_.size()));
+    for (size_t i = 0; i < widthsH_.size(); ++i) {
+        qDebug() << "||||||||||| widthsH_[i] == " << widthsH_[i];
+    }
+
+    program_->bind();
+    MO_CHECK_GL_ERROR;
+
+    program_->setUniformValue("targetWidth", 2000.0f);
+    program_->setUniformValue("targetHeight", 2000.0f);
+    program_->setUniformValue("numTiles", (float)model_.size());
+    MO_CHECK_GL_ERROR;
+
+    vao_.bind();
+    MO_CHECK_GL_ERROR;
 
     glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, model_.size());
-    GLenum err = glGetError();
-    qDebug() << " err == " << err;
-    qDebug() << " GL_INVALID_OPERATION == " << GL_INVALID_OPERATION;
+    MO_CHECK_GL_ERROR;
 
+    vao_.release();
     program_->release();
-
+    MO_CHECK_GL_ERROR;
 
     if (window_) {
         window_->resetOpenGLState();
@@ -123,11 +130,6 @@ void MoMosaicRenderer::initGL() {
         firstCall = false;
         initializeOpenGLFunctions();
     }
-    initShaders();
-    xD_ = program_->attributeLocation("x");
-    yD_ = program_->attributeLocation("y");
-    widthsD_ = program_->attributeLocation("width");
-    heightsD_ = program_->attributeLocation("height");
 }
 
 void MoMosaicRenderer::initShaders() {
@@ -175,7 +177,48 @@ bool MoMosaicRenderer::showOutlines() const {
     return showOutlines_;
 }
 
-void MoMosaicRenderer::ensureBuffersHaveBeenCreated() {
+void MoMosaicRenderer::ensureBuffersAreLargeEnough(size_t size) {
+    size_t requiredSize = size * sizeof(float);
+    if (requiredSize > std::numeric_limits<int>::max()) {
+        throw std::runtime_error("Required buffer size too large.");
+    }
+    int iRequiredSize = static_cast<int>(requiredSize);
+    if (currentBufferSize_ < iRequiredSize) {
+        xBuffer_.bind();
+        xBuffer_.allocate(iRequiredSize);
+        xBuffer_.release();
+
+        yBuffer_.bind();
+        yBuffer_.allocate(iRequiredSize);
+        yBuffer_.release();
+
+        widthBuffer_.bind();
+        widthBuffer_.allocate(iRequiredSize);
+        widthBuffer_.release();
+
+        heightBuffer_.bind();
+        heightBuffer_.allocate(iRequiredSize);
+        heightBuffer_.release();
+
+        currentBufferSize_ = iRequiredSize;
+    }
+}
+
+void MoMosaicRenderer::setVertexAttribDivisor(int loc, int value) {
+    qDebug() << "loc == " << loc;
+    if (loc == -1) {
+        throw std::runtime_error("Failed to find attribute location in shader program");
+    }
+    glVertexAttribDivisor(loc, value);
+}
+
+void MoMosaicRenderer::ensureVAOIsSetUp() {
+    if (vaoInitialized_) return;
+    // Create shaders
+    initShaders();
+    program_->bind();
+
+    // Set up buffers
     bool err = true;
     err &= xBuffer_.create();
     err &= yBuffer_.create();
@@ -184,30 +227,67 @@ void MoMosaicRenderer::ensureBuffersHaveBeenCreated() {
     if (!err) {
         throw std::runtime_error("Failed to allocated vertex buffers.");
     }
-    xBuffer_.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-    yBuffer_.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-    widthBuffer_.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-    heightBuffer_.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-}
 
-void MoMosaicRenderer::ensureBuffersAreLargeEnough(size_t size) {
-    size_t requiredSize = size * sizeof(float);
-    if (requiredSize > std::numeric_limits<int>::max()) {
-        throw std::runtime_error("Required buffer size too large.");
-    }
-    int iRequiredSize = static_cast<int>(requiredSize);
-    if (xBuffer_.size() < iRequiredSize) {
-        xBuffer_.allocate(iRequiredSize);
-    }
-    if (yBuffer_.size() < iRequiredSize) {
-        yBuffer_.allocate(iRequiredSize);
-    }
-    if (widthBuffer_.size() < iRequiredSize) {
-        widthBuffer_.allocate(iRequiredSize);
-    }
-    if (heightBuffer_.size() < iRequiredSize) {
-        heightBuffer_.allocate(iRequiredSize);
-    }
+    xBuffer_.bind();
+    xBuffer_.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+    xBuffer_.release();
+    MO_CHECK_GL_ERROR;
+
+    yBuffer_.bind();
+    yBuffer_.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+    yBuffer_.release();
+    MO_CHECK_GL_ERROR;
+
+    widthBuffer_.bind();
+    widthBuffer_.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+    widthBuffer_.release();
+    MO_CHECK_GL_ERROR;
+
+    heightBuffer_.bind();
+    heightBuffer_.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+    heightBuffer_.release();
+    MO_CHECK_GL_ERROR;
+
+    // Create vertex array object
+    vao_.create();
+    vao_.bind();
+    MO_CHECK_GL_ERROR;
+
+    program_->enableAttributeArray("x");
+    program_->enableAttributeArray("y");
+    program_->enableAttributeArray("width");
+    program_->enableAttributeArray("height");
+    MO_CHECK_GL_ERROR;
+
+    xBuffer_.bind();
+    program_->setAttributeBuffer("x", GL_FLOAT, 0, 1);
+    setVertexAttribDivisor(program_->attributeLocation("x"), 1);
+    xBuffer_.release();
+    MO_CHECK_GL_ERROR;
+
+    yBuffer_.bind();
+    program_->setAttributeBuffer("y", GL_FLOAT, 0, 1);
+    setVertexAttribDivisor(program_->attributeLocation("y"), 1);
+    yBuffer_.release();
+    MO_CHECK_GL_ERROR;
+
+    widthBuffer_.bind();
+    program_->setAttributeBuffer("width", GL_FLOAT, 0, 1);
+    setVertexAttribDivisor(program_->attributeLocation("width"), 1);
+    widthBuffer_.release();
+    MO_CHECK_GL_ERROR;
+
+    heightBuffer_.bind();
+    program_->setAttributeBuffer("height", GL_FLOAT, 0, 1);
+    setVertexAttribDivisor(program_->attributeLocation("height"), 1);
+    heightBuffer_.release();
+    MO_CHECK_GL_ERROR;
+
+    vao_.release();
+    program_->release();
+    MO_CHECK_GL_ERROR;
+
+    vaoInitialized_ = true;
 }
 
 void MoMosaicRenderer::setModel(std::shared_ptr<MoMosaicModel> model) {
