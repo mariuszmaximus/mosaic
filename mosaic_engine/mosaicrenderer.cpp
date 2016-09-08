@@ -45,10 +45,11 @@ void MoMosaicRenderer::render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     MO_CHECK_GL_ERROR;
 
+    glEnable(GL_DEPTH_TEST);
     glFrontFace(GL_CW);
     glCullFace(GL_FRONT);
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_ONE, GL_ONE);
     MO_CHECK_GL_ERROR;
 
     ensureVAOIsSetUp();
@@ -60,10 +61,8 @@ void MoMosaicRenderer::render() {
     float* xH_ = model_.getXCoords();
     float* yH_ = model_.getYCoords();
     for (int i = 0; i < model_.size(); ++i) {
-        xH_[i] = 800.0f * (i - 0.5);
-        yH_[i] = 700.0f * (i - 0.5);
-        qDebug() << "--------------- xH_[i] == " << xH_[i];
-        qDebug() << "--------------- yH_[i] == " << yH_[i];
+        xH_[i] = 300.0f * (i - 0.5);
+        yH_[i] = 200.0f * (i - 0.5);
     }
     widthsH_.resize(model_.size());
     model_.getWidths(&widthsH_[0]);
@@ -92,13 +91,10 @@ void MoMosaicRenderer::render() {
     heightBuffer_.release();
     MO_CHECK_GL_ERROR;
 
-    for (size_t i = 0; i < widthsH_.size(); ++i) {
-        qDebug() << "||||||||||| widthsH_[i] == " << widthsH_[i];
-    }
-
     program_->bind();
     MO_CHECK_GL_ERROR;
 
+    // TODO: set the true targetWidth and targetHeight
     program_->setUniformValue("targetWidth", 2000.0f);
     program_->setUniformValue("targetHeight", 2000.0f);
     program_->setUniformValue("numTiles", (float)model_.size());
