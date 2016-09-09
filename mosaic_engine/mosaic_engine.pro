@@ -30,7 +30,8 @@ HEADERS = \
     evolutionrunner.h \
     mosaicupdatedelay.h \
     mosaicrenderer.h \
-    utilities.h
+    utilities.h \
+    quadraturerule.h
 
 DISTFILES +=
 
