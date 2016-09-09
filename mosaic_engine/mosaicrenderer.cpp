@@ -14,6 +14,7 @@ MoMosaicRenderer::MoMosaicRenderer() :
     yBuffer_(QOpenGLBuffer::VertexBuffer),
     widthBuffer_(QOpenGLBuffer::VertexBuffer),
     heightBuffer_(QOpenGLBuffer::VertexBuffer),
+    rotationBuffer_(QOpenGLBuffer::VertexBuffer),
     currentBufferSize_(0),
     vaoInitialized_(false)
 {
@@ -24,6 +25,7 @@ MoMosaicRenderer::~MoMosaicRenderer() {
     yBuffer_.destroy();
     widthBuffer_.destroy();
     heightBuffer_.destroy();
+    rotationBuffer_.destroy();
 }
 
 QOpenGLFramebufferObject* MoMosaicRenderer::createFramebufferObject(
@@ -68,8 +70,7 @@ void MoMosaicRenderer::render() {
     model_.getWidths(&widthsH_[0]);
     heightsH_.resize(model_.size());
     model_.getHeights(&heightsH_[0]);
-
-    qDebug() << "model_.size() == " << model_.size();
+    float* rotationsH_ = model_.getRotations();
 
     xBuffer_.bind();
     xBuffer_.write(0, xH_, model_.size() * sizeof(float));
@@ -89,6 +90,11 @@ void MoMosaicRenderer::render() {
     heightBuffer_.bind();
     heightBuffer_.write(0, &heightsH_[0], model_.size() * sizeof(float));
     heightBuffer_.release();
+    MO_CHECK_GL_ERROR;
+
+    rotationBuffer_.bind();
+    rotationBuffer_.write(0, rotationsH_, model_.size() * sizeof(float));
+    rotationBuffer_.release();
     MO_CHECK_GL_ERROR;
 
     program_->bind();
@@ -196,12 +202,15 @@ void MoMosaicRenderer::ensureBuffersAreLargeEnough(size_t size) {
         heightBuffer_.allocate(iRequiredSize);
         heightBuffer_.release();
 
+        rotationBuffer_.bind();
+        rotationBuffer_.allocate(iRequiredSize);
+        rotationBuffer_.release();
+
         currentBufferSize_ = iRequiredSize;
     }
 }
 
 void MoMosaicRenderer::setVertexAttribDivisor(int loc, int value) {
-    qDebug() << "loc == " << loc;
     if (loc == -1) {
         throw std::runtime_error("Failed to find attribute location in shader program");
     }
@@ -220,6 +229,7 @@ void MoMosaicRenderer::ensureVAOIsSetUp() {
     err &= yBuffer_.create();
     err &= widthBuffer_.create();
     err &= heightBuffer_.create();
+    err &= rotationBuffer_.create();
     if (!err) {
         throw std::runtime_error("Failed to allocated vertex buffers.");
     }
@@ -244,6 +254,11 @@ void MoMosaicRenderer::ensureVAOIsSetUp() {
     heightBuffer_.release();
     MO_CHECK_GL_ERROR;
 
+    rotationBuffer_.bind();
+    rotationBuffer_.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+    rotationBuffer_.release();
+    MO_CHECK_GL_ERROR;
+
     // Create vertex array object
     vao_.create();
     vao_.bind();
@@ -253,6 +268,7 @@ void MoMosaicRenderer::ensureVAOIsSetUp() {
     program_->enableAttributeArray("y");
     program_->enableAttributeArray("width");
     program_->enableAttributeArray("height");
+    program_->enableAttributeArray("rotation");
     MO_CHECK_GL_ERROR;
 
     xBuffer_.bind();
@@ -277,6 +293,12 @@ void MoMosaicRenderer::ensureVAOIsSetUp() {
     program_->setAttributeBuffer("height", GL_FLOAT, 0, 1);
     setVertexAttribDivisor(program_->attributeLocation("height"), 1);
     heightBuffer_.release();
+    MO_CHECK_GL_ERROR;
+
+    rotationBuffer_.bind();
+    program_->setAttributeBuffer("rotation", GL_FLOAT, 0, 1);
+    setVertexAttribDivisor(program_->attributeLocation("rotation"), 1);
+    rotationBuffer_.release();
     MO_CHECK_GL_ERROR;
 
     vao_.release();

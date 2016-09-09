@@ -54,6 +54,7 @@ private:
     QOpenGLBuffer yBuffer_;
     QOpenGLBuffer widthBuffer_;
     QOpenGLBuffer heightBuffer_;
+    QOpenGLBuffer rotationBuffer_;
     int currentBufferSize_;
 
     void ensureBuffersAreLargeEnough(size_t size);
