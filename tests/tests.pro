@@ -4,6 +4,7 @@ SUBDIRS += mosaicevolution_test
 SUBDIRS += mosaicmodel_test
 SUBDIRS += mosaicview_test
 SUBDIRS += targetimage_test
+SUBDIRS += quadrature_test
 
 RUN_OPENGL_TESTS=$$(RUN_OPENGL_TESTS)
 equals(RUN_OPENGL_TESTS, "true") {
