@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS += test_utilities
+SUBDIRS += lennardjones_test
 SUBDIRS += mosaicevolution_test
 SUBDIRS += mosaicmodel_test
 SUBDIRS += mosaicview_test
