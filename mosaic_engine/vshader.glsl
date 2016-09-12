@@ -1,11 +1,14 @@
 #version 130
+
 in float x;
 in float y;
 in float width;
 in float height;
+in float rotation;
 uniform float targetWidth = 1.0f;
 uniform float targetHeight = 1.0f;
-uniform int numTiles = 1;
+uniform float numTiles = 10.0f;
+out vec4 qt_TexCoord0;
 
 const vec2 pos[] = vec2[4](
   vec2(-0.5f,  0.5f),
@@ -14,15 +17,24 @@ const vec2 pos[] = vec2[4](
   vec2( 0.5f, -0.5f)
 );
 
-in vec4 qt_MultiTexCoord0;
-out vec4 qt_TexCoord0;
+const vec2 texCoords[] = vec2[4](
+            vec2(0.0f, 1.0f);
+            vec2(0.0f, 0.0f);
+            vec2(1.0f, 1.0f);
+            vec2(1.0f, 0.0f);
+);
+
 
 void main(void)
 {
     vec2 offset = pos[gl_VertexID];
-    gl_Position = vec4((x + width * offset.x) / targetWidth,
-                       (y + height * offset.y) / targetHeight,
-                       gl_InstanceID - numTiles - 1,
+    float c = cos(rotation);
+    float s = sin(rotation);
+    float x_ = (x + width * offset.x) / targetWidth;
+    float y_ = (y + height * offset.y) / targetHeight;
+    gl_Position = vec4(c * x_ - s * y_,
+                       s * x_ + c * y_,
+                       (gl_InstanceID - numTiles) / numTiles,
                        1.0f);
-    qt_TexCoord0 = qt_MultiTexCoord0;
+    gl_TexCoord = texCoords[gl_VertexID];
 }
