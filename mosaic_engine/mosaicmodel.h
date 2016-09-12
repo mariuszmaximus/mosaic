@@ -47,6 +47,8 @@ public:
     const float* getScales() const;
     void copyScales(float* scalesBegin) const;
 
+    const MoTargetImage& getTargetImage() const;
+
 private:
     int size_;
     std::vector<float> x_;

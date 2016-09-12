@@ -173,6 +173,10 @@ void MoMosaicModel::copyScales(float *scalesBegin) const {
     std::copy(scales_.cbegin(), scales_.cend(), scalesBegin);
 }
 
+const MoTargetImage &MoMosaicModel::getTargetImage() const {
+    return targetImage_;
+}
+
 const float* MoMosaicModel::getScales() const {
     if (size_ > 0) {
         return &scales_[0];

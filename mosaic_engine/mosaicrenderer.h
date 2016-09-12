@@ -30,7 +30,6 @@ public:
 
     void setModel(std::shared_ptr<MoMosaicModel> model);
     MoMosaicModel getModel() const;
-    void setViewportSize(const QSize &size);
     void setWindow(QQuickWindow *window);
 
 
@@ -41,8 +40,9 @@ public slots:
 private:
     bool showOutlines_;
     std::unique_ptr<QOpenGLShaderProgram> program_;
-    QSize viewportSize_;
     QQuickWindow *window_;
+    float targetWidth_;
+    float targetHeight_;
 
     MoMosaicModel model_;
 

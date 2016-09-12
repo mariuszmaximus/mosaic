@@ -100,9 +100,8 @@ void MoMosaicRenderer::render() {
     program_->bind();
     MO_CHECK_GL_ERROR;
 
-    // TODO: set the true targetWidth and targetHeight
-    program_->setUniformValue("targetWidth", 2000.0f);
-    program_->setUniformValue("targetHeight", 2000.0f);
+    program_->setUniformValue("targetWidth", targetWidth_);
+    program_->setUniformValue("targetHeight", targetHeight_);
     program_->setUniformValue("numTiles", (float)model_.size());
     MO_CHECK_GL_ERROR;
 
@@ -124,6 +123,8 @@ void MoMosaicRenderer::render() {
 void MoMosaicRenderer::synchronize(QQuickFramebufferObject *item) {
     MoMosaicView* mosaicView = static_cast<MoMosaicView*>(item);
     model_ = *mosaicView->getModel();
+    targetWidth_ = mosaicView->width();
+    targetHeight_ = mosaicView->height();
 }
 
 void MoMosaicRenderer::initGL() {
@@ -314,10 +315,6 @@ void MoMosaicRenderer::setModel(std::shared_ptr<MoMosaicModel> model) {
 
 MoMosaicModel MoMosaicRenderer::getModel() const {
     return model_;
-}
-
-void MoMosaicRenderer::setViewportSize(const QSize &size) {
-    viewportSize_ = size;
 }
 
 void MoMosaicRenderer::setWindow(QQuickWindow *win) {
