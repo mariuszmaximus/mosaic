@@ -16,7 +16,8 @@ SOURCES = \
     thumbnail.cpp \
     evolutionrunner.cpp \
     mosaicupdatedelay.cpp \
-    mosaicrenderer.cpp
+    mosaicrenderer.cpp \
+    lennardjones.cpp
 HEADERS = \
     maindriver.h \
     mosaicview.h \
@@ -31,7 +32,8 @@ HEADERS = \
     mosaicupdatedelay.h \
     mosaicrenderer.h \
     utilities.h \
-    quadraturerule.h
+    quadraturerule.h \
+    lennardjones.h
 
 DISTFILES +=
 
