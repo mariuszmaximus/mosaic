@@ -177,7 +177,7 @@ void MoMosaicRenderer::setShowOutlines(bool yesNo) {
     initShaders();
 }
 
-bool MoMosaicRenderer::showOutlines() const {
+bool MoMosaicRenderer::getShowOutlines() const {
     return showOutlines_;
 }
 
@@ -185,7 +185,7 @@ void MoMosaicRenderer::setShowTargetImage(bool yesNo) {
     showTargetImage_ = yesNo;
 }
 
-bool MoMosaicRenderer::showTargetImage() const {
+bool MoMosaicRenderer::getShowTargetImage() const {
     return showTargetImage_;
 }
 

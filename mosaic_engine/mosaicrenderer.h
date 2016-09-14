@@ -32,10 +32,8 @@ public:
     MoMosaicModel getModel() const;
     void setWindow(QQuickWindow *window);
 
-
-public slots:
     void setShowOutlines(bool yesNo);
-    bool showOutlines() const;
+    bool getShowOutlines() const;
     void setShowTargetImage(bool yesNo);
     bool showTargetImage() const;
 

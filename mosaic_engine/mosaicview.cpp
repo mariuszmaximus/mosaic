@@ -27,9 +27,28 @@ QQuickFramebufferObject::Renderer *MoMosaicView::createRenderer() const {
     return new MoMosaicRenderer;
 }
 
+void MoMosaicView::setShowOutlines(bool yesNo) {
+    qDebug() << "In setShowOutlines(...) " << yesNo;
+    renderer_->setShowOutlines(yesNo);
+}
+
+bool MoMosaicView::getShowOutlines() const {
+    return renderer_->getShowOutlines();
+}
+
+void MoMosaicView::setShowTargetImage(bool yesNo) {
+    qDebug() << "In setShowTargetImage(...) " << yesNo;
+    renderer_->setShowTargetImage(yesNo);
+}
+
+bool MoMosaicView::getShowTargetImage() const {
+    return renderer_->getShowTargetImage();
+}
+
 void MoMosaicView::handleWindowChanged(QQuickWindow *win) {
     if (win) {
-        connect(win, &QQuickWindow::sceneGraphInvalidated, this, &MoMosaicView::cleanup, Qt::DirectConnection);
+        connect(win, &QQuickWindow::sceneGraphInvalidated, this,
+                &MoMosaicView::cleanup, Qt::DirectConnection);
         win->setClearBeforeRendering(false);
     }
 }
