@@ -10,6 +10,7 @@
 
 MoMosaicRenderer::MoMosaicRenderer() :
     showOutlines_(true),
+    showTargetImage_(false),
     xBuffer_(QOpenGLBuffer::VertexBuffer),
     yBuffer_(QOpenGLBuffer::VertexBuffer),
     widthBuffer_(QOpenGLBuffer::VertexBuffer),
@@ -178,6 +179,14 @@ void MoMosaicRenderer::setShowOutlines(bool yesNo) {
 
 bool MoMosaicRenderer::showOutlines() const {
     return showOutlines_;
+}
+
+void MoMosaicRenderer::setShowTargetImage(bool yesNo) {
+    showTargetImage_ = yesNo;
+}
+
+bool MoMosaicRenderer::showTargetImage() const {
+    return showTargetImage_;
 }
 
 void MoMosaicRenderer::ensureBuffersAreLargeEnough(size_t size) {

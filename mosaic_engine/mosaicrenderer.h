@@ -36,9 +36,12 @@ public:
 public slots:
     void setShowOutlines(bool yesNo);
     bool showOutlines() const;
+    void setShowTargetImage(bool yesNo);
+    bool showTargetImage() const;
 
 private:
     bool showOutlines_;
+    bool showTargetImage_;
     std::unique_ptr<QOpenGLShaderProgram> program_;
     QQuickWindow *window_;
     float targetWidth_;
