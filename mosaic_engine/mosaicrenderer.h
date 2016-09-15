@@ -35,7 +35,7 @@ public:
     void setShowOutlines(bool yesNo);
     bool getShowOutlines() const;
     void setShowTargetImage(bool yesNo);
-    bool showTargetImage() const;
+    bool getShowTargetImage() const;
 
 private:
     bool showOutlines_;
@@ -61,6 +61,9 @@ private:
     void ensureBuffersAreLargeEnough(size_t size);
     bool vaoInitialized_;
     void ensureVAOIsSetUp();
+
+    void renderTargetImage();
+    void renderMosaicTiles();
 
     void initGL();
     void initShaders();

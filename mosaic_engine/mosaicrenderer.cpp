@@ -19,6 +19,7 @@ MoMosaicRenderer::MoMosaicRenderer() :
     currentBufferSize_(0),
     vaoInitialized_(false)
 {
+    qDebug() << "In MoMosaicRenderer constructor.";
 }
 
 MoMosaicRenderer::~MoMosaicRenderer() {
@@ -51,6 +52,15 @@ void MoMosaicRenderer::render() {
     glEnable(GL_DEPTH_TEST);
     glFrontFace(GL_CW);
     glCullFace(GL_FRONT);
+
+    if (showTargetImage_) {
+        renderTargetImage();
+    }
+
+    renderMosaicTiles();
+}
+
+void MoMosaicRenderer::renderMosaicTiles() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE);
     MO_CHECK_GL_ERROR;
@@ -316,6 +326,10 @@ void MoMosaicRenderer::ensureVAOIsSetUp() {
     MO_CHECK_GL_ERROR;
 
     vaoInitialized_ = true;
+}
+
+void MoMosaicRenderer::renderTargetImage() {
+    qDebug() << "In MoMosaicRenderer::renderTargetImage";
 }
 
 void MoMosaicRenderer::setModel(std::shared_ptr<MoMosaicModel> model) {

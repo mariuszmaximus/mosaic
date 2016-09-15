@@ -11,8 +11,8 @@ class MoMosaicRenderer;
 
 class MoMosaicView : public QQuickFramebufferObject {
     Q_OBJECT
-    Q_PROPERTY(bool showOutlines READ getShowOutlines WRITE setShowOutlines)
-    Q_PROPERTY(bool showTargetImage READ getShowTargetImage WRITE setShowTargetImage)
+    Q_PROPERTY(bool showOutlines MEMBER showOutlines_ READ getShowOutlines WRITE setShowOutlines)
+    Q_PROPERTY(bool showTargetImage MEMBER showTargetImage_ READ getShowTargetImage WRITE setShowTargetImage)
 public:
     MoMosaicView();
     ~MoMosaicView();
@@ -35,8 +35,11 @@ private slots:
     void handleWindowChanged(QQuickWindow *win);
 
 private:
-    bool initialized;
+    bool initialized_;
+    bool showOutlines_;
+    bool showTargetImage_;
     std::unique_ptr<MoMosaicRenderer> renderer_;
+    MoMosaicRenderer* getRenderer() const;
 
     void initGL();
 
