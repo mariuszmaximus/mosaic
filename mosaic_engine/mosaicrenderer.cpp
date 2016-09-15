@@ -19,7 +19,6 @@ MoMosaicRenderer::MoMosaicRenderer() :
     currentBufferSize_(0),
     vaoInitialized_(false)
 {
-    qDebug() << "In MoMosaicRenderer constructor.";
 }
 
 MoMosaicRenderer::~MoMosaicRenderer() {
@@ -329,7 +328,6 @@ void MoMosaicRenderer::ensureVAOIsSetUp() {
 }
 
 void MoMosaicRenderer::renderTargetImage() {
-    qDebug() << "In MoMosaicRenderer::renderTargetImage";
 }
 
 void MoMosaicRenderer::setModel(std::shared_ptr<MoMosaicModel> model) {

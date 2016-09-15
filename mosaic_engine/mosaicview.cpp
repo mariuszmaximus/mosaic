@@ -29,7 +29,6 @@ QQuickFramebufferObject::Renderer *MoMosaicView::createRenderer() const {
 }
 
 void MoMosaicView::setShowOutlines(bool yesNo) {
-    qDebug() << "In setShowOutlines(...) " << yesNo;
     showOutlines_ = yesNo;
     if (renderer_) {
         renderer_->setShowOutlines(yesNo);
@@ -41,7 +40,6 @@ bool MoMosaicView::getShowOutlines() const {
 }
 
 void MoMosaicView::setShowTargetImage(bool yesNo) {
-    qDebug() << "In setShowTargetImage(...) " << yesNo;
     showTargetImage_ = yesNo;
     if (renderer_) {
         renderer_->setShowTargetImage(yesNo);
