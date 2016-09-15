@@ -10,6 +10,7 @@
 
 MoMosaicRenderer::MoMosaicRenderer() :
     showOutlines_(true),
+    showTargetImage_(false),
     xBuffer_(QOpenGLBuffer::VertexBuffer),
     yBuffer_(QOpenGLBuffer::VertexBuffer),
     widthBuffer_(QOpenGLBuffer::VertexBuffer),
@@ -50,6 +51,15 @@ void MoMosaicRenderer::render() {
     glEnable(GL_DEPTH_TEST);
     glFrontFace(GL_CW);
     glCullFace(GL_FRONT);
+
+    if (showTargetImage_) {
+        renderTargetImage();
+    }
+
+    renderMosaicTiles();
+}
+
+void MoMosaicRenderer::renderMosaicTiles() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE);
     MO_CHECK_GL_ERROR;
@@ -176,8 +186,16 @@ void MoMosaicRenderer::setShowOutlines(bool yesNo) {
     initShaders();
 }
 
-bool MoMosaicRenderer::showOutlines() const {
+bool MoMosaicRenderer::getShowOutlines() const {
     return showOutlines_;
+}
+
+void MoMosaicRenderer::setShowTargetImage(bool yesNo) {
+    showTargetImage_ = yesNo;
+}
+
+bool MoMosaicRenderer::getShowTargetImage() const {
+    return showTargetImage_;
 }
 
 void MoMosaicRenderer::ensureBuffersAreLargeEnough(size_t size) {
@@ -307,6 +325,9 @@ void MoMosaicRenderer::ensureVAOIsSetUp() {
     MO_CHECK_GL_ERROR;
 
     vaoInitialized_ = true;
+}
+
+void MoMosaicRenderer::renderTargetImage() {
 }
 
 void MoMosaicRenderer::setModel(std::shared_ptr<MoMosaicModel> model) {

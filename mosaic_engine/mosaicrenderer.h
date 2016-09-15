@@ -32,13 +32,14 @@ public:
     MoMosaicModel getModel() const;
     void setWindow(QQuickWindow *window);
 
-
-public slots:
     void setShowOutlines(bool yesNo);
-    bool showOutlines() const;
+    bool getShowOutlines() const;
+    void setShowTargetImage(bool yesNo);
+    bool getShowTargetImage() const;
 
 private:
     bool showOutlines_;
+    bool showTargetImage_;
     std::unique_ptr<QOpenGLShaderProgram> program_;
     QQuickWindow *window_;
     float targetWidth_;
@@ -60,6 +61,9 @@ private:
     void ensureBuffersAreLargeEnough(size_t size);
     bool vaoInitialized_;
     void ensureVAOIsSetUp();
+
+    void renderTargetImage();
+    void renderMosaicTiles();
 
     void initGL();
     void initShaders();

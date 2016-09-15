@@ -18,21 +18,21 @@ TEST(MoMosaicRenderer, PaintDoesNotThrow) {
 TEST(MoMosaicRenderer, CanSetOutlineMode) {
     MoMosaicRenderer view;
     view.setShowOutlines(true);
-    ASSERT_TRUE(view.showOutlines());
+    ASSERT_TRUE(view.getShowOutlines());
 }
 
 TEST(MoMosaicRenderer, CanUnsetOutlineMode) {
     MoMosaicRenderer view;
     view.setShowOutlines(false);
-    ASSERT_FALSE(view.showOutlines());
+    ASSERT_FALSE(view.getShowOutlines());
 }
 
 TEST(MoMosaicRenderer, CanChangeOutlineMode) {
     MoMosaicRenderer view;
     view.setShowOutlines(false);
-    ASSERT_FALSE(view.showOutlines());
+    ASSERT_FALSE(view.getShowOutlines());
     view.setShowOutlines(true);
-    ASSERT_TRUE(view.showOutlines());
+    ASSERT_TRUE(view.getShowOutlines());
 }
 
 TEST(MoMosaicRenderer, SetModel) {
