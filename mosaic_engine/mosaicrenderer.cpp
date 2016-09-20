@@ -17,6 +17,7 @@ MoMosaicRenderer::MoMosaicRenderer() :
     heightBuffer_(QOpenGLBuffer::VertexBuffer),
     rotationBuffer_(QOpenGLBuffer::VertexBuffer),
     currentBufferSize_(0),
+    targetImage_(QOpenGLTexture::Target2D),
     vaoInitialized_(false)
 {
 }
@@ -135,6 +136,15 @@ void MoMosaicRenderer::synchronize(QQuickFramebufferObject *item) {
     model_ = *mosaicView->getModel();
     targetWidth_ = mosaicView->width();
     targetHeight_ = mosaicView->height();
+
+    const MoTargetImage& img = model_.getTargetImage();
+    if (!targetImage_.isCreated() && !img.getImage().isNull()) {
+        qDebug() << "Setting texture";
+        targetImage_.setData(img.getImage(),
+                             QOpenGLTexture::DontGenerateMipMaps);
+        targetImage_.setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
+        targetImage_.setMagnificationFilter(QOpenGLTexture::Linear);
+    }
 }
 
 void MoMosaicRenderer::initGL() {
@@ -160,6 +170,24 @@ void MoMosaicRenderer::initShaders() {
     }
     if (!program_->bind()) {
         throw std::runtime_error("Failed to bind shader.");
+    }
+
+    targetImageShader_.reset(new QOpenGLShaderProgram);
+    if (!targetImageShader_->addShaderFromSourceFile(QOpenGLShader::Vertex,
+        ":/shaders/vshader_target_image.glsl")) {
+        throw std::runtime_error(
+                    "Failed to add vertex shader for target image shader.");
+    }
+    if (!targetImageShader_->addShaderFromSourceFile(QOpenGLShader::Fragment,
+        ":/shaders/fshader_target_image.glsl")) {
+        throw std::runtime_error(
+                    "Failed to add fragment shader for target image shader.");
+    }
+    if (!targetImageShader_->link()) {
+        throw std::runtime_error("Failed to link target image shader.");
+    }
+    if (!targetImageShader_->bind()) {
+        throw std::runtime_error("Failed to bind target image shader.");
     }
 }
 
@@ -328,6 +356,13 @@ void MoMosaicRenderer::ensureVAOIsSetUp() {
 }
 
 void MoMosaicRenderer::renderTargetImage() {
+    if (targetImageShader_) {
+    qDebug() << "In MoMosaicRenderer::renderTargetImage()";
+        targetImageShader_->bind();
+        targetImage_.bind();
+        targetImage_.release();
+        targetImageShader_->release();
+    }
 }
 
 void MoMosaicRenderer::setModel(std::shared_ptr<MoMosaicModel> model) {

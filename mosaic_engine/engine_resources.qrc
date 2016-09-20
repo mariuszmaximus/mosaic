@@ -4,5 +4,7 @@
         <file>vshader.glsl</file>
         <file>vshader_outline.glsl</file>
         <file>fshader_outline.glsl</file>
+        <file>vshader_target_image.glsl</file>
+        <file>fshader_target_image.glsl</file>
     </qresource>
 </RCC>
