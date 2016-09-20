@@ -360,6 +360,7 @@ void MoMosaicRenderer::renderTargetImage() {
     qDebug() << "In MoMosaicRenderer::renderTargetImage()";
         targetImageShader_->bind();
         targetImage_.bind();
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         targetImage_.release();
         targetImageShader_->release();
     }
