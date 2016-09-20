@@ -357,12 +357,20 @@ void MoMosaicRenderer::ensureVAOIsSetUp() {
 
 void MoMosaicRenderer::renderTargetImage() {
     if (targetImageShader_) {
-    qDebug() << "In MoMosaicRenderer::renderTargetImage()";
+        qDebug() << "In MoMosaicRenderer::renderTargetImage()";
         targetImageShader_->bind();
+        MO_CHECK_GL_ERROR;
         targetImage_.bind();
+        MO_CHECK_GL_ERROR;
+        targetImageShader_->setUniformValue("targetWidth", targetWidth_);
+        targetImageShader_->setUniformValue("targetHeight", targetHeight_);
+        MO_CHECK_GL_ERROR;
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        MO_CHECK_GL_ERROR;
         targetImage_.release();
+        MO_CHECK_GL_ERROR;
         targetImageShader_->release();
+        MO_CHECK_GL_ERROR;
     }
 }
 
