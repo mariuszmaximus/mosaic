@@ -46,6 +46,7 @@ private:
     QQuickWindow *window_;
     float viewPortWidth_;
     float viewPortHeight_;
+    float magnification_;
 
     MoMosaicModel model_;
 

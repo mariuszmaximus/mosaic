@@ -6,7 +6,8 @@
 MoMosaicView::MoMosaicView() :
     initialized_(false),
     showOutlines_(false),
-    showTargetImage_(false) {
+    showTargetImage_(false),
+    magnification_(1.0f) {
     connect(this, &QQuickItem::windowChanged,
             this, &MoMosaicView::handleWindowChanged);
 }
@@ -48,6 +49,14 @@ void MoMosaicView::setShowTargetImage(bool yesNo) {
 
 bool MoMosaicView::getShowTargetImage() const {
     return showTargetImage_;
+}
+
+void MoMosaicView::setMagnification(float magnification) {
+    magnification_ = magnification;
+}
+
+float MoMosaicView::getMagnification() const {
+    return magnification_;
 }
 
 void MoMosaicView::handleWindowChanged(QQuickWindow *win) {
