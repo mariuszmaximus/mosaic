@@ -177,6 +177,10 @@ const MoTargetImage &MoMosaicModel::getTargetImage() const {
     return targetImage_;
 }
 
+const std::vector<MoTile> &MoMosaicModel::getTiles() const {
+    return tiles_;
+}
+
 const float* MoMosaicModel::getScales() const {
     if (size_ > 0) {
         return &scales_[0];

@@ -21,6 +21,7 @@ MoMosaicRenderer::MoMosaicRenderer() :
     rotationBuffer_(QOpenGLBuffer::VertexBuffer),
     currentBufferSize_(0),
     targetImage_(QOpenGLTexture::Target2D),
+    tileTextures_(QOpenGLTexture::Target2DArray),
     vaoInitialized_(false)
 {
 }
@@ -147,8 +148,22 @@ void MoMosaicRenderer::synchronize(QQuickFramebufferObject *item) {
         qDebug() << "Setting texture";
         targetImage_.setData(img.getImage(),
                              QOpenGLTexture::DontGenerateMipMaps);
+        targetImage_.setWrapMode(QOpenGLTexture::ClampToEdge);
         targetImage_.setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
         targetImage_.setMagnificationFilter(QOpenGLTexture::Linear);
+    }
+
+    // Copy the tiles to textures
+    const std::vector<MoTile>& tiles = model_.getTiles();
+    if (!tileTextures_.isCreated()) {
+        tileTextures_.setMipLevels(1);
+        tileTextures_.setLayers(model_.size());
+        tileTextures_.setWrapMode(QOpenGLTexture::ClampToEdge);
+        tileTextures_.setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
+        tileTextures_.setMagnificationFilter(QOpenGLTexture::Linear);
+        for (auto& t : tiles) {
+            Q_UNUSED(t);
+        }
     }
 }
 
