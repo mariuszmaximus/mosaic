@@ -17,6 +17,7 @@ MoMosaicRenderer::MoMosaicRenderer() :
     heightBuffer_(QOpenGLBuffer::VertexBuffer),
     rotationBuffer_(QOpenGLBuffer::VertexBuffer),
     currentBufferSize_(0),
+    targetImage_(QOpenGLTexture::Target2D),
     vaoInitialized_(false)
 {
 }
@@ -110,8 +111,8 @@ void MoMosaicRenderer::renderMosaicTiles() {
     program_->bind();
     MO_CHECK_GL_ERROR;
 
-    program_->setUniformValue("targetWidth", targetWidth_);
-    program_->setUniformValue("targetHeight", targetHeight_);
+    program_->setUniformValue("viewPortWidth", viewPortWidth_);
+    program_->setUniformValue("viewPortHeight", viewPortHeight_);
     program_->setUniformValue("numTiles", (float)model_.size());
     MO_CHECK_GL_ERROR;
 
@@ -133,8 +134,17 @@ void MoMosaicRenderer::renderMosaicTiles() {
 void MoMosaicRenderer::synchronize(QQuickFramebufferObject *item) {
     MoMosaicView* mosaicView = static_cast<MoMosaicView*>(item);
     model_ = *mosaicView->getModel();
-    targetWidth_ = mosaicView->width();
-    targetHeight_ = mosaicView->height();
+    viewPortWidth_ = mosaicView->width();
+    viewPortHeight_ = mosaicView->height();
+
+    const MoTargetImage& img = model_.getTargetImage();
+    if (!targetImage_.isCreated() && !img.getImage().isNull()) {
+        qDebug() << "Setting texture";
+        targetImage_.setData(img.getImage(),
+                             QOpenGLTexture::DontGenerateMipMaps);
+        targetImage_.setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
+        targetImage_.setMagnificationFilter(QOpenGLTexture::Linear);
+    }
 }
 
 void MoMosaicRenderer::initGL() {
@@ -160,6 +170,24 @@ void MoMosaicRenderer::initShaders() {
     }
     if (!program_->bind()) {
         throw std::runtime_error("Failed to bind shader.");
+    }
+
+    targetImageShader_.reset(new QOpenGLShaderProgram);
+    if (!targetImageShader_->addShaderFromSourceFile(QOpenGLShader::Vertex,
+        ":/shaders/vshader_target_image.glsl")) {
+        throw std::runtime_error(
+                    "Failed to add vertex shader for target image shader.");
+    }
+    if (!targetImageShader_->addShaderFromSourceFile(QOpenGLShader::Fragment,
+        ":/shaders/fshader_target_image.glsl")) {
+        throw std::runtime_error(
+                    "Failed to add fragment shader for target image shader.");
+    }
+    if (!targetImageShader_->link()) {
+        throw std::runtime_error("Failed to link target image shader.");
+    }
+    if (!targetImageShader_->bind()) {
+        throw std::runtime_error("Failed to bind target image shader.");
     }
 }
 
@@ -328,6 +356,30 @@ void MoMosaicRenderer::ensureVAOIsSetUp() {
 }
 
 void MoMosaicRenderer::renderTargetImage() {
+    if (targetImageShader_) {
+        targetImageShader_->bind();
+        MO_CHECK_GL_ERROR;
+        targetImage_.bind();
+        MO_CHECK_GL_ERROR;
+        const MoTargetImage& ti = model_.getTargetImage();
+        QSize targetSize = ti.getSize();
+        targetImageShader_->setUniformValue("targetWidth",
+                                            static_cast<float>(targetSize.width()));
+        MO_CHECK_GL_ERROR;
+        targetImageShader_->setUniformValue("targetHeight",
+                                            static_cast<float>(targetSize.height()));
+        MO_CHECK_GL_ERROR;
+        targetImageShader_->setUniformValue("viewPortWidth", viewPortWidth_);
+        MO_CHECK_GL_ERROR;
+        targetImageShader_->setUniformValue("viewPortHeight", viewPortHeight_);
+        MO_CHECK_GL_ERROR;
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        MO_CHECK_GL_ERROR;
+        targetImage_.release();
+        MO_CHECK_GL_ERROR;
+        targetImageShader_->release();
+        MO_CHECK_GL_ERROR;
+    }
 }
 
 void MoMosaicRenderer::setModel(std::shared_ptr<MoMosaicModel> model) {

@@ -5,6 +5,7 @@
 #include <QQuickFramebufferObject>
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
+#include <QOpenGLTexture>
 #include <QOpenGLFunctions_3_3_Core>
 #include <QOpenGLShaderProgram>
 #include <mosaicmodel.h>
@@ -41,9 +42,10 @@ private:
     bool showOutlines_;
     bool showTargetImage_;
     std::unique_ptr<QOpenGLShaderProgram> program_;
+    std::unique_ptr<QOpenGLShaderProgram> targetImageShader_;
     QQuickWindow *window_;
-    float targetWidth_;
-    float targetHeight_;
+    float viewPortWidth_;
+    float viewPortHeight_;
 
     MoMosaicModel model_;
 
@@ -57,6 +59,8 @@ private:
     QOpenGLBuffer heightBuffer_;
     QOpenGLBuffer rotationBuffer_;
     int currentBufferSize_;
+
+    QOpenGLTexture targetImage_;
 
     void ensureBuffersAreLargeEnough(size_t size);
     bool vaoInitialized_;
