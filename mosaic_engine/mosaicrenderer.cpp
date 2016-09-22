@@ -111,8 +111,8 @@ void MoMosaicRenderer::renderMosaicTiles() {
     program_->bind();
     MO_CHECK_GL_ERROR;
 
-    program_->setUniformValue("targetWidth", targetWidth_);
-    program_->setUniformValue("targetHeight", targetHeight_);
+    program_->setUniformValue("viewPortWidth", viewPortWidth_);
+    program_->setUniformValue("viewPortHeight", viewPortHeight_);
     program_->setUniformValue("numTiles", (float)model_.size());
     MO_CHECK_GL_ERROR;
 
@@ -134,8 +134,8 @@ void MoMosaicRenderer::renderMosaicTiles() {
 void MoMosaicRenderer::synchronize(QQuickFramebufferObject *item) {
     MoMosaicView* mosaicView = static_cast<MoMosaicView*>(item);
     model_ = *mosaicView->getModel();
-    targetWidth_ = mosaicView->width();
-    targetHeight_ = mosaicView->height();
+    viewPortWidth_ = mosaicView->width();
+    viewPortHeight_ = mosaicView->height();
 
     const MoTargetImage& img = model_.getTargetImage();
     if (!targetImage_.isCreated() && !img.getImage().isNull()) {
@@ -357,13 +357,21 @@ void MoMosaicRenderer::ensureVAOIsSetUp() {
 
 void MoMosaicRenderer::renderTargetImage() {
     if (targetImageShader_) {
-        qDebug() << "In MoMosaicRenderer::renderTargetImage()";
         targetImageShader_->bind();
         MO_CHECK_GL_ERROR;
         targetImage_.bind();
         MO_CHECK_GL_ERROR;
-        targetImageShader_->setUniformValue("targetWidth", targetWidth_);
-        targetImageShader_->setUniformValue("targetHeight", targetHeight_);
+        const MoTargetImage& ti = model_.getTargetImage();
+        QSize targetSize = ti.getSize();
+        targetImageShader_->setUniformValue("targetWidth",
+                                            static_cast<float>(targetSize.width()));
+        MO_CHECK_GL_ERROR;
+        targetImageShader_->setUniformValue("targetHeight",
+                                            static_cast<float>(targetSize.height()));
+        MO_CHECK_GL_ERROR;
+        targetImageShader_->setUniformValue("viewPortWidth", viewPortWidth_);
+        MO_CHECK_GL_ERROR;
+        targetImageShader_->setUniformValue("viewPortHeight", viewPortHeight_);
         MO_CHECK_GL_ERROR;
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         MO_CHECK_GL_ERROR;

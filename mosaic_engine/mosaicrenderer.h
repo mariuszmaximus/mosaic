@@ -44,8 +44,8 @@ private:
     std::unique_ptr<QOpenGLShaderProgram> program_;
     std::unique_ptr<QOpenGLShaderProgram> targetImageShader_;
     QQuickWindow *window_;
-    float targetWidth_;
-    float targetHeight_;
+    float viewPortWidth_;
+    float viewPortHeight_;
 
     MoMosaicModel model_;
 
