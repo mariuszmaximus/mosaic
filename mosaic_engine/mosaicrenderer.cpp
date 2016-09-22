@@ -80,10 +80,6 @@ void MoMosaicRenderer::renderMosaicTiles() {
         xH_[i] = 300.0f * (i - 0.5);
         yH_[i] = 200.0f * (i - 0.5);
     }
-    widthsH_.resize(model_.size());
-    model_.getWidths(&widthsH_[0]);
-    heightsH_.resize(model_.size());
-    model_.getHeights(&heightsH_[0]);
     float* rotationsH_ = model_.getRotations();
 
     xBuffer_.bind();
@@ -97,12 +93,16 @@ void MoMosaicRenderer::renderMosaicTiles() {
     MO_CHECK_GL_ERROR;
 
     widthBuffer_.bind();
-    widthBuffer_.write(0, &widthsH_[0], model_.size() * sizeof(float));
+    float* widths = (float*)widthBuffer_.map(QOpenGLBuffer::WriteOnly);
+    model_.getWidths(widths);
+    widthBuffer_.unmap();
     widthBuffer_.release();
     MO_CHECK_GL_ERROR;
 
     heightBuffer_.bind();
-    heightBuffer_.write(0, &heightsH_[0], model_.size() * sizeof(float));
+    float* heights = (float*)heightBuffer_.map(QOpenGLBuffer::WriteOnly);
+    model_.getHeights(heights);
+    heightBuffer_.unmap();
     heightBuffer_.release();
     MO_CHECK_GL_ERROR;
 

@@ -50,9 +50,6 @@ private:
 
     MoMosaicModel model_;
 
-    std::vector<float> widthsH_;
-    std::vector<float> heightsH_;
-
     QOpenGLVertexArrayObject vao_;
     QOpenGLBuffer xBuffer_;
     QOpenGLBuffer yBuffer_;
