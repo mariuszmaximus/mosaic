@@ -11,6 +11,9 @@
 MoMosaicRenderer::MoMosaicRenderer() :
     showOutlines_(true),
     showTargetImage_(false),
+    viewPortWidth_(1.0f),
+    viewPortHeight_(1.0f),
+    magnification_(1.0f),
     xBuffer_(QOpenGLBuffer::VertexBuffer),
     yBuffer_(QOpenGLBuffer::VertexBuffer),
     widthBuffer_(QOpenGLBuffer::VertexBuffer),
@@ -113,6 +116,7 @@ void MoMosaicRenderer::renderMosaicTiles() {
 
     program_->setUniformValue("viewPortWidth", viewPortWidth_);
     program_->setUniformValue("viewPortHeight", viewPortHeight_);
+    program_->setUniformValue("magnification", magnification_);
     program_->setUniformValue("numTiles", (float)model_.size());
     MO_CHECK_GL_ERROR;
 
@@ -136,6 +140,7 @@ void MoMosaicRenderer::synchronize(QQuickFramebufferObject *item) {
     model_ = *mosaicView->getModel();
     viewPortWidth_ = mosaicView->width();
     viewPortHeight_ = mosaicView->height();
+    magnification_ = mosaicView->getMagnification();
 
     const MoTargetImage& img = model_.getTargetImage();
     if (!targetImage_.isCreated() && !img.getImage().isNull()) {
@@ -372,6 +377,8 @@ void MoMosaicRenderer::renderTargetImage() {
         targetImageShader_->setUniformValue("viewPortWidth", viewPortWidth_);
         MO_CHECK_GL_ERROR;
         targetImageShader_->setUniformValue("viewPortHeight", viewPortHeight_);
+        MO_CHECK_GL_ERROR;
+        targetImageShader_->setUniformValue("magnification", magnification_);
         MO_CHECK_GL_ERROR;
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         MO_CHECK_GL_ERROR;
