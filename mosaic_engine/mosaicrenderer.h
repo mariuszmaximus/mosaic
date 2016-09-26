@@ -59,6 +59,7 @@ private:
     int currentBufferSize_;
 
     QOpenGLTexture targetImage_;
+    QOpenGLTexture tileTextures_;
 
     void ensureBuffersAreLargeEnough(size_t size);
     bool vaoInitialized_;

@@ -48,6 +48,7 @@ public:
     void copyScales(float* scalesBegin) const;
 
     const MoTargetImage& getTargetImage() const;
+    const std::vector<MoTile>& getTiles() const;
 
 private:
     int size_;
