@@ -5,7 +5,7 @@ Item {
     MoMosaicView {
         id: mosaicView
         anchors.fill: parent
-        showOutlines: true
+        showOutlines: false
         showTargetImage: true
         objectName: "mosaicView"
     }

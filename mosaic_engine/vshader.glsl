@@ -8,7 +8,8 @@ in float rotation;
 uniform float targetWidth = 1.0f;
 uniform float targetHeight = 1.0f;
 uniform float numTiles = 10.0f;
-out vec4 qt_TexCoord0;
+out vec2 texCoord;
+out float layer;
 
 const vec2 pos[] = vec2[4](
   vec2(-0.5f,  0.5f),
@@ -18,10 +19,10 @@ const vec2 pos[] = vec2[4](
 );
 
 const vec2 texCoords[] = vec2[4](
-            vec2(0.0f, 1.0f);
-            vec2(0.0f, 0.0f);
-            vec2(1.0f, 1.0f);
-            vec2(1.0f, 0.0f);
+            vec2(0.0f, 1.0f),
+            vec2(0.0f, 0.0f),
+            vec2(1.0f, 1.0f),
+            vec2(1.0f, 0.0f)
 );
 
 
@@ -36,5 +37,6 @@ void main(void)
                        s * x_ + c * y_,
                        (gl_InstanceID - numTiles) / numTiles,
                        1.0f);
-    gl_TexCoord = texCoords[gl_VertexID];
+    texCoord = texCoords[gl_VertexID];
+    layer = gl_InstanceID;
 }
