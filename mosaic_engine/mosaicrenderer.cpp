@@ -247,7 +247,6 @@ QString MoMosaicRenderer::fshaderFileName() const {
 void MoMosaicRenderer::setShowOutlines(bool yesNo) {
     if (showOutlines_ == yesNo) return;
     showOutlines_ = yesNo;
-    initShaders();
 }
 
 bool MoMosaicRenderer::getShowOutlines() const {
