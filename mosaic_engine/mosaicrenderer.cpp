@@ -173,7 +173,7 @@ void MoMosaicRenderer::synchronize(QQuickFramebufferObject *item) {
         for (size_t i = 0; i < tiles.size(); ++i) {
             const MoTile& tile = tiles[i];
             QImage tileImage = tile.getImage()->scaled(maxSize, maxSize,
-                                                       Qt::KeepAspectRatio,
+                                                       Qt::IgnoreAspectRatio,
                                                        Qt::FastTransformation);
             tileImage = tileImage.convertToFormat(QImage::Format_RGBA8888);
             tileTextures_.setData(0, i, QOpenGLTexture::RGBA_Integer,
