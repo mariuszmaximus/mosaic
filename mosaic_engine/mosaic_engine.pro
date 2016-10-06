@@ -35,7 +35,8 @@ HEADERS = \
     utilities.h \
     quadraturerule.h \
     lennardjones.h \
-    tiletextures.h
+    tiletextures.h \
+    badness.h
 
 DISTFILES +=
 
