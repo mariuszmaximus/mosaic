@@ -163,7 +163,7 @@ void MoMosaicRenderer::synchronize(QQuickFramebufferObject *item) {
     // Copy the tiles to textures
     const std::vector<MoTile>& tiles = model_.getTiles();
     const int textureSize = 256;
-    createTileTextures(tiles, textureSize, &tileTextures_);
+    moCreateTileTextures(tiles, textureSize, &tileTextures_);
 }
 
 void MoMosaicRenderer::initGL() {

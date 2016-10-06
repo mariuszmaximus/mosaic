@@ -2,7 +2,7 @@
 #include <utilities.h>
 
 
-bool createTileTextures(const std::vector<MoTile> &tiles,
+bool moCreateTileTextures(const std::vector<MoTile> &tiles,
                         int textureSize,
                         QOpenGLTexture *texture) {
     if (!texture) return false;

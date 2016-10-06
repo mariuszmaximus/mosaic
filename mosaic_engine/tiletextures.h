@@ -14,8 +14,8 @@
  *        not null, and if the tiles vector is not empty.
  * @return true if the array texture was created.  False otherwise.
  */
-bool createTileTextures(const std::vector<MoTile>& tiles,
-                        int textureSize,
-                        QOpenGLTexture* texture);
+bool moCreateTileTextures(const std::vector<MoTile>& tiles,
+                          int textureSize,
+                          QOpenGLTexture* texture);
 
 #endif // TILETEXTURES_H
