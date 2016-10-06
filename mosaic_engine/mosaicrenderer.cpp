@@ -119,10 +119,16 @@ void MoMosaicRenderer::renderMosaicTiles() {
     program_->setUniformValue("viewPortHeight", viewPortHeight_);
     program_->setUniformValue("magnification", magnification_);
     program_->setUniformValue("numTiles", (float)model_.size());
+    program_->setUniformValue("qt_Texture0", 0);
     MO_CHECK_GL_ERROR;
 
     vao_.bind();
     MO_CHECK_GL_ERROR;
+
+    if (tileTextures_.isCreated()) {
+      tileTextures_.bind();
+      MO_CHECK_GL_ERROR;
+    }
 
     glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, model_.size());
     MO_CHECK_GL_ERROR;
@@ -382,6 +388,11 @@ void MoMosaicRenderer::ensureVAOIsSetUp() {
     setVertexAttribDivisor(program_->attributeLocation("rotation"), 1);
     rotationBuffer_.release();
     MO_CHECK_GL_ERROR;
+
+    if (!showOutlines_ && tileTextures_.isCreated()) {
+        tileTextures_.bind();
+        MO_CHECK_GL_ERROR;
+    }
 
     vao_.release();
     program_->release();

@@ -1,11 +1,11 @@
 #version 130
-uniform sampler2DArray qt_Texture0;
+uniform usampler2DArray texture0;
 in vec2 texCoord;
 in float layer;
 
 void main(void)
 {
-    gl_FragColor = texture(qt_Texture0,
-                           vec3(texCoord.x, texCoord.y, layer));
-    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+    gl_FragColor = texture(texture0,
+                           vec3(texCoord.x, texCoord.y, layer)) / 255.0;
+    gl_FragColor = gl_FragColor.wzyx;
 }
