@@ -119,10 +119,16 @@ void MoMosaicRenderer::renderMosaicTiles() {
     program_->setUniformValue("viewPortHeight", viewPortHeight_);
     program_->setUniformValue("magnification", magnification_);
     program_->setUniformValue("numTiles", (float)model_.size());
+    program_->setUniformValue("qt_Texture0", 0);
     MO_CHECK_GL_ERROR;
 
     vao_.bind();
     MO_CHECK_GL_ERROR;
+
+    if (tileTextures_.isCreated()) {
+      tileTextures_.bind();
+      MO_CHECK_GL_ERROR;
+    }
 
     glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, model_.size());
     MO_CHECK_GL_ERROR;
@@ -173,7 +179,7 @@ void MoMosaicRenderer::synchronize(QQuickFramebufferObject *item) {
         for (size_t i = 0; i < tiles.size(); ++i) {
             const MoTile& tile = tiles[i];
             QImage tileImage = tile.getImage()->scaled(maxSize, maxSize,
-                                                       Qt::KeepAspectRatio,
+                                                       Qt::IgnoreAspectRatio,
                                                        Qt::FastTransformation);
             tileImage = tileImage.convertToFormat(QImage::Format_RGBA8888);
             tileTextures_.setData(0, i, QOpenGLTexture::RGBA_Integer,
@@ -247,7 +253,6 @@ QString MoMosaicRenderer::fshaderFileName() const {
 void MoMosaicRenderer::setShowOutlines(bool yesNo) {
     if (showOutlines_ == yesNo) return;
     showOutlines_ = yesNo;
-    initShaders();
 }
 
 bool MoMosaicRenderer::getShowOutlines() const {
@@ -383,6 +388,11 @@ void MoMosaicRenderer::ensureVAOIsSetUp() {
     setVertexAttribDivisor(program_->attributeLocation("rotation"), 1);
     rotationBuffer_.release();
     MO_CHECK_GL_ERROR;
+
+    if (!showOutlines_ && tileTextures_.isCreated()) {
+        tileTextures_.bind();
+        MO_CHECK_GL_ERROR;
+    }
 
     vao_.release();
     program_->release();
