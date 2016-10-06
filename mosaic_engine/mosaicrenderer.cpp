@@ -6,6 +6,7 @@
 #include <QOpenGLFramebufferObjectFormat>
 #include <mosaicview.h>
 #include <utilities.h>
+#include <tiletextures.h>
 
 
 MoMosaicRenderer::MoMosaicRenderer() :
@@ -161,32 +162,8 @@ void MoMosaicRenderer::synchronize(QQuickFramebufferObject *item) {
 
     // Copy the tiles to textures
     const std::vector<MoTile>& tiles = model_.getTiles();
-    if (!tileTextures_.isCreated() && !tiles.empty()) {
-        tileTextures_.setMipLevels(1);
-        tileTextures_.setLayers(model_.size());
-        tileTextures_.setWrapMode(QOpenGLTexture::ClampToEdge);
-        tileTextures_.setMinificationFilter(QOpenGLTexture::Linear);
-        tileTextures_.setMagnificationFilter(QOpenGLTexture::Linear);
-        tileTextures_.setFormat(QOpenGLTexture::RGBA8U);
-        static const int maxSize = 256;
-        tileTextures_.setSize(maxSize, maxSize);
-        MO_CHECK_GL_ERROR;
-
-        tileTextures_.allocateStorage();
-        MO_CHECK_GL_ERROR;
-
-        // Now upload the textures
-        for (size_t i = 0; i < tiles.size(); ++i) {
-            const MoTile& tile = tiles[i];
-            QImage tileImage = tile.getImage()->scaled(maxSize, maxSize,
-                                                       Qt::IgnoreAspectRatio,
-                                                       Qt::FastTransformation);
-            tileImage = tileImage.convertToFormat(QImage::Format_RGBA8888);
-            tileTextures_.setData(0, i, QOpenGLTexture::RGBA_Integer,
-                                  QOpenGLTexture::UInt32_RGBA8,
-                                  (void*)tileImage.bits());
-        }
-    }
+    const int textureSize = 256;
+    createTileTextures(tiles, textureSize, &tileTextures_);
 }
 
 void MoMosaicRenderer::initGL() {
