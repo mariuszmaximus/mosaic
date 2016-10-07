@@ -8,6 +8,8 @@ class MoTargetImage;
 
 class MoBadness {
 public:
+    virtual ~MoBadness() {}
+
     /**
      * @brief Calculate the badness of a mosaic
      * @param model the model

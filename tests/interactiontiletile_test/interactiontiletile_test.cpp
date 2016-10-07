@@ -2,8 +2,9 @@
 #include <interactiontiletile.h>
 
 
-TEST(MoInteractionTileTile, Include) {
-  ASSERT_TRUE(true);
+TEST(MoInteractionTileTile, Constructor) {
+    std::unique_ptr<MoInteractionTileTile> interaction;
+    EXPECT_NO_THROW(interaction.reset(new MoInteractionTileTile(nullptr)));
 }
 
 
