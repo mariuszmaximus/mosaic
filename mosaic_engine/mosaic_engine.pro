@@ -18,7 +18,9 @@ SOURCES = \
     mosaicupdatedelay.cpp \
     mosaicrenderer.cpp \
     lennardjones.cpp \
-    tiletextures.cpp
+    tiletextures.cpp \
+    interactiontiletile.cpp \
+    potentiallennardjones.cpp
 HEADERS = \
     maindriver.h \
     mosaicview.h \
@@ -36,7 +38,10 @@ HEADERS = \
     quadraturerule.h \
     lennardjones.h \
     tiletextures.h \
-    badness.h
+    badness.h \
+    interactiontiletile.h \
+    potential.h \
+    potentiallennardjones.h
 
 DISTFILES +=
 
