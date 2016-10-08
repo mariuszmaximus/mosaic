@@ -47,6 +47,16 @@ static float computeBadnessPair(const float* x, const float* y,
                                 const float* alpha, const float* scale,
                                 int i, int j,
                                 MoPotential* potential) {
+    float range = potential->range();
+    if (range > 0) {
+        float dist = std::sqrt(
+                    (x[i] - x[j]) * (x[i] - x[j]) +
+                    (y[i] - y[j]) * (y[i] - y[j]));
+        if (dist > range) {
+            return 0.0f;
+        }
+    }
+
     // asm("# computeBadnessPair");
     static const int order = 4;
     static const float* weights = &MoQuadratureRule[order - 1][MO_QUADRATURE_WEIGHTS][0];

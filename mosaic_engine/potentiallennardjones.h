@@ -12,6 +12,7 @@ public:
 
     virtual ~MoPotentialLennardJones() {}
     virtual float operator()(const float* x1, const float* x2);
+    virtual float range() const;
 private:
     MoLennardJones lennardJones_;
 };

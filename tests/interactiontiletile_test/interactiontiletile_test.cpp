@@ -20,6 +20,9 @@ class IdentityPotential : public MoPotential {
         Q_UNUSED(x2);
         return 1.0f;
     }
+    float range() const {
+        return -1.0f;
+    }
 };
 
 
