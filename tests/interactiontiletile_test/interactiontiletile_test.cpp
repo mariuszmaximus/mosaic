@@ -15,12 +15,12 @@ TEST(MoInteractionTileTile, Constructor) {
 
 
 class IdentityPotential : public MoPotential {
-    float operator()(const float* x1, const float* x2) {
+    virtual float operator()(const float* x1, const float* x2) {
         Q_UNUSED(x1);
         Q_UNUSED(x2);
         return 1.0f;
     }
-    float range() const {
+    virtual float range() const {
         return -1.0f;
     }
 };
@@ -67,6 +67,34 @@ TEST_F(MoInteractionTileTileIdentity, ThreeTilesGiveThreeTimesAsMuchBadness) {
     int numTiles = 3;
     createSomeModel(numTiles);
     EXPECT_FLOAT_EQ(3.0f, interaction.computeBadness(model, targetImage));
+}
+
+class IdentityPotentialFiniteRange : public IdentityPotential {
+    virtual float range() const {
+        return 1.0f;
+    }
+};
+
+TEST_F(MoInteractionTileTileIdentity, FiniteRangeInRange) {
+    interaction.resetPotential(
+                std::unique_ptr<MoPotential>(
+                    new IdentityPotentialFiniteRange()));
+    model.getXCoords()[0] = 0.0f;
+    model.getXCoords()[1] = 0.2f;
+    model.getYCoords()[0] = 0.0f;
+    model.getYCoords()[1] = 0.2f;
+    EXPECT_FLOAT_EQ(1.0f, interaction.computeBadness(model, targetImage));
+}
+
+TEST_F(MoInteractionTileTileIdentity, FiniteRangeOutOfRange) {
+    interaction.resetPotential(
+                std::unique_ptr<MoPotential>(
+                    new IdentityPotentialFiniteRange()));
+    model.getXCoords()[0] = 0.0f;
+    model.getXCoords()[1] = 1.2f;
+    model.getYCoords()[0] = 0.0f;
+    model.getYCoords()[1] = 0.2f;
+    EXPECT_FLOAT_EQ(0.0f, interaction.computeBadness(model, targetImage));
 }
 
 

@@ -42,6 +42,10 @@ float MoInteractionTileTile::computeBadness(
     return badness;
 }
 
+void MoInteractionTileTile::resetPotential(std::unique_ptr<MoPotential> potential) {
+    potential_ = std::move(potential);
+}
+
 static float computeBadnessPair(const float* x, const float* y,
                                 const float* w, const float* h,
                                 const float* alpha, const float* scale,

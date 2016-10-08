@@ -12,6 +12,7 @@ public:
     virtual ~MoInteractionTileTile() {}
     virtual float computeBadness(const MoMosaicModel &model,
                                  const MoTargetImage &targetImage);
+    void resetPotential(std::unique_ptr<MoPotential> potential);
 private:
     std::unique_ptr<MoPotential> potential_;
 };
