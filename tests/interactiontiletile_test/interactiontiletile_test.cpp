@@ -30,19 +30,22 @@ struct MoInteractionTileTileIdentity : public ::testing::Test {
         targetImage(QImage(), QSize(150, 100))
     {}
     virtual void SetUp() {
-        std::vector<MoTile> tiles(2,
-            MoTile(QImage(20, 30, QImage::Format_RGBA8888)));
-        model.constructInitialState(targetImage, tiles);
-        float x[] = {30.0f, 50.0f};
-        model.setXCoords(&x[0], &x[2]);
-        float y[] = {40.0f, 50.0f};
-        model.setXCoords(&y[0], &y[2]);
-        std::vector<float> rotations(2, 0.0f);
-        model.setRotations(&rotations[0], &rotations[0] + 2);
-        std::vector<float> scales(2, 0.0f);
-        model.setRotations(&scales[0], &scales[0] + 2);
+        createSomeModel(2);
     }
     virtual void TearDown() {}
+    void createSomeModel(int numTiles) {
+        std::vector<MoTile> tiles(numTiles,
+            MoTile(QImage(20, 30, QImage::Format_RGBA8888)));
+        model.constructInitialState(targetImage, tiles);
+        std::vector<float> x(numTiles);
+        model.setXCoords(&x[0], &x[0] + numTiles);
+        std::vector<float> y(numTiles);
+        model.setXCoords(&y[0], &y[0] + numTiles);
+        std::vector<float> rotations(numTiles, 0.0f);
+        model.setRotations(&rotations[0], &rotations[0] + numTiles);
+        std::vector<float> scales(numTiles, 0.0f);
+        model.setRotations(&scales[0], &scales[0] + numTiles);
+    }
     MoInteractionTileTile interaction;
     MoMosaicModel model;
     MoTargetImage targetImage;
@@ -55,6 +58,12 @@ TEST_F(MoInteractionTileTileIdentity, CanComputeBadness) {
 
 TEST_F(MoInteractionTileTileIdentity, UnitScaleTilesGiveBadnessOfOne) {
     EXPECT_FLOAT_EQ(1.0f, interaction.computeBadness(model, targetImage));
+}
+
+TEST_F(MoInteractionTileTileIdentity, ThreeTilesGiveThreeTimesAsMuchBadness) {
+    int numTiles = 3;
+    createSomeModel(numTiles);
+    EXPECT_FLOAT_EQ(3.0f, interaction.computeBadness(model, targetImage));
 }
 
 
