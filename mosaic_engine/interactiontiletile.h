@@ -14,10 +14,6 @@ public:
                                  const MoTargetImage &targetImage);
 private:
     std::unique_ptr<MoPotential> potential_;
-
-    float computeBadnessPair(const MoMosaicModel& model,
-                                                const MoTargetImage& targetImage,
-                                                int i, int j);
 };
 
 #endif // INTERACTIONTILETILE_H

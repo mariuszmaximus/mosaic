@@ -9,29 +9,57 @@ MoInteractionTileTile::MoInteractionTileTile(
         std::unique_ptr<MoPotential> potential) : potential_(std::move(potential)) {
 }
 
-float MoInteractionTileTile::computeBadness(
-        const MoMosaicModel &model, const MoTargetImage &targetImage) {
-  float badness = 0.0f;
-  for (int i = 0; i < model.size(); ++i) {
-      for (int j = 0; j < i; ++j) {
-          badness += computeBadnessPair(model, targetImage, i, j);
-      }
-  }
-  return badness;
+static void transformToWorldCoordinates(float x, float y, float w, float h,
+                                        float alpha, float scale,
+                                        float* r) {
+    float rtemp[2];
+    float c = cos(alpha);
+    float s = sin(alpha);
+
+    r[0] *= w;
+    r[1] *= h;
+
+    rtemp[0] = scale * (c * r[0] - s * r[1]) + x;
+    rtemp[1] = scale * (s * r[0] + c * r[1]) + y;
+
+    for (int i = 0; i < 2; ++i) {
+        r[i] = rtemp[i];
+    }
 }
 
-float MoInteractionTileTile::computeBadnessPair(const MoMosaicModel& model,
-                                                const MoTargetImage& targetImage,
-                                                int i, int j) {
-    Q_UNUSED(model);
-    Q_UNUSED(targetImage);
-    Q_UNUSED(i);
-    Q_UNUSED(j);
-    static const int order = 3;
-    static const float* weights = &MoQuadratureRule[order][MO_QUADRATURE_WEIGHTS][0];
-    static const float* nodes = &MoQuadratureRule[order][MO_QUADRATURE_NODES][0];
-    Q_UNUSED(nodes);
+static float computeBadnessPair(const float* x, const float* y,
+                                const float* w, const float* h,
+                                const float* alpha, const float* scale,
+                                int i, int j,
+                                MoPotential* potential) {
+    static const int order = 4;
+    static const float* weights = &MoQuadratureRule[order - 1][MO_QUADRATURE_WEIGHTS][0];
+    static const float* nodes = &MoQuadratureRule[order - 1][MO_QUADRATURE_NODES][0];
 
+
+    // Compute nodes for i tile
+    float x1[order][order][2];
+    for (int ix = 0; ix < order; ++ix) {
+        for (int iy = 0; iy < order; ++iy) {
+            x1[ix][iy][0] = nodes[ix];
+            x1[ix][iy][1] = nodes[iy];
+            transformToWorldCoordinates(x[i], y[i], w[i], h[i], alpha[i], scale[i],
+                                        x1[ix][iy]);
+        }
+    }
+
+    // Compute nodes for j tile
+    float x2[order][order][2];
+    for (int ix = 0; ix < order; ++ix) {
+        for (int iy = 0; iy < order; ++iy) {
+            x2[ix][iy][0] = nodes[ix];
+            x2[ix][iy][1] = nodes[iy];
+            transformToWorldCoordinates(x[j], y[j], w[j], h[j], alpha[j], scale[j],
+                                        x2[ix][iy]);
+        }
+    }
+
+    // Now compute badness by integrating over both tiles
     float badness = 0.0f;
     for (int ix = 0; ix < order; ++ix) {
         float b = 0.0f;
@@ -40,7 +68,8 @@ float MoInteractionTileTile::computeBadnessPair(const MoMosaicModel& model,
             for (int jx = 0; jx < order; ++jx) {
                 float bpp = 0.0f;
                 for (int jy = 0; jy < order; ++jy) {
-                    bpp += weights[jy] * 1.0f;
+                    bpp += weights[jy] *
+                            potential->operator()(x1[ix][iy], x2[ix][iy]);
                 }
                 bp += weights[jx] * bpp;
             }
@@ -48,5 +77,27 @@ float MoInteractionTileTile::computeBadnessPair(const MoMosaicModel& model,
         }
         badness += weights[ix] * b;
     }
-    return 1.0f;
+    return badness;
+}
+
+float MoInteractionTileTile::computeBadness(
+        const MoMosaicModel &model, const MoTargetImage &targetImage) {
+    Q_UNUSED(targetImage);
+    const float* x = model.getXCoords();
+    const float* y = model.getYCoords();
+    std::vector<float> w(model.size());
+    model.getWidths(&w[0]);
+    std::vector<float> h(model.size());
+    model.getHeights(&h[0]);
+    const float* alpha = model.getRotations();
+    const float* scale = model.getScales();
+
+    float badness = 0.0f;
+    for (int i = 0; i < model.size(); ++i) {
+        for (int j = 0; j < i; ++j) {
+            badness += computeBadnessPair(x, y, &w[0], &h[0], alpha, scale, i, j,
+                    potential_.get());
+        }
+    }
+    return badness / 16.0f;
 }
