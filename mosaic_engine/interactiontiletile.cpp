@@ -39,7 +39,7 @@ float MoInteractionTileTile::computeBadness(
                     potential_.get());
         }
     }
-    return badness / 16.0f;
+    return badness;
 }
 
 static float computeBadnessPair(const float* x, const float* y,
@@ -104,7 +104,9 @@ static float computeBadnessPair(const float* x, const float* y,
         }
         badness += weights[ix] * b;
     }
-    return badness;
+    // Gauss quadrature weights are normalized for integration over [-1, 1].
+    // We divide by 2^4 to make the integrals normalized over the tiles.
+    return badness / 16.0f;
 }
 
 void transformToWorldCoordinates(float x, float y, float w, float h,
