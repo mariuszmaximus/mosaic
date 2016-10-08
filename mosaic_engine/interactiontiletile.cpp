@@ -5,79 +5,19 @@
 #include <QtGlobal>
 
 
-MoInteractionTileTile::MoInteractionTileTile(
-        std::unique_ptr<MoPotential> potential) : potential_(std::move(potential)) {
-}
-
+// A few helper functions
 static void transformToWorldCoordinates(float x, float y, float w, float h,
                                         float alpha, float scale,
-                                        float* r) {
-    float rtemp[2];
-    float c = cos(alpha);
-    float s = sin(alpha);
-
-    r[0] *= w;
-    r[1] *= h;
-
-    rtemp[0] = scale * (c * r[0] - s * r[1]) + x;
-    rtemp[1] = scale * (s * r[0] + c * r[1]) + y;
-
-    for (int i = 0; i < 2; ++i) {
-        r[i] = rtemp[i];
-    }
-}
-
+                                        float* r);
 static float computeBadnessPair(const float* x, const float* y,
                                 const float* w, const float* h,
                                 const float* alpha, const float* scale,
                                 int i, int j,
-                                MoPotential* potential) {
-    static const int order = 4;
-    static const float* weights = &MoQuadratureRule[order - 1][MO_QUADRATURE_WEIGHTS][0];
-    static const float* nodes = &MoQuadratureRule[order - 1][MO_QUADRATURE_NODES][0];
+                                MoPotential* potential);
 
 
-    // Compute nodes for i tile
-    float x1[order][order][2];
-    for (int ix = 0; ix < order; ++ix) {
-        for (int iy = 0; iy < order; ++iy) {
-            x1[ix][iy][0] = nodes[ix];
-            x1[ix][iy][1] = nodes[iy];
-            transformToWorldCoordinates(x[i], y[i], w[i], h[i], alpha[i], scale[i],
-                                        x1[ix][iy]);
-        }
-    }
-
-    // Compute nodes for j tile
-    float x2[order][order][2];
-    for (int ix = 0; ix < order; ++ix) {
-        for (int iy = 0; iy < order; ++iy) {
-            x2[ix][iy][0] = nodes[ix];
-            x2[ix][iy][1] = nodes[iy];
-            transformToWorldCoordinates(x[j], y[j], w[j], h[j], alpha[j], scale[j],
-                                        x2[ix][iy]);
-        }
-    }
-
-    // Now compute badness by integrating over both tiles
-    float badness = 0.0f;
-    for (int ix = 0; ix < order; ++ix) {
-        float b = 0.0f;
-        for (int iy = 0; iy < order; ++iy) {
-            float bp = 0.0f;
-            for (int jx = 0; jx < order; ++jx) {
-                float bpp = 0.0f;
-                for (int jy = 0; jy < order; ++jy) {
-                    bpp += weights[jy] *
-                            potential->operator()(x1[ix][iy], x2[ix][iy]);
-                }
-                bp += weights[jx] * bpp;
-            }
-            b += weights[iy] * bp;
-        }
-        badness += weights[ix] * b;
-    }
-    return badness;
+MoInteractionTileTile::MoInteractionTileTile(
+        std::unique_ptr<MoPotential> potential) : potential_(std::move(potential)) {
 }
 
 float MoInteractionTileTile::computeBadness(
@@ -100,4 +40,77 @@ float MoInteractionTileTile::computeBadness(
         }
     }
     return badness / 16.0f;
+}
+
+static float computeBadnessPair(const float* x, const float* y,
+                                const float* w, const float* h,
+                                const float* alpha, const float* scale,
+                                int i, int j,
+                                MoPotential* potential) {
+    // asm("# computeBadnessPair");
+    static const int order = 4;
+    static const float* weights = &MoQuadratureRule[order - 1][MO_QUADRATURE_WEIGHTS][0];
+    static const float* nodes = &MoQuadratureRule[order - 1][MO_QUADRATURE_NODES][0];
+
+
+    // asm("# compute nodes for i tile");
+    float x1[order][order][2];
+    for (int ix = 0; ix < order; ++ix) {
+        for (int iy = 0; iy < order; ++iy) {
+            x1[ix][iy][0] = nodes[ix];
+            x1[ix][iy][1] = nodes[iy];
+            transformToWorldCoordinates(x[i], y[i], w[i], h[i], alpha[i], scale[i],
+                                        x1[ix][iy]);
+        }
+    }
+
+    // asm("# compute nodes for j tile");
+    float x2[order][order][2];
+    for (int ix = 0; ix < order; ++ix) {
+        for (int iy = 0; iy < order; ++iy) {
+            x2[ix][iy][0] = nodes[ix];
+            x2[ix][iy][1] = nodes[iy];
+            transformToWorldCoordinates(x[j], y[j], w[j], h[j], alpha[j], scale[j],
+                                        x2[ix][iy]);
+        }
+    }
+
+    // Now compute badness by integrating over both tiles
+    // asm("# quadrature loop");
+    float badness = 0.0f;
+    for (int ix = 0; ix < order; ++ix) {
+        float b = 0.0f;
+        for (int iy = 0; iy < order; ++iy) {
+            float bp = 0.0f;
+            for (int jx = 0; jx < order; ++jx) {
+                float bpp = 0.0f;
+                for (int jy = 0; jy < order; ++jy) {
+                    bpp += weights[jy] *
+                            potential->operator()(x1[ix][iy], x2[ix][iy]);
+                }
+                bp += weights[jx] * bpp;
+            }
+            b += weights[iy] * bp;
+        }
+        badness += weights[ix] * b;
+    }
+    return badness;
+}
+
+void transformToWorldCoordinates(float x, float y, float w, float h,
+                                        float alpha, float scale,
+                                        float* r) {
+    float rtemp[2];
+    float c = cos(alpha);
+    float s = sin(alpha);
+
+    r[0] *= w;
+    r[1] *= h;
+
+    rtemp[0] = scale * (c * r[0] - s * r[1]) + x;
+    rtemp[1] = scale * (s * r[0] + c * r[1]) + y;
+
+    for (int i = 0; i < 2; ++i) {
+        r[i] = rtemp[i];
+    }
 }
