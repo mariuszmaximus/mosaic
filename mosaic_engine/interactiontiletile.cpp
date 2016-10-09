@@ -53,10 +53,18 @@ static float computeBadnessPair(const float* x, const float* y,
                                 MoPotential* potential) {
     float range = potential->range();
     if (range > 0) {
-        float dist = std::sqrt(
+        // Check if distance between tiles is larger than range.
+        // To compute the distance between tiles we construct a
+        // bounding circle around each tile and we compute the
+        // distance between these circles.
+        float distanceBetweenTileCenters = std::sqrt(
                     (x[i] - x[j]) * (x[i] - x[j]) +
                     (y[i] - y[j]) * (y[i] - y[j]));
-        if (dist > range) {
+        float radius1 = std::sqrt(w[i] * w[i] + h[i] * h[i]);
+        float radius2 = std::sqrt(w[j] * w[j] + h[j] * h[j]);
+        float distanceBetweenTiles =
+                distanceBetweenTileCenters - radius1 - radius2;
+        if (distanceBetweenTiles > range) {
             return 0.0f;
         }
     }
