@@ -6,6 +6,7 @@
 
 #include <QtGlobal>
 #include <memory>
+#include <cmath>
 
 
 TEST(MoInteractionTileTile, Constructor) {
@@ -70,15 +71,19 @@ TEST_F(MoInteractionTileTileIdentity, ThreeTilesGiveThreeTimesAsMuchBadness) {
 }
 
 class IdentityPotentialFiniteRange : public IdentityPotential {
+public:
+    IdentityPotentialFiniteRange(float range) : range_(range) {}
     virtual float range() const {
-        return 1.0f;
+        return range_;
     }
+    float range_;
 };
 
 TEST_F(MoInteractionTileTileIdentity, FiniteRangeInRange) {
+    float range = 100.0f;
     interaction.resetPotential(
                 std::unique_ptr<MoPotential>(
-                    new IdentityPotentialFiniteRange()));
+                    new IdentityPotentialFiniteRange(range)));
     model.getXCoords()[0] = 0.0f;
     model.getXCoords()[1] = 0.2f;
     model.getYCoords()[0] = 0.0f;
@@ -86,14 +91,49 @@ TEST_F(MoInteractionTileTileIdentity, FiniteRangeInRange) {
     EXPECT_FLOAT_EQ(1.0f, interaction.computeBadness(model, targetImage));
 }
 
-TEST_F(MoInteractionTileTileIdentity, FiniteRangeOutOfRange) {
+TEST_F(MoInteractionTileTileIdentity, FiniteRangeMarginal) {
+    float range = 100.0f;
     interaction.resetPotential(
                 std::unique_ptr<MoPotential>(
-                    new IdentityPotentialFiniteRange()));
+                    new IdentityPotentialFiniteRange(range)));
+    std::vector<float> w(model.size());
+    model.getWidths(&w[0]);
+    std::vector<float> h(model.size());
+    model.getHeights(&h[0]);
+    float radius1 = std::sqrt(w[0] * w[0] + h[0] * h[0]);
+    float radius2 = std::sqrt(w[1] * w[1] + h[1] * h[1]);
+
+    float distance = range + radius1 + radius2 - 1.0f;
+
+    float alpha = 1.0f;
     model.getXCoords()[0] = 0.0f;
-    model.getXCoords()[1] = 1.2f;
+    model.getXCoords()[1] = cos(alpha) * distance;
     model.getYCoords()[0] = 0.0f;
-    model.getYCoords()[1] = 0.2f;
+    model.getYCoords()[1] = -sin(alpha) * distance;
+
+    EXPECT_FLOAT_EQ(1.0f, interaction.computeBadness(model, targetImage));
+}
+
+TEST_F(MoInteractionTileTileIdentity, FiniteRangeOutOfRange) {
+    float range = 100.0f;
+    interaction.resetPotential(
+                std::unique_ptr<MoPotential>(
+                    new IdentityPotentialFiniteRange(range)));
+    std::vector<float> w(model.size());
+    model.getWidths(&w[0]);
+    std::vector<float> h(model.size());
+    model.getHeights(&h[0]);
+    float radius1 = std::sqrt(w[0] * w[0] + h[0] * h[0]);
+    float radius2 = std::sqrt(w[1] * w[1] + h[1] * h[1]);
+
+    float distance = range + radius1 + radius2 + 1.0f;
+
+    float alpha = 1.0f;
+    model.getXCoords()[0] = 0.0f;
+    model.getXCoords()[1] = cos(alpha) * distance;
+    model.getYCoords()[0] = 0.0f;
+    model.getYCoords()[1] = -sin(alpha) * distance;
+
     EXPECT_FLOAT_EQ(0.0f, interaction.computeBadness(model, targetImage));
 }
 
