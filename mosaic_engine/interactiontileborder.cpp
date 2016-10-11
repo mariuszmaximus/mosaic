@@ -15,3 +15,7 @@ float MoInteractionTileBorder::computeBadness(
     return 0.0f;
 }
 
+void MoInteractionTileBorder::resetPotential(
+        std::unique_ptr<MoPotential> potential) {
+    potential_ = std::move(potential);
+}
