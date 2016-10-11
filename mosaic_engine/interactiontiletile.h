@@ -2,8 +2,9 @@
 #define INTERACTIONTILETILE_H
 
 #include <badness.h>
-#include <potential.h>
 #include <memory>
+
+class MoPotential;
 
 
 class MoInteractionTileTile : public MoBadness {

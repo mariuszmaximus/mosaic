@@ -3,6 +3,7 @@
 #include <mosaicmodel.h>
 #include <targetimage.h>
 #include <tile.h>
+#include <potential.h>
 
 #include <QtGlobal>
 #include <memory>

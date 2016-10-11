@@ -1,6 +1,7 @@
 #include <interactiontiletile.h>
 #include <mosaicmodel.h>
 #include <quadraturerule.h>
+#include <potential.h>
 
 #include <QtGlobal>
 
