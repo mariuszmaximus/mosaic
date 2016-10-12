@@ -21,7 +21,8 @@ SOURCES = \
     tiletextures.cpp \
     interactiontiletile.cpp \
     potentiallennardjones.cpp \
-    interactiontileborder.cpp
+    interactiontileborder.cpp \
+    interactionhelpers.cpp
 HEADERS = \
     maindriver.h \
     mosaicview.h \
@@ -43,7 +44,8 @@ HEADERS = \
     interactiontiletile.h \
     potential.h \
     potentiallennardjones.h \
-    interactiontileborder.h
+    interactiontileborder.h \
+    interactionhelpers.h
 
 DISTFILES +=
 
