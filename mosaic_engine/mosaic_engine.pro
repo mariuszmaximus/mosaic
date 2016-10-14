@@ -45,7 +45,8 @@ HEADERS = \
     potential.h \
     potentiallennardjones.h \
     interactiontileborder.h \
-    interactionhelpers.h
+    interactionhelpers.h \
+    badnesscomposite.h
 
 DISTFILES +=
 
