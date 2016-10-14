@@ -26,8 +26,8 @@ public:
     float range_;
 };
 
-struct MoInteractionTileTileIdentity : public ::testing::Test {
-    MoInteractionTileTileIdentity() :
+struct MoInteractionTileBorderIdentity : public ::testing::Test {
+    MoInteractionTileBorderIdentity() :
         interaction(std::unique_ptr<MoPotential>(
                         new IdentityPotentialFiniteRange(-1.0f))),
         model(),
@@ -47,24 +47,92 @@ struct MoInteractionTileTileIdentity : public ::testing::Test {
         model.setXCoords(&y[0], &y[0] + numTiles);
         std::vector<float> rotations(numTiles, 0.0f);
         model.setRotations(&rotations[0], &rotations[0] + numTiles);
-        std::vector<float> scales(numTiles, 0.0f);
-        model.setRotations(&scales[0], &scales[0] + numTiles);
+        std::vector<float> scales(numTiles, 1.0f);
+        model.setScales(&scales[0], &scales[0] + numTiles);
     }
     MoInteractionTileBorder interaction;
     MoMosaicModel model;
     MoTargetImage targetImage;
 };
 
-TEST_F(MoInteractionTileTileIdentity, InRange) {
+TEST_F(MoInteractionTileBorderIdentity, InRangeBottomLeft) {
+    float width = 3000.0f;
+    float height = 2000.0f;
+    targetImage = MoTargetImage(QImage(), QSize(width, height));
     float range = 100.f;
     interaction.resetPotential(
                 std::unique_ptr<MoPotential>(
                     new IdentityPotentialFiniteRange(range)));
-    model.getXCoords()[0] = 0.0f;
-    model.getXCoords()[1] = 0.2f;
-    model.getYCoords()[0] = 0.0f;
-    model.getYCoords()[1] = 0.2f;
+    // place tiles close to bottom left corner
+    model.getXCoords()[0] = -0.5f * width + 10.0f;
+    model.getXCoords()[1] = -0.5f * width + 10.0f;
+    model.getYCoords()[0] = -0.5f * height + 10.0f;
+    model.getYCoords()[1] = -0.5f * height + 10.0f;
     EXPECT_NE(0.0f, interaction.computeBadness(model, targetImage));
+}
+
+TEST_F(MoInteractionTileBorderIdentity, InRangeBottomRight) {
+    float width = 3000.0f;
+    float height = 2000.0f;
+    targetImage = MoTargetImage(QImage(), QSize(width, height));
+    float range = 100.f;
+    interaction.resetPotential(
+                std::unique_ptr<MoPotential>(
+                    new IdentityPotentialFiniteRange(range)));
+    // place tiles close to the top right corner
+    model.getXCoords()[0] = 0.5f * width - 50.0f;
+    model.getXCoords()[1] = 0.5f * width - 50.0f;
+    model.getYCoords()[0] = -0.5f * height + 30.0f;
+    model.getYCoords()[1] = -0.5f * height + 30.0f;
+    EXPECT_NE(0.0f, interaction.computeBadness(model, targetImage));
+}
+
+TEST_F(MoInteractionTileBorderIdentity, InRangeTopRight) {
+    float width = 3000.0f;
+    float height = 2000.0f;
+    targetImage = MoTargetImage(QImage(), QSize(width, height));
+    float range = 100.f;
+    interaction.resetPotential(
+                std::unique_ptr<MoPotential>(
+                    new IdentityPotentialFiniteRange(range)));
+    // place tiles close to the top right corner
+    model.getXCoords()[0] = 0.5f * width - 50.0f;
+    model.getXCoords()[1] = 0.5f * width - 50.0f;
+    model.getYCoords()[0] = 0.5f * height - 30.0f;
+    model.getYCoords()[1] = 0.5f * height - 30.0f;
+    EXPECT_NE(0.0f, interaction.computeBadness(model, targetImage));
+}
+
+TEST_F(MoInteractionTileBorderIdentity, InRangeTopLeft) {
+    float width = 3000.0f;
+    float height = 2000.0f;
+    targetImage = MoTargetImage(QImage(), QSize(width, height));
+    float range = 100.f;
+    interaction.resetPotential(
+                std::unique_ptr<MoPotential>(
+                    new IdentityPotentialFiniteRange(range)));
+    // place tiles close to the top right corner
+    model.getXCoords()[0] = -0.5f * width + 10.0f;
+    model.getXCoords()[1] = -0.5f * width + 10.0f;
+    model.getYCoords()[0] = 0.5f * height - 30.0f;
+    model.getYCoords()[1] = 0.5f * height - 30.0f;
+    EXPECT_NE(0.0f, interaction.computeBadness(model, targetImage));
+}
+
+TEST_F(MoInteractionTileBorderIdentity, OutOfRange) {
+    float width = 3000.0f;
+    float height = 2000.0f;
+    targetImage = MoTargetImage(QImage(), QSize(width, height));
+    float range = 100.0f;
+    interaction.resetPotential(
+                std::unique_ptr<MoPotential>(
+                    new IdentityPotentialFiniteRange(range)));
+    // place tiles at the origin
+    model.getXCoords()[0] = 0.0f;
+    model.getXCoords()[1] = 0.0f;
+    model.getYCoords()[0] = 0.0f;
+    model.getYCoords()[1] = 0.0f;
+    EXPECT_EQ(0.0f, interaction.computeBadness(model, targetImage));
 }
 
 
