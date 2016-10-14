@@ -7,6 +7,7 @@ SUBDIRS += mosaicview_test
 SUBDIRS += targetimage_test
 SUBDIRS += quadrature_test
 SUBDIRS += interactiontiletile_test
+SUBDIRS += interactiontileborder_test
 
 lennardjones_test.depends = test_utilities
 mosaicevolution_test.depends = test_utilities
@@ -15,6 +16,7 @@ mosaicview_test.depends = test_utilities
 targetimage_test.depends = test_utilities
 quadrature_test.depends = test_utilities
 interactiontiletile_test.depends = test_utilities
+interactiontileborder_test.depends = test_utilities
 
 RUN_OPENGL_TESTS=$$(RUN_OPENGL_TESTS)
 equals(RUN_OPENGL_TESTS, "true") {
