@@ -135,6 +135,33 @@ TEST_F(MoInteractionTileBorderIdentity, OutOfRange) {
     EXPECT_EQ(0.0f, interaction.computeBadness(model, targetImage));
 }
 
+TEST_F(MoInteractionTileBorderIdentity, TwoTilesTwiceAsBadAsOne) {
+    float width = 3000.0f;
+    float height = 2000.0f;
+    targetImage = MoTargetImage(QImage(), QSize(width, height));
+    float range = 100.f;
+    interaction.resetPotential(
+                std::unique_ptr<MoPotential>(
+                    new IdentityPotentialFiniteRange(range)));
+
+    ASSERT_EQ(2, model.size());
+
+    // Place tile in bottom left corner so we have a non-zero
+    // badness.
+    model.getXCoords()[0] = -0.5f * width + 10.0f;
+    model.getXCoords()[1] = -0.5f * width + 10.0f;
+    model.getYCoords()[0] = -0.5f * height + 10.0f;
+    model.getYCoords()[1] = -0.5f * height + 10.0f;
+
+    float badnessTwoTiles = interaction.computeBadness(model, targetImage);
+
+    model.resize(1);
+    ASSERT_EQ(1, model.size());
+    float badnessOneTile = interaction.computeBadness(model, targetImage);
+
+    EXPECT_FLOAT_EQ(badnessTwoTiles, 2.0f * badnessOneTile);
+}
+
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
