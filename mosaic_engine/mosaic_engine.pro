@@ -22,7 +22,8 @@ SOURCES = \
     interactiontiletile.cpp \
     potentiallennardjones.cpp \
     interactiontileborder.cpp \
-    interactionhelpers.cpp
+    interactionhelpers.cpp \
+    badnesscomposite.cpp
 HEADERS = \
     maindriver.h \
     mosaicview.h \
