@@ -23,7 +23,8 @@ SOURCES = \
     potentiallennardjones.cpp \
     interactiontileborder.cpp \
     interactionhelpers.cpp \
-    badnesscomposite.cpp
+    badnesscomposite.cpp \
+    mosaicupdateoptimize.cpp
 HEADERS = \
     maindriver.h \
     mosaicview.h \
@@ -47,7 +48,8 @@ HEADERS = \
     potentiallennardjones.h \
     interactiontileborder.h \
     interactionhelpers.h \
-    badnesscomposite.h
+    badnesscomposite.h \
+    mosaicupdateoptimize.h
 
 DISTFILES +=
 

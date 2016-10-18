@@ -18,7 +18,7 @@ public:
   void constructInitialState(const MoTargetImage& targetImage,
                              const std::vector<MoTile>& tiles);
   void takeStep();
-  void addUpdate(std::unique_ptr<MoMosaicUpdate>&& update);
+  void addUpdate(std::unique_ptr<MoMosaicUpdate> update);
   MoMosaicModel* getCurrentModel();
 private:
   class MoMosaicEvolutionImpl;

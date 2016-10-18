@@ -20,7 +20,7 @@ public:
         }
     }
 
-    void addUpdate(std::unique_ptr<MoMosaicUpdate>&& update) {
+    void addUpdate(std::unique_ptr<MoMosaicUpdate>update) {
         updates_.emplace_back(std::move(update));
     }
 
@@ -50,7 +50,7 @@ void MoMosaicEvolution::takeStep() {
     impl_->takeStep();
 }
 
-void MoMosaicEvolution::addUpdate(std::unique_ptr<MoMosaicUpdate>&& update) {
+void MoMosaicEvolution::addUpdate(std::unique_ptr<MoMosaicUpdate> update) {
     impl_->addUpdate(std::move(update));
 }
 
