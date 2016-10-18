@@ -45,18 +45,31 @@ TEST_F(MoBadnessCompositeT, EmptyCompositeHasZeroBadness) {
 }
 
 class ConstantBadness : public MoBadness {
+public:
+    ConstantBadness(float badness) : badness_(badness) {}
     virtual ~ConstantBadness() {}
     float computeBadness(const MoMosaicModel &model, const MoTargetImage &targetImage) {
         Q_UNUSED(model);
         Q_UNUSED(targetImage);
-        return 2.3f;
+        return badness_;
     }
+private:
+    float badness_;
 };
 
 TEST_F(MoBadnessCompositeT, NonEmptyBadnessHasNonZeroBadness) {
     MoBadnessComposite badness;
-    badness.addBadness(std::unique_ptr<MoBadness>(new ConstantBadness));
+    badness.addBadness(std::unique_ptr<MoBadness>(new ConstantBadness(2.3f)));
     EXPECT_NE(0.0f, badness.computeBadness(model, targetImage));
+}
+
+TEST_F(MoBadnessCompositeT, BadnessesAddUp) {
+    MoBadnessComposite badness;
+    float b1 = 2.3f;
+    badness.addBadness(std::unique_ptr<MoBadness>(new ConstantBadness(b1)));
+    float b2 = 5.2f;
+    badness.addBadness(std::unique_ptr<MoBadness>(new ConstantBadness(b2)));
+    EXPECT_FLOAT_EQ(b1 + b2, badness.computeBadness(model, targetImage));
 }
 
 
