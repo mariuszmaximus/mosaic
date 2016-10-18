@@ -11,9 +11,10 @@ TEST(LennardJones, Constructor) {
 
 TEST(LennardJones, IsZeroAtSigma) {
     float sigma = 23.0f;
-    MoLennardJones lj(11.0f, sigma);
+    float epsilon = 11.0f;
+    MoLennardJones lj(epsilon, sigma);
     float potential = lj.evaluateAt(sigma);
-    ASSERT_NEAR(0.0f, potential, 1.0e-6f);
+    ASSERT_NEAR(0.0f, potential, 1.0e-4f * epsilon);
 }
 
 TEST(LennardJones, IsEpsilonAtMinimum) {
