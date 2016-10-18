@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS += test_utilities
+SUBDIRS += badnesscomposite_test
 SUBDIRS += lennardjones_test
 SUBDIRS += mosaicevolution_test
 SUBDIRS += mosaicmodel_test
@@ -9,6 +10,7 @@ SUBDIRS += quadrature_test
 SUBDIRS += interactiontiletile_test
 SUBDIRS += interactiontileborder_test
 
+badnesscomposite_test.depends = test_utilities
 lennardjones_test.depends = test_utilities
 mosaicevolution_test.depends = test_utilities
 mosaicmodel_test.depends = test_utilities
