@@ -12,6 +12,9 @@
 #include <mosaicmodel.h>
 #include <evolutionrunner.h>
 #include <mosaicupdatedelay.h>
+#include <mosaicupdateoptimize.h>
+#include <badness.h>
+#include <badnesscomposite.h>
 
 
 MoMainDriver::MoMainDriver(QObject *parent) :
@@ -44,8 +47,16 @@ void MoMainDriver::start() {
                    loadTile);
 
     evolution_.constructInitialState(targetImage, tiles);
-    evolution_.addUpdate(std::unique_ptr<MoMosaicUpdate>(
-                             new MoMosaicUpdateDelay));
+
+    evolution_.addUpdate(
+                std::unique_ptr<MoMosaicUpdate>(new MoMosaicUpdateDelay));
+
+    std::unique_ptr<MoBadness> badness{new MoBadnessComposite};
+    std::unique_ptr<MoMosaicUpdateOptimize> updateOptimize{
+            new MoMosaicUpdateOptimize};
+    updateOptimize->setBadness(std::move(badness));
+    evolution_.addUpdate(std::move(updateOptimize));
+
 
     if (evolutionRunner_) {
         evolutionRunner_->terminate();
