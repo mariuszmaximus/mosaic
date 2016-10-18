@@ -4,6 +4,7 @@
 #include <targetimage.h>
 
 #include <memory>
+#include <QtGlobal>
 
 
 TEST(MoBadnessComposite, Constructor) {
@@ -41,6 +42,21 @@ struct MoBadnessCompositeT : public ::testing::Test {
 TEST_F(MoBadnessCompositeT, EmptyCompositeHasZeroBadness) {
     MoBadnessComposite badness;
     EXPECT_EQ(0.0f, badness.computeBadness(model, targetImage));
+}
+
+class ConstantBadness : public MoBadness {
+    virtual ~ConstantBadness() {}
+    float computeBadness(const MoMosaicModel &model, const MoTargetImage &targetImage) {
+        Q_UNUSED(model);
+        Q_UNUSED(targetImage);
+        return 2.3f;
+    }
+};
+
+TEST_F(MoBadnessCompositeT, NonEmptyBadnessHasNonZeroBadness) {
+    MoBadnessComposite badness;
+    badness.addBadness(std::unique_ptr<MoBadness>(new ConstantBadness));
+    EXPECT_NE(0.0f, badness.computeBadness(model, targetImage));
 }
 
 
