@@ -37,8 +37,8 @@ float moComputeBadnessPair(float x0, float y0, float w0, float h0,
     float r1[order][order][2];
     for (int ix = 0; ix < order; ++ix) {
         for (int iy = 0; iy < order; ++iy) {
-            r1[ix][iy][0] = nodes[ix];
-            r1[ix][iy][1] = nodes[iy];
+            r1[ix][iy][0] = 0.5f * nodes[ix];
+            r1[ix][iy][1] = 0.5f * nodes[iy];
             moTransformToWorldCoordinates(x0, y0, w0, h0, alpha0, scale0,
                                           r1[ix][iy]);
         }
@@ -48,8 +48,8 @@ float moComputeBadnessPair(float x0, float y0, float w0, float h0,
     float r2[order][order][2];
     for (int ix = 0; ix < order; ++ix) {
         for (int iy = 0; iy < order; ++iy) {
-            r2[ix][iy][0] = nodes[ix];
-            r2[ix][iy][1] = nodes[iy];
+            r2[ix][iy][0] = 0.5f * nodes[ix];
+            r2[ix][iy][1] = 0.5f * nodes[iy];
             moTransformToWorldCoordinates(x1, y1, w1, h1, alpha1, scale1,
                                           r2[ix][iy]);
         }
@@ -59,20 +59,16 @@ float moComputeBadnessPair(float x0, float y0, float w0, float h0,
     // asm("# quadrature loop");
     float badness = 0.0f;
     for (int ix = 0; ix < order; ++ix) {
-        float b = 0.0f;
         for (int iy = 0; iy < order; ++iy) {
-            float bp = 0.0f;
             for (int jx = 0; jx < order; ++jx) {
-                float bpp = 0.0f;
                 for (int jy = 0; jy < order; ++jy) {
-                    bpp += weights[jy] *
-                            potential->operator()(r1[ix][iy], r2[ix][iy]);
+                    badness +=
+                            weights[ix] * weights[iy] *
+                            weights[jx] * weights[jy] *
+                            potential->operator()(r1[ix][iy], r2[jx][jy]);
                 }
-                bp += weights[jx] * bpp;
             }
-            b += weights[iy] * bp;
         }
-        badness += weights[ix] * b;
     }
     // Gauss quadrature weights are normalized for integration over [-1, 1].
     // We divide by 2^4 to make the integrals normalized over the tiles.

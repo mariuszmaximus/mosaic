@@ -28,8 +28,8 @@ class IdentityPotential : public MoPotential {
 };
 
 
-struct MoInteractionTileBorderIdentity : public ::testing::Test {
-    MoInteractionTileBorderIdentity() :
+struct MoInteractionTileTileIdentity : public ::testing::Test {
+    MoInteractionTileTileIdentity() :
         interaction(std::unique_ptr<MoPotential>(new IdentityPotential())),
         model(),
         targetImage(QImage(), QSize(150, 100))
@@ -57,18 +57,18 @@ struct MoInteractionTileBorderIdentity : public ::testing::Test {
 };
 
 
-TEST_F(MoInteractionTileBorderIdentity, CanComputeBadness) {
+TEST_F(MoInteractionTileTileIdentity, CanComputeBadness) {
     EXPECT_NO_THROW(interaction.computeBadness(model, targetImage));
 }
 
-TEST_F(MoInteractionTileBorderIdentity, UnitScaleTilesGiveBadnessOfOne) {
-    EXPECT_FLOAT_EQ(1.0f, interaction.computeBadness(model, targetImage));
+TEST_F(MoInteractionTileTileIdentity, UnitScaleTilesGiveBadnessOfOne) {
+    EXPECT_NEAR(1.0f, interaction.computeBadness(model, targetImage), 1.0e-5f);
 }
 
-TEST_F(MoInteractionTileBorderIdentity, ThreeTilesGiveThreeTimesAsMuchBadness) {
+TEST_F(MoInteractionTileTileIdentity, ThreeTilesGiveThreeTimesAsMuchBadness) {
     int numTiles = 3;
     createSomeModel(numTiles);
-    EXPECT_FLOAT_EQ(3.0f, interaction.computeBadness(model, targetImage));
+    EXPECT_NEAR(3.0f, interaction.computeBadness(model, targetImage), 1.0e-5f);
 }
 
 class IdentityPotentialFiniteRange : public IdentityPotential {
@@ -80,7 +80,7 @@ public:
     float range_;
 };
 
-TEST_F(MoInteractionTileBorderIdentity, FiniteRangeInRange) {
+TEST_F(MoInteractionTileTileIdentity, FiniteRangeInRange) {
     float range = 100.0f;
     interaction.resetPotential(
                 std::unique_ptr<MoPotential>(
@@ -89,10 +89,10 @@ TEST_F(MoInteractionTileBorderIdentity, FiniteRangeInRange) {
     model.getXCoords()[1] = 0.2f;
     model.getYCoords()[0] = 0.0f;
     model.getYCoords()[1] = 0.2f;
-    EXPECT_FLOAT_EQ(1.0f, interaction.computeBadness(model, targetImage));
+    EXPECT_NEAR(1.0f, interaction.computeBadness(model, targetImage), 1.0e-5f);
 }
 
-TEST_F(MoInteractionTileBorderIdentity, FiniteRangeMarginal) {
+TEST_F(MoInteractionTileTileIdentity, FiniteRangeMarginal) {
     float range = 100.0f;
     interaction.resetPotential(
                 std::unique_ptr<MoPotential>(
@@ -112,10 +112,10 @@ TEST_F(MoInteractionTileBorderIdentity, FiniteRangeMarginal) {
     model.getYCoords()[0] = 0.0f;
     model.getYCoords()[1] = -sin(alpha) * distance;
 
-    EXPECT_FLOAT_EQ(1.0f, interaction.computeBadness(model, targetImage));
+    EXPECT_NEAR(1.0f, interaction.computeBadness(model, targetImage), 1.0e-5f);
 }
 
-TEST_F(MoInteractionTileBorderIdentity, FiniteRangeOutOfRange) {
+TEST_F(MoInteractionTileTileIdentity, FiniteRangeOutOfRange) {
     float range = 100.0f;
     interaction.resetPotential(
                 std::unique_ptr<MoPotential>(
