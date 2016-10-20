@@ -37,8 +37,8 @@ float moComputeBadnessPair(float x0, float y0, float w0, float h0,
     float r1[order][order][2];
     for (int ix = 0; ix < order; ++ix) {
         for (int iy = 0; iy < order; ++iy) {
-            r1[ix][iy][0] = nodes[ix];
-            r1[ix][iy][1] = nodes[iy];
+            r1[ix][iy][0] = 0.5f * nodes[ix];
+            r1[ix][iy][1] = 0.5f * nodes[iy];
             moTransformToWorldCoordinates(x0, y0, w0, h0, alpha0, scale0,
                                           r1[ix][iy]);
         }
@@ -48,8 +48,8 @@ float moComputeBadnessPair(float x0, float y0, float w0, float h0,
     float r2[order][order][2];
     for (int ix = 0; ix < order; ++ix) {
         for (int iy = 0; iy < order; ++iy) {
-            r2[ix][iy][0] = nodes[ix];
-            r2[ix][iy][1] = nodes[iy];
+            r2[ix][iy][0] = 0.5f * nodes[ix];
+            r2[ix][iy][1] = 0.5f * nodes[iy];
             moTransformToWorldCoordinates(x1, y1, w1, h1, alpha1, scale1,
                                           r2[ix][iy]);
         }
