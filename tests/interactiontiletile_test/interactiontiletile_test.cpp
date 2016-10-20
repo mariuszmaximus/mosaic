@@ -62,13 +62,13 @@ TEST_F(MoInteractionTileTileIdentity, CanComputeBadness) {
 }
 
 TEST_F(MoInteractionTileTileIdentity, UnitScaleTilesGiveBadnessOfOne) {
-    EXPECT_FLOAT_EQ(1.0f, interaction.computeBadness(model, targetImage));
+    EXPECT_NEAR(1.0f, interaction.computeBadness(model, targetImage), 1.0e-5f);
 }
 
 TEST_F(MoInteractionTileTileIdentity, ThreeTilesGiveThreeTimesAsMuchBadness) {
     int numTiles = 3;
     createSomeModel(numTiles);
-    EXPECT_FLOAT_EQ(3.0f, interaction.computeBadness(model, targetImage));
+    EXPECT_NEAR(3.0f, interaction.computeBadness(model, targetImage), 1.0e-5f);
 }
 
 class IdentityPotentialFiniteRange : public IdentityPotential {
@@ -89,7 +89,7 @@ TEST_F(MoInteractionTileTileIdentity, FiniteRangeInRange) {
     model.getXCoords()[1] = 0.2f;
     model.getYCoords()[0] = 0.0f;
     model.getYCoords()[1] = 0.2f;
-    EXPECT_FLOAT_EQ(1.0f, interaction.computeBadness(model, targetImage));
+    EXPECT_NEAR(1.0f, interaction.computeBadness(model, targetImage), 1.0e-5f);
 }
 
 TEST_F(MoInteractionTileTileIdentity, FiniteRangeMarginal) {
@@ -112,7 +112,7 @@ TEST_F(MoInteractionTileTileIdentity, FiniteRangeMarginal) {
     model.getYCoords()[0] = 0.0f;
     model.getYCoords()[1] = -sin(alpha) * distance;
 
-    EXPECT_FLOAT_EQ(1.0f, interaction.computeBadness(model, targetImage));
+    EXPECT_NEAR(1.0f, interaction.computeBadness(model, targetImage), 1.0e-5f);
 }
 
 TEST_F(MoInteractionTileTileIdentity, FiniteRangeOutOfRange) {
