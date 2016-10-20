@@ -13,5 +13,6 @@ float MoLennardJones::evaluateAt(float r) const {
             std::sqrt(r * r + rmin * rmin);
     float xi = sigmaOverR * sigmaOverR;
     xi = xi * xi * xi;
-    return 4.0 * epsilon_ * (xi * xi - xi);
+    float lj = 4.0 * epsilon_ * (xi * xi - xi);
+    return lj;
 }
