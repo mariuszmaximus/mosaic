@@ -59,20 +59,16 @@ float moComputeBadnessPair(float x0, float y0, float w0, float h0,
     // asm("# quadrature loop");
     float badness = 0.0f;
     for (int ix = 0; ix < order; ++ix) {
-        float b = 0.0f;
         for (int iy = 0; iy < order; ++iy) {
-            float bp = 0.0f;
             for (int jx = 0; jx < order; ++jx) {
-                float bpp = 0.0f;
                 for (int jy = 0; jy < order; ++jy) {
-                    bpp += weights[jy] *
-                            potential->operator()(r1[ix][iy], r2[ix][iy]);
+                    badness +=
+                            weights[ix] * weights[iy] *
+                            weights[jx] * weights[jy] *
+                            potential->operator()(r1[ix][iy], r2[jx][jy]);
                 }
-                bp += weights[jx] * bpp;
             }
-            b += weights[iy] * bp;
         }
-        badness += weights[ix] * b;
     }
     // Gauss quadrature weights are normalized for integration over [-1, 1].
     // We divide by 2^4 to make the integrals normalized over the tiles.
