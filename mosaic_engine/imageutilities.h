@@ -1,0 +1,4 @@
+#ifndef IMAGEUTILITIES_H
+#define IMAGEUTILITIES_H
+
+#endif // IMAGEUTILITIES_H

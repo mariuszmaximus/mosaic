@@ -49,7 +49,8 @@ HEADERS = \
     interactiontileborder.h \
     interactionhelpers.h \
     badnesscomposite.h \
-    mosaicupdateoptimize.h
+    mosaicupdateoptimize.h \
+    imageutilities.h
 
 DISTFILES +=
 
