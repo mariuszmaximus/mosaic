@@ -9,5 +9,5 @@ TEST_MASTERS = \
 
 # TODO: Would be nice to turn this into a macro.
 for(FILE,TEST_MASTERS){
-    QMAKE_POST_LINK += $$quote(cp $${FILE} $${DESTDIR}$$escape_expand(\n\t))
+    QMAKE_POST_LINK += $$quote(cp $${FILE} $${OUT_PWD} $$escape_expand(\t\n))
 }
