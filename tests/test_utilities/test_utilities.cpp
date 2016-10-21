@@ -43,8 +43,10 @@ float distanceBetweenImages(const QImage &image1, const QImage &image2) {
     int h = size.height();
     float distance = 0.0f;
     for (int i = 0; i < h; ++i) {
-        const QRgb* line1 = reinterpret_cast<const QRgb*>(image1.scanLine(i));
-        const QRgb* line2 = reinterpret_cast<const QRgb*>(image2Resized.scanLine(i));
+        const QRgb* line1 =
+                reinterpret_cast<const QRgb*>(image1.constScanLine(i));
+        const QRgb* line2 =
+                reinterpret_cast<const QRgb*>(image2Resized.constScanLine(i));
         for (int j = 0; j < w; ++j) {
             QColor color1(line1[j]);
             qreal rgb1[3];
