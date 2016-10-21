@@ -8,7 +8,8 @@ QImage createImageRandomSize();
 
 // L2 difference between images
 float distanceBetweenImages(const QImage& image1, const QImage& image2);
-float distanceBetweenImages(const QImage &image1, const QString& fileName);
+float distanceBetweenImages(const QString& masterFileName,
+                            const QImage& image1);
 
 /**
  * @brief Checks images for equality.
@@ -25,6 +26,11 @@ float distanceBetweenImages(const QImage &image1, const QString& fileName);
  *                       Otherwise returns false.
  */
 bool imagesEqual(const QString& masterFileName,
+                 const QImage& image,
+                 float tolerance,
+                 const QString& fileName);
+
+bool imagesEqual(const QImage& masterImage,
                  const QImage& image,
                  float tolerance,
                  const QString& fileName);

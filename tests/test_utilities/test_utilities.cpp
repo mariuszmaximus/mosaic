@@ -64,7 +64,7 @@ float distanceBetweenImages(const QImage &image1, const QImage &image2) {
     return distance;
 }
 
-float distanceBetweenImages(const QImage &image1, const QString& fileName) {
+float distanceBetweenImages(const QString& fileName, const QImage &image1) {
     QImage image2(fileName);
     if (image2.format() != QImage::Format_ARGB32) {
         image2 = image2.convertToFormat(QImage::Format_ARGB32);
@@ -72,16 +72,28 @@ float distanceBetweenImages(const QImage &image1, const QString& fileName) {
     return distanceBetweenImages(image1, image2);
 }
 
-
-bool imagesEqual(const QString &masterFileName,
-                 const QImage &image,
-                 float tolerance,
-                 const QString &fileName) {
-    float distance = distanceBetweenImages(image, masterFileName);
+static bool closeEnough(float distance, float tolerance,
+                        const QImage& image, const QString& fileName) {
     if (distance < tolerance) {
         return true;
     } else {
         image.save(fileName);
         return false;
     }
+}
+
+bool imagesEqual(const QString &masterFileName,
+                 const QImage &image,
+                 float tolerance,
+                 const QString &fileName) {
+    float distance = distanceBetweenImages(masterFileName, image);
+    return closeEnough(distance, tolerance, image, fileName);
+}
+
+bool imagesEqual(const QImage &masterImage,
+                 const QImage &image,
+                 float tolerance,
+                 const QString &fileName) {
+    float distance = distanceBetweenImages(masterImage, image);
+    return closeEnough(distance, tolerance, image, fileName);
 }
