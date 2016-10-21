@@ -57,6 +57,7 @@ float distanceBetweenImages(const QImage &image1, const QImage &image2) {
             }
         }
     }
-    distance /= (w * h);
+    distance /= (3.0f * w * h);
+    distance = std::sqrt(distance);
     return distance;
 }
