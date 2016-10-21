@@ -63,3 +63,11 @@ float distanceBetweenImages(const QImage &image1, const QImage &image2) {
     distance = std::sqrt(distance);
     return distance;
 }
+
+float distanceBetweenImages(const QImage &image1, const QString& fileName) {
+    QImage image2(fileName);
+    if (image2.format() != QImage::Format_ARGB32) {
+        image2 = image2.convertToFormat(QImage::Format_ARGB32);
+    }
+    return distanceBetweenImages(image1, image2);
+}

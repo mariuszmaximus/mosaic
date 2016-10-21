@@ -20,3 +20,22 @@ TEST(DistanceBetweenImages, IsNonZeroForDifferentImages) {
     img2.fill(0);
     EXPECT_GT(distanceBetweenImages(img1, img2), 0.0f);
 }
+
+TEST(DistanceBetweenImages, IsZeroIfImageComesFromFile) {
+    QImage img1 = createImage(70, 80);
+    img1.fill(QColor(200, 100, 150));
+    QImage img2{img1.copy()};
+    EXPECT_NEAR(0.0f,
+                distanceBetweenImages(img1,
+                                      "IsZeroIfImageComesFromFile_master.png"),
+                1.0e-4);
+}
+
+TEST(DistanceBetweenImages, IsNonZeroIfImageDiffersFromMaster) {
+    QImage img1 = createImage(70, 80);
+    img1.fill(QColor(100, 100, 150));
+    QImage img2{img1.copy()};
+    EXPECT_LT(2.0e-2f,
+                distanceBetweenImages(img1,
+                                      "IsZeroIfImageComesFromFile_master.png"));
+}
