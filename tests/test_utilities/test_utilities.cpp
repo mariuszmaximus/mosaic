@@ -71,3 +71,17 @@ float distanceBetweenImages(const QImage &image1, const QString& fileName) {
     }
     return distanceBetweenImages(image1, image2);
 }
+
+
+bool imagesEqual(const QString &masterFileName,
+                 const QImage &image,
+                 float tolerance,
+                 const QString &fileName) {
+    float distance = distanceBetweenImages(image, masterFileName);
+    if (distance < tolerance) {
+        return true;
+    } else {
+        image.save(fileName);
+        return false;
+    }
+}
