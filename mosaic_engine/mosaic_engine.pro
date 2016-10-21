@@ -24,7 +24,8 @@ SOURCES = \
     interactiontileborder.cpp \
     interactionhelpers.cpp \
     badnesscomposite.cpp \
-    mosaicupdateoptimize.cpp
+    mosaicupdateoptimize.cpp \
+    imageutilities.cpp
 HEADERS = \
     maindriver.h \
     mosaicview.h \
