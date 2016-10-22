@@ -26,7 +26,7 @@ SOURCES = \
     badnesscomposite.cpp \
     mosaicupdateoptimize.cpp \
     imageutilities.cpp \
-    tiletargetcorrelation.cpp
+    mosaictargetcorrelation.cpp
 HEADERS = \
     maindriver.h \
     mosaicview.h \
@@ -53,7 +53,7 @@ HEADERS = \
     badnesscomposite.h \
     mosaicupdateoptimize.h \
     imageutilities.h \
-    tiletargetcorrelation.h
+    mosaictargetcorrelation.h
 
 DISTFILES +=
 

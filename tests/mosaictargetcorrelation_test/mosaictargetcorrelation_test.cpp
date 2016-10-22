@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <tiletargetcorrelation.h>
+#include <mosaictargetcorrelation.h>
 #include <targetimage.h>
 #include <mosaicmodel.h>
 #include <test_utilities.h>
@@ -7,17 +7,17 @@
 #include <memory>
 
 
-TEST(MoTileTargetCorrelation, IncludeTest) {
+TEST(MoMosaicTargetCorrelation, IncludeTest) {
   EXPECT_TRUE(true);
 }
 
-TEST(MoTileTargetCorrelation, Constructor) {
-    std::unique_ptr<MoTileTargetCorrelation> ptr;
-    EXPECT_NO_THROW(ptr.reset(new MoTileTargetCorrelation(10)));
+TEST(MoMosaicTargetCorrelation, Constructor) {
+    std::unique_ptr<MoMosaicTargetCorrelation> ptr;
+    EXPECT_NO_THROW(ptr.reset(new MoMosaicTargetCorrelation(10)));
 }
 
-TEST(MoTileTargetCorrelation, OfEmptyModelIsZero) {
-    MoTileTargetCorrelation tileTargetCorrelation(10);
+TEST(MoMosaicTargetCorrelation, OfEmptyModelIsZero) {
+    MoMosaicTargetCorrelation tileTargetCorrelation(10);
     MoMosaicModel model;
     MoTargetImage targetImage(QImage(), QSize(40, 30));
     EXPECT_FLOAT_EQ(0.0f,
@@ -41,8 +41,8 @@ static MoMosaicModel createSomeModel(const MoTargetImage& targetImage,
     return model;
 }
 
-TEST(MoTileTargetCorrelation, OfNonEmptyModelIsNonZero) {
-    MoTileTargetCorrelation tileTargetCorrelation(10);
+TEST(MoMosaicTargetCorrelation, OfNonEmptyModelIsNonZero) {
+    MoMosaicTargetCorrelation tileTargetCorrelation(10);
     MoTargetImage targetImage(createImage(120, 80), QSize(120, 80));
     MoMosaicModel model{createSomeModel(targetImage, 3)};
     EXPECT_NE(0.0f, tileTargetCorrelation.computeBadness(model, targetImage));
