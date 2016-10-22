@@ -3,6 +3,9 @@
 #include <targetimage.h>
 #include <mosaicmodel.h>
 #include <test_utilities.h>
+#include <QOffscreenSurface>
+#include <QGuiApplication>
+#include <QOpenGLContext>
 
 #include <memory>
 
@@ -51,5 +54,25 @@ TEST(MoMosaicTargetCorrelation, OfNonEmptyModelIsNonZero) {
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
+
+    QGuiApplication app(argc, argv);
+    Q_UNUSED(app);
+
+    QSurfaceFormat format;
+    format.setMajorVersion(3);
+    format.setMinorVersion(0);
+
+    QOpenGLContext context;
+    context.setFormat(format);
+    context.create();
+    if (!context.isValid()) return 1;
+
+    QOffscreenSurface surface;
+    surface.setFormat(format);
+    surface.create();
+    if(!surface.isValid()) return 2;
+
+    context.makeCurrent(&surface);
+
     return RUN_ALL_TESTS();
 }
