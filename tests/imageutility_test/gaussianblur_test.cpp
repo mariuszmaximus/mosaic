@@ -17,6 +17,44 @@ TEST(GaussianBlur, IsIdentityOnConstantImage) {
     EXPECT_NEAR(color.blueF(), pixel1.blueF(), 1.0e-2);
 }
 
+static void makeRightHalfOfImageBlack(QImage* image) {
+    for (int i = 0; i < image->height(); ++i) {
+        for (int j = image->width() / 2; j < image->width(); ++j) {
+            image->setPixel(j, i, QColor(0, 0, 0).rgba());
+        }
+    }
+}
+
+TEST(GaussianBlur, SoftensAHardEdge) {
+    QImage img(30, 20, QImage::Format_ARGB32);
+    QColor color(150, 100, 200);
+    img.fill(color);
+    makeRightHalfOfImageBlack(&img);
+    QImage blurredImage{moGaussianBlur(img, 3.0f)};
+
+    QColor pixel;
+
+    // pixels more than a few sigma away from the hard edge are unchanged.
+    pixel = blurredImage.pixel(2, 4);
+    EXPECT_NEAR(color.redF(), pixel.redF(), 1.0e-2);
+    EXPECT_NEAR(color.greenF(), pixel.greenF(), 1.0e-2);
+    EXPECT_NEAR(color.blueF(), pixel.blueF(), 1.0e-2);
+
+    pixel = blurredImage.pixel(img.width() - 2, 4);
+    EXPECT_NEAR(0.0f, pixel.redF(), 1.0e-2);
+    EXPECT_NEAR(0.0f, pixel.greenF(), 1.0e-2);
+    EXPECT_NEAR(0.0f, pixel.blueF(), 1.0e-2);
+
+    // A pixel near the hard edge has intermediate color
+    pixel = blurredImage.pixel(img.width() / 2, 4);
+    EXPECT_LT(0.0f, pixel.redF());
+    EXPECT_LT(0.0f, pixel.greenF());
+    EXPECT_LT(0.0f, pixel.blueF());
+    EXPECT_LT(pixel.redF(), color.redF());
+    EXPECT_LT(pixel.greenF(), color.greenF());
+    EXPECT_LT(pixel.blueF(), color.blueF());
+}
+
 TEST(GaussianBlur, OfAnImage) {
     QImage img(":/testimages/GaussianBlurOfAnImage_input.png");
     ASSERT_FALSE(img.isNull());
