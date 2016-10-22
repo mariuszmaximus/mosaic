@@ -7,7 +7,6 @@ QImage createImage(int width, int height);
 QImage createImageRandomSize();
 
 // L2 difference between images
-float distanceBetweenImages(const QImage& image1, const QImage& image2);
 float distanceBetweenImages(const QString& masterFileName,
                             const QImage& image1);
 
