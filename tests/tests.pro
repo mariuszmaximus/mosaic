@@ -10,6 +10,7 @@ SUBDIRS += quadrature_test
 SUBDIRS += imageutility_test
 SUBDIRS += interactiontiletile_test
 SUBDIRS += interactiontileborder_test
+SUBDIRS += tiletargetcorrelation_test
 
 badnesscomposite_test.depends = test_utilities
 lennardjones_test.depends = test_utilities
@@ -21,6 +22,7 @@ quadrature_test.depends = test_utilities
 imageutility_test.depends = test_utilities
 interactiontiletile_test.depends = test_utilities
 interactiontileborder_test.depends = test_utilities
+tiletargetcorrelation_test.depends = test_utilities
 
 RUN_OPENGL_TESTS=$$(RUN_OPENGL_TESTS)
 equals(RUN_OPENGL_TESTS, "true") {

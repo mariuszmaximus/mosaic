@@ -51,7 +51,8 @@ HEADERS = \
     interactionhelpers.h \
     badnesscomposite.h \
     mosaicupdateoptimize.h \
-    imageutilities.h
+    imageutilities.h \
+    tiletargetcorrelation.h
 
 DISTFILES +=
 
