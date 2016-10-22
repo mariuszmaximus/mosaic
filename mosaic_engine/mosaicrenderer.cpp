@@ -50,7 +50,9 @@ void MoMosaicRenderer::render() {
     }
     ++i;
 
-    glClearColor(0.0f, 0.0f, 0.0f, 0.3f);
+    if (model_.size() == 0) return;
+
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     MO_CHECK_GL_ERROR;
 
@@ -96,6 +98,7 @@ void MoMosaicRenderer::renderMosaicTiles() {
 
     widthBuffer_.bind();
     float* widths = (float*)widthBuffer_.map(QOpenGLBuffer::WriteOnly);
+    MO_CHECK_GL_ERROR;
     model_.getWidths(widths);
     widthBuffer_.unmap();
     widthBuffer_.release();
@@ -103,6 +106,7 @@ void MoMosaicRenderer::renderMosaicTiles() {
 
     heightBuffer_.bind();
     float* heights = (float*)heightBuffer_.map(QOpenGLBuffer::WriteOnly);
+    MO_CHECK_GL_ERROR;
     model_.getHeights(heights);
     heightBuffer_.unmap();
     heightBuffer_.release();

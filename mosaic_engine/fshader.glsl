@@ -1,4 +1,4 @@
-#version 130
+#version 330
 uniform usampler2DArray texture0;
 in vec2 texCoord;
 in float layer;

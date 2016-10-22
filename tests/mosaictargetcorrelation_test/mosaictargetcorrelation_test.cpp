@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
 
     QSurfaceFormat format;
     format.setMajorVersion(3);
-    format.setMinorVersion(0);
+    format.setMinorVersion(3);
 
     QOpenGLContext context;
     context.setFormat(format);

@@ -1,4 +1,4 @@
-#version 130
+#version 330
 uniform float targetWidth = 1.0f;
 uniform float targetHeight = 1.0f;
 uniform float viewPortWidth = 1.0f;
