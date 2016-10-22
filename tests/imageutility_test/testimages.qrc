@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/testimages">
-        <file>gaussianBlur0.JPG</file>
+        <file>GaussianBlurOfAnImage_input.png</file>
     </qresource>
 </RCC>

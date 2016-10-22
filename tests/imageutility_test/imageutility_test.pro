@@ -5,7 +5,8 @@ SOURCES = \
     distancebetweenimages_test.cpp
 
 TEST_MASTERS = \
-    IsZeroIfImageComesFromFile_master.png
+    IsZeroIfImageComesFromFile_master.png \
+    GaussianBlurOfAnImage_master.png
 
 # TODO: Would be nice to turn this into a macro.
 QMAKE_POST_LINK+=$$quote(mkdir -p $${OUT_PWD}$$escape_expand(\n\t))

@@ -1,6 +1,7 @@
 #include <test_utilities.h>
 
 #include <random>
+#include <QFileInfo>
 
 
 static std::random_device rd;
@@ -73,11 +74,20 @@ float distanceBetweenImages(const QString& fileName, const QImage &image1) {
 }
 
 static bool closeEnough(float distance, float tolerance,
-                        const QImage& image, const QString& fileName) {
+                        const QImage& masterImage,
+                        const QImage& image,
+                        const QString& fileName) {
     if (distance < tolerance) {
         return true;
     } else {
         image.save(fileName);
+        QFileInfo info(fileName);
+        QString masterFileName =
+                info.path() +
+                "/" +
+                info.completeBaseName() +
+                "_master.png";
+        masterImage.save(masterFileName);
         return false;
     }
 }
@@ -86,8 +96,9 @@ bool imagesEqual(const QString &masterFileName,
                  const QImage &image,
                  float tolerance,
                  const QString &fileName) {
-    float distance = distanceBetweenImages(masterFileName, image);
-    return closeEnough(distance, tolerance, image, fileName);
+    QImage masterImage(masterFileName);
+    float distance = distanceBetweenImages(masterImage, image);
+    return closeEnough(distance, tolerance, masterImage, image, fileName);
 }
 
 bool imagesEqual(const QImage &masterImage,
@@ -95,5 +106,5 @@ bool imagesEqual(const QImage &masterImage,
                  float tolerance,
                  const QString &fileName) {
     float distance = distanceBetweenImages(masterImage, image);
-    return closeEnough(distance, tolerance, image, fileName);
+    return closeEnough(distance, tolerance, masterImage, image, fileName);
 }
