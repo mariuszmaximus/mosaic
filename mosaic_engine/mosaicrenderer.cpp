@@ -50,8 +50,6 @@ void MoMosaicRenderer::render() {
     }
     ++i;
 
-    if (model_.size() == 0) return;
-
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     MO_CHECK_GL_ERROR;
@@ -59,6 +57,9 @@ void MoMosaicRenderer::render() {
     glEnable(GL_DEPTH_TEST);
     glFrontFace(GL_CW);
     glCullFace(GL_FRONT);
+    MO_CHECK_GL_ERROR;
+
+    if (model_.size() == 0) return;
 
     if (showTargetImage_) {
         renderTargetImage();
@@ -141,6 +142,15 @@ void MoMosaicRenderer::renderMosaicTiles() {
     vao_.release();
     program_->release();
     MO_CHECK_GL_ERROR;
+
+    if (tileTextures_.isBound()) {
+        tileTextures_.release();
+        MO_CHECK_GL_ERROR;
+    }
+    if (targetImage_.isBound()) {
+        targetImage_.release();
+        MO_CHECK_GL_ERROR;
+    }
 
     if (window_) {
         window_->resetOpenGLState();

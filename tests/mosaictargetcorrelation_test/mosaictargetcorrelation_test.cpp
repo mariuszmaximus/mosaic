@@ -48,7 +48,9 @@ TEST(MoMosaicTargetCorrelation, OfNonEmptyModelIsNonZero) {
     MoMosaicTargetCorrelation tileTargetCorrelation(10);
     MoTargetImage targetImage(createImage(120, 80), QSize(120, 80));
     MoMosaicModel model{createSomeModel(targetImage, 3)};
-    EXPECT_NE(0.0f, tileTargetCorrelation.computeBadness(model, targetImage));
+    float badness = tileTargetCorrelation.computeBadness(model, targetImage);
+    std::cout << badness << std::endl;
+    EXPECT_NE(0.0f, badness);
 }
 
 
