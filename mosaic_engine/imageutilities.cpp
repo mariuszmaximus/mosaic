@@ -87,12 +87,17 @@ QImage moGaussianBlur(const QImage &input, float sigma) {
 }
 
 float moDistanceBetweenImages(const QImage &image1, const QImage &image2) {
-    Q_ASSERT(image1.format() == QImage::Format_ARGB32);
-    Q_ASSERT(image2.format() == QImage::Format_ARGB32);
+    const QImage* image1Ptr = &image1;
+    QImage image1WithFormatFixed;
+    if (image1.format() != image2.format()) {
+        image1WithFormatFixed = image1.convertToFormat(image2.format());
+        image1Ptr = &image1WithFormatFixed;
+    }
+    Q_ASSERT(image1Ptr->format() == image2.format());
 
     // Rescale image2 to the same size as image1 if needed
     QImage image2Resized;
-    QSize size = image1.size();
+    QSize size = image1Ptr->size();
     if (image2.size() == size) {
         image2Resized = image2;
     } else {
@@ -105,7 +110,7 @@ float moDistanceBetweenImages(const QImage &image1, const QImage &image2) {
     float distance = 0.0f;
     for (int i = 0; i < h; ++i) {
         const QRgb* line1 =
-                reinterpret_cast<const QRgb*>(image1.constScanLine(i));
+                reinterpret_cast<const QRgb*>(image1Ptr->constScanLine(i));
         const QRgb* line2 =
                 reinterpret_cast<const QRgb*>(image2Resized.constScanLine(i));
         for (int j = 0; j < w; ++j) {
