@@ -7,6 +7,7 @@ SUBDIRS += mosaicmodel_test
 SUBDIRS += mosaicview_test
 SUBDIRS += targetimage_test
 SUBDIRS += quadrature_test
+SUBDIRS += imageutility_test
 SUBDIRS += interactiontiletile_test
 SUBDIRS += interactiontileborder_test
 
@@ -17,6 +18,7 @@ mosaicmodel_test.depends = test_utilities
 mosaicview_test.depends = test_utilities
 targetimage_test.depends = test_utilities
 quadrature_test.depends = test_utilities
+imageutility_test.depends = test_utilities
 interactiontiletile_test.depends = test_utilities
 interactiontileborder_test.depends = test_utilities
 

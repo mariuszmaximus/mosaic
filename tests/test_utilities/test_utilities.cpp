@@ -1,6 +1,7 @@
 #include <test_utilities.h>
 
 #include <random>
+#include <QFileInfo>
 
 
 static std::random_device rd;
@@ -23,4 +24,87 @@ QImage createImageRandomSize() {
     int width = dis(gen);
     int height = dis(gen);
     return createImage(width, height);
+}
+
+float distanceBetweenImages(const QImage &image1, const QImage &image2) {
+    Q_ASSERT(image1.format() == QImage::Format_ARGB32);
+    Q_ASSERT(image2.format() == QImage::Format_ARGB32);
+
+    // Rescale image2 to the same size as image1 if needed
+    QImage image2Resized;
+    QSize size = image1.size();
+    if (image2.size() == size) {
+        image2Resized = image2;
+    } else {
+        image2Resized = image2.scaled(size);
+    }
+
+    // now iterate over pixels and compute L2 distance
+    int w = size.width();
+    int h = size.height();
+    float distance = 0.0f;
+    for (int i = 0; i < h; ++i) {
+        const QRgb* line1 =
+                reinterpret_cast<const QRgb*>(image1.constScanLine(i));
+        const QRgb* line2 =
+                reinterpret_cast<const QRgb*>(image2Resized.constScanLine(i));
+        for (int j = 0; j < w; ++j) {
+            QColor color1(line1[j]);
+            qreal rgb1[3];
+            color1.getRgbF(&rgb1[0], &rgb1[1], &rgb1[2]);
+            QColor color2(line2[j]);
+            qreal rgb2[3];
+            color2.getRgbF(&rgb2[0], &rgb2[1], &rgb2[2]);
+            for (int k = 0; k < 3; ++k) {
+                distance += (rgb1[k] - rgb2[k]) * (rgb1[k] - rgb2[k]);
+            }
+        }
+    }
+    distance /= (3.0f * w * h);
+    distance = std::sqrt(distance);
+    return distance;
+}
+
+float distanceBetweenImages(const QString& fileName, const QImage &image1) {
+    QImage image2(fileName);
+    if (image2.format() != QImage::Format_ARGB32) {
+        image2 = image2.convertToFormat(QImage::Format_ARGB32);
+    }
+    return distanceBetweenImages(image1, image2);
+}
+
+static bool closeEnough(float distance, float tolerance,
+                        const QImage& masterImage,
+                        const QImage& image,
+                        const QString& fileName) {
+    if (distance < tolerance) {
+        return true;
+    } else {
+        image.save(fileName);
+        QFileInfo info(fileName);
+        QString masterFileName =
+                info.path() +
+                "/" +
+                info.completeBaseName() +
+                "_master.png";
+        masterImage.save(masterFileName);
+        return false;
+    }
+}
+
+bool imagesEqual(const QString &masterFileName,
+                 const QImage &image,
+                 float tolerance,
+                 const QString &fileName) {
+    QImage masterImage(masterFileName);
+    float distance = distanceBetweenImages(masterImage, image);
+    return closeEnough(distance, tolerance, masterImage, image, fileName);
+}
+
+bool imagesEqual(const QImage &masterImage,
+                 const QImage &image,
+                 float tolerance,
+                 const QString &fileName) {
+    float distance = distanceBetweenImages(masterImage, image);
+    return closeEnough(distance, tolerance, masterImage, image, fileName);
 }

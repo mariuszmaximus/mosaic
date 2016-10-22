@@ -27,6 +27,8 @@ before_install:
 
 script:
  - source /opt/qt${QT_VERSION}/bin/qt${QT_VERSION}-env.sh
- - qmake mosaic_all.pro -r QMAKE_CC=$CC QMAKE_CXX=$CXX
+ - mkdir build
+ - cd build
+ - qmake -r QMAKE_CC=$CC QMAKE_CXX=$CXX ../mosaic_all.pro
  - make -j2
  - make check
