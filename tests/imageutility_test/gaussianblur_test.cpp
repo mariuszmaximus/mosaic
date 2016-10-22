@@ -14,6 +14,8 @@ TEST(GaussianBlur, IsIdentityOnConstantImage) {
 TEST(GaussianBlur, OfAnImage) {
     QImage img(":/testimages/gaussianBlur0.JPG");
     ASSERT_FALSE(img.isNull());
+    img = img.convertToFormat(QImage::Format_ARGB32);
+    ASSERT_EQ(QImage::Format_ARGB32, img.format());
     QImage blurredImage = moGaussianBlur(img, 20.0f);
     blurredImage.save("blurredImage.png");
 }
