@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+﻿#include <gtest/gtest.h>
 #include <mosaictargetcorrelation.h>
 #include <targetimage.h>
 #include <mosaicmodel.h>
@@ -6,8 +6,13 @@
 #include <QOffscreenSurface>
 #include <QGuiApplication>
 #include <QOpenGLContext>
+#include <QOpenGLFunctions>
 
 #include <memory>
+
+static std::unique_ptr<QSurfaceFormat> format;
+static std::unique_ptr<QOffscreenSurface> surface;
+static std::unique_ptr<QOpenGLContext> context;
 
 
 TEST(MoMosaicTargetCorrelation, IncludeTest) {
@@ -19,7 +24,38 @@ TEST(MoMosaicTargetCorrelation, Constructor) {
     EXPECT_NO_THROW(ptr.reset(new MoMosaicTargetCorrelation(10)));
 }
 
-TEST(MoMosaicTargetCorrelation, OfEmptyModelIsZero) {
+struct OpenGLFixture : public ::testing::Test {
+    virtual ~OpenGLFixture() {}
+    virtual void SetUp() {
+        ASSERT_NE(nullptr, context);
+        ASSERT_TRUE(context->isValid());
+        context->makeCurrent(surface.get());
+    }
+    virtual void TearDown() {
+        context->doneCurrent();
+    }
+};
+
+TEST_F(OpenGLFixture, CanMakeContextCurrent) {
+    //ASSERT_EQ(0u, glGetError());
+    EXPECT_TRUE(context->isValid());
+    QOpenGLFunctions* funcs =
+            QOpenGLContext::currentContext()->functions();
+    ASSERT_EQ(0u, funcs->glGetError());
+}
+
+TEST_F(OpenGLFixture, CanMakeContextCurrentASecondTime) {
+    ASSERT_EQ(0u, glGetError());
+    EXPECT_TRUE(context->isValid());
+    QOpenGLFunctions* funcs =
+            QOpenGLContext::currentContext()->functions();
+    ASSERT_EQ(0u, funcs->glGetError());
+}
+
+struct MoMosaicTargetCorrelation_Fixture : public OpenGLFixture {
+};
+
+TEST_F(MoMosaicTargetCorrelation_Fixture, OfEmptyModelIsZero) {
     MoMosaicTargetCorrelation tileTargetCorrelation(10);
     MoMosaicModel model;
     MoTargetImage targetImage(QImage(), QSize(40, 30));
@@ -27,6 +63,15 @@ TEST(MoMosaicTargetCorrelation, OfEmptyModelIsZero) {
                     tileTargetCorrelation.computeBadness(model, targetImage));
 }
 
+TEST_F(MoMosaicTargetCorrelation_Fixture, OfEmptyModelIsZeroAgain) {
+    MoMosaicTargetCorrelation tileTargetCorrelation(10);
+    MoMosaicModel model;
+    MoTargetImage targetImage(QImage(), QSize(40, 30));
+    EXPECT_FLOAT_EQ(0.0f,
+                    tileTargetCorrelation.computeBadness(model, targetImage));
+}
+
+/*
 static MoMosaicModel createSomeModel(const MoTargetImage& targetImage,
                                      int numTiles) {
     MoMosaicModel model;
@@ -52,6 +97,7 @@ TEST(MoMosaicTargetCorrelation, OfNonEmptyModelIsNonZero) {
     std::cout << badness << std::endl;
     EXPECT_NE(0.0f, badness);
 }
+*/
 
 
 int main(int argc, char **argv) {
@@ -60,21 +106,33 @@ int main(int argc, char **argv) {
     QGuiApplication app(argc, argv);
     Q_UNUSED(app);
 
-    QSurfaceFormat format;
-    format.setMajorVersion(3);
-    format.setMinorVersion(3);
 
-    QOpenGLContext context;
-    context.setFormat(format);
-    context.create();
-    if (!context.isValid()) return 1;
+    format.reset(new QSurfaceFormat);
+    format->setMajorVersion(3);
+    format->setMinorVersion(3);
+    format->setProfile(QSurfaceFormat::CoreProfile);
+    QSurfaceFormat::setDefaultFormat(*format);
 
-    QOffscreenSurface surface;
-    surface.setFormat(format);
-    surface.create();
-    if(!surface.isValid()) return 2;
+    context.reset(new QOpenGLContext);
+    context->setFormat(*format);
+    context->create();
+    if (!context->isValid()) return 1;
 
-    context.makeCurrent(&surface);
+    surface.reset(new QOffscreenSurface);
+    surface->setFormat(*format);
+    surface->create();
+    if (!surface->isValid()) return 2;
 
-    return RUN_ALL_TESTS();
+    context->makeCurrent(surface.get());
+    QOpenGLFunctions* funcs = context->functions();
+    funcs->initializeOpenGLFunctions();
+    context->doneCurrent();
+
+    int result = RUN_ALL_TESTS();
+
+    format.release();
+    surface.release();
+    context.release();
+
+    return result;
 }
