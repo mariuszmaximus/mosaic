@@ -34,7 +34,6 @@ public:
 
         static const GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0};
         glDrawBuffers(1, drawBuffers);
-        /*
 
         std::shared_ptr<MoMosaicModel> modelPtr{
             std::make_shared<MoMosaicModel>(model)};
@@ -46,19 +45,15 @@ public:
         QImage mosaicImage{mosaicBuffer.toImage()};
         mosaicImage.save("mosaicImage.png");
         return moDistanceBetweenImages(mosaicImage, targetImage.getImage());
-        */
-        return 0.0f;
     }
 
 private:
     void initGL() {
-        /*
         static bool openGLFunctionsInitialized = false;
         if (!openGLFunctionsInitialized) {
             Q_ASSERT(initializeOpenGLFunctions());
             openGLFunctionsInitialized = true;
         }
-        */
     }
 
     int maxNumTiles_;

@@ -71,7 +71,6 @@ TEST_F(MoMosaicTargetCorrelation_Fixture, OfEmptyModelIsZeroAgain) {
                     tileTargetCorrelation.computeBadness(model, targetImage));
 }
 
-/*
 static MoMosaicModel createSomeModel(const MoTargetImage& targetImage,
                                      int numTiles) {
     MoMosaicModel model;
@@ -97,7 +96,6 @@ TEST(MoMosaicTargetCorrelation, OfNonEmptyModelIsNonZero) {
     std::cout << badness << std::endl;
     EXPECT_NE(0.0f, badness);
 }
-*/
 
 
 int main(int argc, char **argv) {
