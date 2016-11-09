@@ -1,6 +1,7 @@
 #include <mosaictargetcorrelation.h>
 #include <targetimage.h>
 #include <imageutilities.h>
+#include <utilities.h>
 #include <QtGlobal>
 #include <QDebug>
 #include <QOpenGLFramebufferObject>
@@ -26,14 +27,19 @@ public:
         }
 
         QOpenGLFramebufferObjectFormat fboFormat;
-        fboFormat.setSamples(4);
+        fboFormat.setSamples(0);
         fboFormat.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
         QOpenGLFramebufferObject mosaicBuffer(targetImage.getSize(),
                                               fboFormat);
         Q_ASSERT(mosaicBuffer.bind());
+        glViewport(0, 0,
+                   targetImage.getSize().width(), targetImage.getSize().height());
+        MO_CHECK_GL_ERROR;
+
 
         static const GLenum drawBuffers[] = {GL_COLOR_ATTACHMENT0};
         glDrawBuffers(1, drawBuffers);
+        MO_CHECK_GL_ERROR;
 
         std::shared_ptr<MoMosaicModel> modelPtr{
             std::make_shared<MoMosaicModel>(model)};
@@ -43,7 +49,6 @@ public:
         mosaicBuffer.release();
 
         QImage mosaicImage{mosaicBuffer.toImage()};
-        mosaicImage.save("mosaicImage.png");
         return moDistanceBetweenImages(mosaicImage, targetImage.getImage());
     }
 

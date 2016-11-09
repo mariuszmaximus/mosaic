@@ -7,12 +7,15 @@
 #include <QGuiApplication>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
+#include <QOpenGLDebugLogger>
+#include <QOpenGLFunctions_3_3_Core>
 
 #include <memory>
 
 static std::unique_ptr<QSurfaceFormat> format;
 static std::unique_ptr<QOffscreenSurface> surface;
 static std::unique_ptr<QOpenGLContext> context;
+
 
 
 TEST(MoMosaicTargetCorrelation, IncludeTest) {
@@ -52,13 +55,27 @@ TEST_F(OpenGLFixture, CanMakeContextCurrentASecondTime) {
     ASSERT_EQ(0u, funcs->glGetError());
 }
 
+TEST_F(OpenGLFixture, CanInitializeOpenGLFunctions) {
+    ASSERT_EQ(0u, glGetError());
+    QOpenGLFunctions_3_3_Core funcs;
+    EXPECT_TRUE(funcs.initializeOpenGLFunctions());
+}
+
+TEST_F(OpenGLFixture, CanInitializeOpenGLFunctionsASecondTime) {
+    ASSERT_EQ(0u, glGetError());
+    QOpenGLFunctions_3_3_Core funcs;
+    EXPECT_TRUE(funcs.initializeOpenGLFunctions());
+}
+
 struct MoMosaicTargetCorrelation_Fixture : public OpenGLFixture {
 };
 
 TEST_F(MoMosaicTargetCorrelation_Fixture, OfEmptyModelIsZero) {
     MoMosaicTargetCorrelation tileTargetCorrelation(10);
     MoMosaicModel model;
-    MoTargetImage targetImage(QImage(), QSize(40, 30));
+    QImage img{createImage(80, 60)};
+    img.fill(QColor(0, 0, 0, 0xFF));
+    MoTargetImage targetImage(img, QSize(40, 30));
     EXPECT_FLOAT_EQ(0.0f,
                     tileTargetCorrelation.computeBadness(model, targetImage));
 }
@@ -66,11 +83,14 @@ TEST_F(MoMosaicTargetCorrelation_Fixture, OfEmptyModelIsZero) {
 TEST_F(MoMosaicTargetCorrelation_Fixture, OfEmptyModelIsZeroAgain) {
     MoMosaicTargetCorrelation tileTargetCorrelation(10);
     MoMosaicModel model;
-    MoTargetImage targetImage(QImage(), QSize(40, 30));
+    QImage img{createImage(80, 60)};
+    img.fill(QColor(0, 0, 0, 0xFF));
+    MoTargetImage targetImage(img, QSize(40, 30));
     EXPECT_FLOAT_EQ(0.0f,
                     tileTargetCorrelation.computeBadness(model, targetImage));
 }
 
+/*
 static MoMosaicModel createSomeModel(const MoTargetImage& targetImage,
                                      int numTiles) {
     MoMosaicModel model;
@@ -96,6 +116,7 @@ TEST(MoMosaicTargetCorrelation, OfNonEmptyModelIsNonZero) {
     std::cout << badness << std::endl;
     EXPECT_NE(0.0f, badness);
 }
+*/
 
 
 int main(int argc, char **argv) {
@@ -109,12 +130,14 @@ int main(int argc, char **argv) {
     format->setMajorVersion(3);
     format->setMinorVersion(3);
     format->setProfile(QSurfaceFormat::CoreProfile);
+    format->setOptions(QSurfaceFormat::DebugContext);
     QSurfaceFormat::setDefaultFormat(*format);
 
     context.reset(new QOpenGLContext);
     context->setFormat(*format);
     context->create();
     if (!context->isValid()) return 1;
+
 
     surface.reset(new QOffscreenSurface);
     surface->setFormat(*format);
@@ -124,10 +147,15 @@ int main(int argc, char **argv) {
     context->makeCurrent(surface.get());
     QOpenGLFunctions* funcs = context->functions();
     funcs->initializeOpenGLFunctions();
-    context->doneCurrent();
+
+    QOpenGLDebugLogger logger;
+    logger.initialize();
+    DebugMessageHandler handler;
+    handler.connectToLogger(&logger);
 
     int result = RUN_ALL_TESTS();
 
+    context->doneCurrent();
     format.release();
     surface.release();
     context.release();
