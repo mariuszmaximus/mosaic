@@ -1,4 +1,4 @@
-#version 130
+#version 140
 
 in float x;
 in float y;
