@@ -17,10 +17,17 @@
 
 
 int main(int argc, char *argv[]) {
+    Q_INIT_RESOURCE(engine_resources);
+    Q_INIT_RESOURCE(qml);
+
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication::setApplicationName("mosaic_cmd");
     QGuiApplication::setApplicationVersion("0.0.1");
     QGuiApplication app(argc, argv);
+
+app.setOrganizationName("Some Company");
+app.setOrganizationDomain("somecompany.com");
+app.setApplicationName("Amazing Application");
 
     // Parse command line arguments
     QCommandLineParser parser;
